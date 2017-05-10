@@ -1,0 +1,768 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spfood.pms.intf.domain.Commodity" >
+  <resultMap id="BaseResultMap" type="com.spfood.pms.intf.domain.Commodity" >
+
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="commodity_code" property="commodityCode" jdbcType="VARCHAR" />
+    <result column="commodity_gs1_code" property="commodityGs1Code" jdbcType="VARCHAR" />
+    <result column="category_code" property="category.categoryCode" jdbcType="VARCHAR" />
+    <result column="category_name" property="category.categoryName" jdbcType="VARCHAR" />
+    <result column="product_status" property="product.productStatus" jdbcType="VARCHAR" />
+   	<result column="product_buy_unit_name" property="product.productBuyUnitName" jdbcType="VARCHAR" />
+    <result column="product_buy_unit_code" property="product.productBuyUnitCode" jdbcType="VARCHAR" />
+    <result column="product_specification_value" property="product.productSpecificationValue" jdbcType="FLOAT" />
+    <result column="product_specification_unit_first" property="product.productSpecificationUnitFirst" jdbcType="VARCHAR" />
+    <result column="product_specification_unit_second" property="product.productSpecificationUnitSecond" jdbcType="VARCHAR" />
+    <result column="product_specification_unit_first_value" property="product.productSpecificationUnitFirstValue" jdbcType="VARCHAR" />
+    <result column="product_specification_unit_second_value" property="product.productSpecificationUnitSecondValue" jdbcType="VARCHAR" />
+    <result column="product_temperature_zone_name" property="product.productTemperatureZoneName" jdbcType="VARCHAR" />
+    <result column="product_temperature_zone_code" property="product.productTemperatureZoneCode" jdbcType="VARCHAR" />
+    <result column="product_code" property="product.productCode" jdbcType="VARCHAR" />
+	<result column="product_name" property="product.productName" jdbcType="VARCHAR" />
+    <result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
+    <result column="commodity_name" property="commodityName" jdbcType="VARCHAR" />
+    <result column="commodity_show_name" property="commodityShowName" jdbcType="VARCHAR" />
+    <result column="commodity_city" property="commodityCity" jdbcType="VARCHAR" />
+    <result column="commodity_price" property="commodityPrice" jdbcType="DECIMAL" />
+    <result column="commodity_sales_price" property="commoditySalesPrice" jdbcType="DECIMAL" />
+    <result column="sales_amount" property="salesAmount" jdbcType="INTEGER" />
+    <result column="commodity_product_quantity" property="commodityProductQuantity" jdbcType="DECIMAL" />
+    <result column="default_flag" property="defaultFlag" jdbcType="INTEGER" />
+    <result column="commodity_weight_unit" property="commodityWeightUnit" jdbcType="VARCHAR" />
+    <result column="commodity_show_place" property="commodityShowPlace" jdbcType="VARCHAR" />
+    <result column="commodity_comment" property="commodityComment" jdbcType="VARCHAR" />
+    <result column="commodity_weight" property="commodityWeight" jdbcType="DOUBLE" />
+    <result column="commodity_quantity" property="commodityQuantity" jdbcType="INTEGER" />
+    <result column="commodity_status" property="commodityStatus" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="express_good_count" property="commodityCommentDomain.expressGoodCount" jdbcType="INTEGER" />
+    <result column="express_mid_count" property="commodityCommentDomain.expressMidCount" jdbcType="INTEGER" />
+    <result column="express_bad_count" property="commodityCommentDomain.expressBadCount" jdbcType="INTEGER" />
+    <result column="package_good_count" property="commodityCommentDomain.packageGoodCount" jdbcType="INTEGER" />
+    <result column="package_mid_count" property="commodityCommentDomain.packageMidCount" jdbcType="INTEGER" />
+    <result column="package_bad_count" property="commodityCommentDomain.packageBadCount" jdbcType="INTEGER" />
+    <result column="commodity_good_count" property="commodityCommentDomain.commodityGoodCount" jdbcType="INTEGER" />
+    <result column="commodity_mid_count" property="commodityCommentDomain.commodityMidCount" jdbcType="INTEGER" />
+    <result column="commodity_bad_count" property="commodityCommentDomain.commodityBadCount" jdbcType="INTEGER" />
+    
+    <collection property="commodityPropertys" ofType="com.spfood.pms.intf.domain.CommodityProperty">
+        <id column="cid" property="id" jdbcType="BIGINT" />
+	    <result column="commdity_code" property="commodityCode" jdbcType="VARCHAR" />
+	    <result column="commdity_property_name" property="commdityPropertyName" jdbcType="VARCHAR" />
+	    <result column="commdity_property_value" property="commdityPropertyValue" jdbcType="VARCHAR" />
+    </collection>
+    
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, commodity_code, commodity_gs1_code, category_code, product_code, commodity_name,commodity_city, 
+    commodity_comment,commodity_weight,commodity_weight_unit,commodity_show_place,commodity_product_quantity,
+    commodity_city,
+    commodity_show_name, commodity_price, commodity_sales_price, sales_amount, default_flag, 
+    commodity_quantity, commodity_status, create_date, create_user, last_update_date, 
+    last_update_user
+  </sql>
+  
+  <sql id="Base_Where_Case" >
+    <where >
+      <if test="id != null" >
+         AND id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="commodityCode != null" >
+         AND commodity_code = #{commodityCode,jdbcType=VARCHAR}
+      </if>
+      <if test="commodityGs1Code != null" >
+         AND commodity_gs1_code = #{commodityGs1Code,jdbcType=VARCHAR}
+      </if>
+      <if test="categoryCode != null" >
+         AND category_code = #{categoryCode,jdbcType=VARCHAR}
+      </if>
+      <if test="productCode != null" >
+         AND product_code = #{productCode,jdbcType=VARCHAR}
+      </if>
+      <if test="commodityName != null" >
+         AND commodity_name = #{commodityName,jdbcType=VARCHAR}
+      </if>
+      <if test="commodityShowName != null" >
+         AND commodity_show_name = #{commodityShowName,jdbcType=VARCHAR}
+      </if>
+      <if test="commodityPrice != null" >
+         AND commodity_price = #{commodityPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="commoditySalesPrice != null" >
+         AND commodity_sales_price = #{commoditySalesPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="salesAmount != null" >
+         AND sales_amount = #{salesAmount,jdbcType=INTEGER}
+      </if>
+      <if test="defaultFlag != null" >
+         AND default_flag = #{defaultFlag,jdbcType=INTEGER}
+      </if>
+      <if test="commodityQuantity != null" >
+         AND commodity_quantity = #{commodityQuantity,jdbcType=INTEGER}
+      </if>
+      <if test="commodityStatus != null" >
+         AND commodity_status = #{commodityStatus,jdbcType=INTEGER}
+      </if>
+      <if test="createDate != null" >
+         AND create_date = #{createDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createUser != null" >
+         AND create_user = #{createUser,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdateDate != null" >
+         AND last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdateUser != null" >
+         AND last_update_user = #{lastUpdateUser,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </sql>
+  
+  <select id="selectCount" resultType="java.lang.Long" parameterType="com.spfood.pms.intf.domain.Commodity" >
+    select count( id)
+     from pms_commodity
+    <include refid="Base_Where_Case" />
+  </select>
+  
+  <select id="selectByProductCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+      select 	id,
+      			commodity_code,
+      			commodity_gs1_code,
+      			commodity_name,
+      			commodity_show_name,
+      			commodity_status,
+      			commodity_quantity,
+      			commodity_weight,
+      			commodity_weight_unit,
+      			commodity_show_place
+       	from 	pms_commodity 
+      	where 	product_code = #{productCode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="select" resultMap="BaseResultMap" parameterType="com.spfood.pms.intf.domain.Commodity" >
+		select pms_commodity.id
+		from pms_commodity 
+		where pms_commodity.category_code = #{category.categoryCode}
+		 <if test="commodityCode != null and commodityCode != ''" >
+	         AND commodity_code like #{commodityCode,jdbcType=VARCHAR}
+	     </if>
+		 order by id desc 
+  </select>
+  
+  <select id="selectByCategory" resultMap="BaseResultMap" parameterType="com.spfood.pms.intf.domain.Commodity" >
+		select pms_commodity.id
+		from pms_commodity 
+		where 1=1
+		<if test="category != null and category.categoryCode != null" >
+         AND pms_commodity.category_code like #{category.categoryCode}
+      </if>
+      <if test="commodityName != null" >
+         AND pms_commodity.commodity_name like #{commodityName,jdbcType=VARCHAR}
+      </if>
+		<if test="commodityCode != null and commodityCode != ''" >
+         AND commodity_code like #{commodityCode,jdbcType=VARCHAR}
+      </if>
+		<if test="commodityStatus != null and commodityStatus != ''" >
+         AND commodity_status = #{commodityStatus,jdbcType=INTEGER}
+      </if>
+		<if test="commodityShowPlace != null and commodityShowPlace != ''" >
+         AND commodity_show_place = #{commodityShowPlace,jdbcType=INTEGER}
+      </if>
+		 order by id desc 
+  </select>
+  
+  	<select id="selectListByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+			SELECT
+				pms_commodity.id,
+				pms_commodity.commodity_code,
+				pms_commodity.commodity_name,
+				pms_commodity.commodity_status,
+				pms_commodity.product_code,
+				pms_product.product_name,
+				pms_product_category.category_code,
+				pms_product.product_buy_unit_code,
+				pms_product.product_buy_unit_name,
+				pms_product.product_specification_value,
+				pms_product.product_specification_unit_first,
+				pms_product.product_specification_unit_first_value,
+				pms_product.product_specification_unit_second,
+				pms_product.product_specification_unit_second_value,
+				pms_product.product_temperature_zone_name,
+				pms_product.product_temperature_zone_code,
+				pms_commodity.commodity_comment,
+				pms_commodity.commodity_price,
+				pms_commodity.commodity_sales_price,
+				pms_commodity.commodity_weight_unit,
+				pms_commodity.commodity_product_quantity,
+				pms_commodity.commodity_gs1_code,
+				pms_product_category.category_name,
+				pms_commodity.commodity_weight,
+				pms_commodity.commodity_quantity,
+				pms_commodity.commodity_show_place,
+				pms_commodity.commodity_city,
+				pms_commodity_property.id AS cid,
+				pms_commodity_property.commdity_property_name,
+				pms_commodity_property.commdity_property_value,
+				pms_commodity_picture.picture_url AS image_url,
+				pms_product.product_status
+			FROM
+				pms_commodity
+			LEFT JOIN pms_commodity_picture ON pms_commodity_picture.commodity_code = pms_commodity.commodity_code
+			LEFT JOIN pms_commodity_property ON pms_commodity_property.commdity_code = pms_commodity.commodity_code
+			LEFT JOIN pms_product_category ON pms_commodity.category_code = pms_product_category.category_code
+			LEFT JOIN pms_product ON pms_commodity.product_code = pms_product.product_code
+			WHERE
+				pms_commodity_picture.picture_show_order = 0
+			AND pms_commodity_picture.picture_show_position = 0
+			AND pms_commodity.id IN
+				<foreach item="item" index="index" collection="list" open="("
+					separator="," close=")">
+					#{item}
+				</foreach>
+		 	order by pms_commodity.id desc 
+	</select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+     select 	pms_commodity.id,
+     			pms_commodity.commodity_code,
+     			pms_commodity.commodity_name,
+     			pms_commodity.commodity_status,
+     			pms_commodity.product_code,
+			    pms_commodity.sales_amount,
+			    pms_commodity.commodity_comment,
+			    pms_commodity.commodity_price,
+			    pms_commodity.commodity_sales_price,
+			    pms_commodity.commodity_weight_unit,
+			    pms_commodity.commodity_product_quantity,
+			    pms_commodity.commodity_gs1_code,
+			    pms_commodity.default_flag,
+			    pms_commodity.commodity_weight,
+			    pms_commodity.commodity_quantity,
+			    pms_commodity.commodity_show_place,
+			    pms_commodity.commodity_city,
+			    pms_commodity.product_temperature_zone_name,
+			    pms_commodity.product_temperature_zone_code,
+				pms_commodity_property.id as cid,
+				pms_commodity_property.commdity_property_name,
+				pms_commodity_property.commdity_property_value
+    	from   pms_commodity
+    	left join pms_commodity_property on pms_commodity_property.commdity_code = pms_commodity.commodity_code
+    	where pms_commodity.commodity_code = #{commodityCode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from pms_commodity
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.spfood.pms.intf.domain.Commodity"  useGeneratedKeys="true" keyProperty="id">
+    insert into pms_commodity ( commodity_code, 
+    							commodity_gs1_code,
+    							commodity_product_quantity,
+    							search_property,
+      							category_code,
+      							product_code,
+      							commodity_name,
+      							commodity_city,
+      							commodity_weight_unit,
+      							commodity_weight,
+      							commodity_show_place,
+      							commodity_comment,
+      							commodity_show_name,
+      							commodity_price,
+      							commodity_sales_price, 
+      							product_temperature_zone_code,
+      							product_temperature_zone_name, 
+      							sales_amount,
+      							default_flag,
+      							commodity_quantity, 
+      							commodity_status,
+      							create_date,
+      							create_user, 
+      							last_update_date,
+      							last_update_user)
+    					values( #{commodityCode,jdbcType=VARCHAR},
+    							#{commodityGs1Code,jdbcType=VARCHAR},
+    							#{commodityProductQuantity,jdbcType=DECIMAL},
+    							#{searchProperty,jdbcType=VARCHAR}, 
+      							#{product.categoryCode,jdbcType=VARCHAR},
+      							#{product.productCode,jdbcType=VARCHAR},
+      							#{commodityName,jdbcType=VARCHAR},
+      							#{commodityCity,jdbcType=VARCHAR},
+      							#{commodityWeightUnit,jdbcType=VARCHAR},
+      							#{commodityWeight,jdbcType=VARCHAR},
+      							#{commodityShowPlace,jdbcType=VARCHAR},
+      							#{commodityComment,jdbcType=VARCHAR},
+      							#{commodityShowName,jdbcType=VARCHAR},
+      							#{commodityPrice,jdbcType=DECIMAL},
+      							#{commoditySalesPrice,jdbcType=DECIMAL}, 
+      							#{product.productTemperatureZoneCode,jdbcType=VARCHAR},
+      							#{product.productTemperatureZoneName,jdbcType=VARCHAR},
+      							#{salesAmount,jdbcType=INTEGER},
+      							#{defaultFlag,jdbcType=INTEGER},
+      							#{commodityQuantity,jdbcType=INTEGER}, 
+      							#{commodityStatus,jdbcType=INTEGER},
+      							#{createDate,jdbcType=TIMESTAMP},
+      							#{createUser,jdbcType=VARCHAR}, 
+      							#{lastUpdateDate,jdbcType=TIMESTAMP},
+      							#{lastUpdateUser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.spfood.pms.intf.domain.Commodity" >
+    insert into pms_commodity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="commodityCode != null" >
+        commodity_code,
+      </if>
+      <if test="commodityGs1Code != null" >
+        commodity_gs1_code,
+      </if>
+      <if test="categoryCode != null" >
+        category_code,
+      </if>
+      <if test="productCode != null" >
+        product_code,
+      </if>
+      <if test="commodityName != null" >
+        commodity_name,
+      </if>
+      <if test="commodityShowName != null" >
+        commodity_show_name,
+      </if>
+      <if test="commodityPrice != null" >
+        commodity_price,
+      </if>
+      <if test="commoditySalesPrice != null" >
+        commodity_sales_price,
+      </if>
+      <if test="salesAmount != null" >
+        sales_amount,
+      </if>
+      <if test="defaultFlag != null" >
+        default_flag,
+      </if>
+      <if test="commodityQuantity != null" >
+        commodity_quantity,
+      </if>
+      <if test="commodityStatus != null" >
+        commodity_status,
+      </if>
+      <if test="commodityProductQuantity != null" >
+        commodity_product_quantity,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="commodityCode != null" >
+        #{commodityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityGs1Code != null" >
+        #{commodityGs1Code,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryCode != null" >
+        #{categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null" >
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityName != null" >
+        #{commodityName,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityShowName != null" >
+        #{commodityShowName,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityPrice != null" >
+        #{commodityPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="commoditySalesPrice != null" >
+        #{commoditySalesPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="salesAmount != null" >
+        #{salesAmount,jdbcType=INTEGER},
+      </if>
+      <if test="defaultFlag != null" >
+        #{defaultFlag,jdbcType=INTEGER},
+      </if>
+      <if test="commodityQuantity != null" >
+        #{commodityQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="commodityStatus != null" >
+        #{commodityStatus,jdbcType=INTEGER},
+      </if>
+      <if test="commodityProductQuantity != null" >
+        #{commodityProductQuantity,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" >
+    	update pms_commodity set commodity_status = #{state} where id = #{id}
+  </update>
+  
+   <update id="updateList" parameterType="java.util.List">
+    update pms_commodity set
+        <foreach collection="list" item="item" index="index"  > 
+	          <if test="index==0">
+	            commodity_status = #{item.state}  
+	          </if>
+    	</foreach>
+     where id in 
+    	<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item.id}
+		</foreach>
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.spfood.pms.intf.domain.Commodity" >
+    update pms_commodity
+	    set 
+	      commodity_gs1_code = #{commodityGs1Code,jdbcType=VARCHAR},
+	      commodity_comment = #{commodityComment,jdbcType=VARCHAR},
+	      commodity_weight = #{commodityWeight,jdbcType=VARCHAR},
+	      commodity_city = #{commodityCity,jdbcType=VARCHAR},
+	      commodity_weight_unit = #{commodityWeightUnit,jdbcType=VARCHAR},
+	      commodity_show_place = #{commodityShowPlace,jdbcType=VARCHAR},
+	      commodity_name = #{commodityName,jdbcType=VARCHAR},
+	      commodity_show_name = #{commodityShowName,jdbcType=VARCHAR},
+	      commodity_price = #{commodityPrice,jdbcType=DECIMAL},
+	      commodity_sales_price = #{commoditySalesPrice,jdbcType=DECIMAL},
+	      sales_amount = #{salesAmount,jdbcType=INTEGER},
+	      default_flag = #{defaultFlag,jdbcType=INTEGER},
+	      commodity_quantity = #{commodityQuantity,jdbcType=INTEGER},
+	      commodity_product_quantity = #{commodityProductQuantity,jdbcType=DECIMAL},
+	      last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+	      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+    
+   <select id="selectByCategoryForPrice" resultMap="BaseResultMap" parameterType="com.spfood.pms.intf.domain.Commodity" >
+		SELECT
+			pms_commodity.id,
+			pms_commodity.commodity_code,
+			pms_commodity.commodity_name,
+			pms_commodity.commodity_status,
+			pms_commodity.product_code,
+			pms_commodity.commodity_comment,
+			pms_commodity.commodity_price,
+			pms_commodity.commodity_sales_price,
+			pms_commodity.commodity_weight_unit,
+			pms_commodity.commodity_product_quantity,
+			pms_commodity.commodity_gs1_code,
+			pms_product_category.category_name,
+			pms_commodity.commodity_weight,
+			pms_commodity.commodity_quantity,
+			pms_commodity.commodity_show_place,
+			pms_commodity.commodity_city
+		FROM
+			pms_commodity
+		LEFT JOIN pms_product_category ON pms_commodity.category_code = pms_product_category.category_code
+		WHERE
+			1=1
+				<if test="category != null and category.categoryCode != null" >
+		         AND pms_commodity.category_code = #{category.categoryCode,jdbcType=VARCHAR}
+		      </if>
+				<if test="commodityStatus != null and commodityStatus != ''" >
+		         AND commodity_status = #{commodityStatus,jdbcType=INTEGER}
+		      </if>
+				<if test="commodityShowPlace != null and commodityShowPlace != ''" >
+		         AND commodity_show_place = #{commodityShowPlace,jdbcType=VARCHAR}
+		      </if>
+		ORDER BY
+				id DESC
+  </select>
+    <select id="selectByCommodityCodeListCommodity" resultMap="BaseResultMap" parameterType="java.util.List" >
+		SELECT
+			pms_commodity.id,
+			pms_commodity.category_code,
+			pms_commodity.commodity_code,
+			pms_commodity.commodity_name,
+			pms_commodity.commodity_status,
+			pms_commodity.product_code,
+			pms_commodity.sales_amount,
+			pms_commodity.commodity_comment,
+			pms_commodity.commodity_price,
+			pms_commodity.commodity_sales_price,
+			pms_commodity.commodity_weight_unit,
+			pms_commodity.commodity_product_quantity,
+			pms_commodity.commodity_gs1_code,
+			pms_commodity.default_flag,
+			pms_commodity.commodity_weight,
+			pms_commodity.commodity_quantity,
+			pms_commodity.commodity_show_place,
+			pms_commodity.commodity_city,
+			pms_commodity.product_temperature_zone_name,
+			pms_commodity.product_temperature_zone_code,
+			pms_product.product_name,
+			pms_product.product_buy_unit_name,
+			pms_product.product_buy_unit_code,
+			pms_product.product_status,
+			pms_product.product_specification_value,
+			pms_product.product_specification_unit_first,
+			pms_product.product_specification_unit_first_value,
+			pms_product.product_specification_unit_second,
+			pms_product.product_specification_unit_second_value,
+			pms_product_category.category_name,
+		 	pms_commodity_property.id AS cid,
+		 	pms_commodity_property.commdity_property_name,
+		 	pms_commodity_property.commdity_property_value
+		FROM
+			pms_commodity
+		LEFT JOIN pms_commodity_property ON pms_commodity_property.commdity_code = pms_commodity.commodity_code
+		LEFT JOIN pms_product ON pms_product.product_code = pms_commodity.product_code
+		LEFT JOIN pms_product_category ON pms_product_category.category_code = pms_commodity.category_code
+		WHERE
+			pms_commodity.commodity_code IN
+    	<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+  </select>
+  
+    <select id="selectByCommodityCodeForMQ" resultMap="BaseResultMap">
+		SELECT
+			pms_commodity.id,
+			pms_commodity.commodity_code,
+			pms_commodity.commodity_name,
+			pms_commodity.commodity_status,
+			pms_commodity.product_code,
+			pms_commodity.sales_amount,
+			pms_commodity.commodity_comment,
+			pms_commodity.commodity_price,
+			pms_commodity.commodity_sales_price,
+			pms_commodity.commodity_weight_unit,
+			pms_commodity.commodity_product_quantity,
+			pms_commodity.commodity_gs1_code,
+			pms_commodity.default_flag,
+			pms_commodity.commodity_weight,
+			pms_commodity.commodity_quantity,
+			pms_commodity.commodity_show_place,
+			pms_commodity.commodity_city,
+			pms_commodity.product_temperature_zone_name,
+			pms_commodity.product_temperature_zone_code
+		FROM
+			pms_commodity
+		JOIN pms_commodity_msg_temp ON pms_commodity_msg_temp.commdity_code = pms_commodity.commodity_code
+		WHERE
+			pms_commodity_msg_temp.send_date IS NULL
+  </select>
+  
+  
+    <select id="selectPageInCommodityForComment" resultMap="BaseResultMap" parameterType="com.spfood.pms.intf.domain.Commodity" >
+    
+  			SELECT id FROM(
+				SELECT a.id,a.category_code,a.commodity_code,a.commodity_name,
+					SUM(b.express_good) AS express_good_count,SUM(b.express_mid) AS express_mid_count,SUM(b.express_bad) AS express_bad_count,
+					SUM(b.package_good) AS package_good_count,SUM(b.package_mid) AS package_mid_count,SUM(b.package_bad) AS package_bad_count,
+					SUM(b.commodity_good) AS commodity_good_count,SUM(b.commodity_mid) AS commodity_mid_count,SUM(b.commodity_bad) AS commodity_bad_count
+				FROM pms_commodity AS a
+				LEFT JOIN
+				 (
+					SELECT  id, comment_usercode, commodity_code, category_code, comment_content,  order_no, comment_time,
+						 CASE WHEN express_grade in (4,5) THEN  COUNT(*)  ELSE 0 END AS express_good ,
+						 CASE WHEN express_grade in (2,3) THEN  COUNT(*)  ELSE 0 END AS express_mid,
+						 CASE WHEN express_grade = 1 THEN  COUNT(*)  ELSE 0 END  AS express_bad,
+
+						CASE WHEN package_grade in (4,5) THEN  COUNT(*)  ELSE 0 END AS package_good ,
+						CASE WHEN package_grade in (2,3) THEN  COUNT(*)  ELSE 0 END AS package_mid,
+						CASE WHEN package_grade = 1 THEN  COUNT(*)  ELSE 0 END AS package_bad,
+
+						CASE WHEN commodity_grade in (4,5) THEN  COUNT(*)  ELSE 0 END AS commodity_good ,
+						CASE WHEN commodity_grade in (2,3) THEN  COUNT(*)  ELSE 0 END AS commodity_mid,
+						CASE WHEN commodity_grade = 1 THEN  COUNT(*)  ELSE 0 END  AS commodity_bad
+					 FROM (SELECT  c.id, c.comment_usercode, c.commodity_code, c.category_code, c.comment_content,  c.order_no, c.comment_time,
+					 MAX(CASE WHEN c.comment_type_code = 1 THEN  c.comment_grade  ELSE 0 END) as express_grade
+					,MAX(CASE WHEN c.comment_type_code = 2 THEN  c.comment_grade  ELSE 0 END) as package_grade
+					,MAX(CASE WHEN c.comment_type_code = 3 THEN  c.comment_grade  ELSE 0 END) as commodity_grade
+					FROM   pms_commodity_comment c  
+							GROUP BY commodity_code,comment_usercode,order_no) as t 
+							WHERE 1=1
+				GROUP BY t.commodity_code,t.comment_usercode,t.order_no
+				ORDER BY t.id
+				) AS b
+				ON a.commodity_code = b.commodity_code
+				WHERE 
+				1=1
+				<if test="category != null and category.categoryCode != null" >
+		        AND a.category_code = #{category.categoryCode}
+		      </if>
+				<if test="commodityName != null and commodityName != ''" >
+		        AND a.commodity_name like '%' #{commodityName} '%'
+		      </if>
+				<if test="commodityCommentDomain != null">
+					<!-- 商品ID -->
+					<if test="commodityCommentDomain.commodityCode != null and commodityCommentDomain.commodityCode != ''" >
+							AND b.commodity_code like '%' #{commodityCommentDomain.commodityCode} '%'
+					</if>
+					
+					<!-- 用户昵称 -->
+			        <if test="commodityCommentDomain.commentUsercodeList != null" >
+			       	 AND b.comment_usercode in 
+						<foreach item="item" index="index" collection="commodityCommentDomain.commentUsercodeList" open="("
+							separator="," close=")">
+							#{item}
+						</foreach>
+			        </if>
+					
+					<!-- 订单编号 -->
+					<if test="commodityCommentDomain.orderNo != null and commodityCommentDomain.orderNo != ''" >
+							AND b.order_no like '%' #{commodityCommentDomain.orderNo} '%'
+					</if>
+					<!-- 评价关键字 -->
+					<if test="commodityCommentDomain.commentContent != null and commodityCommentDomain.commentContent != ''" >
+							AND b.comment_content like '%' #{commodityCommentDomain.commentContent} '%'
+					</if>
+					<!-- 评价时间 -->
+					<if test="commodityCommentDomain.CommodityCommentDateSt != null and 
+						commodityCommentDomain.CommodityCommentDateEd != null" >
+							AND b.comment_time BETWEEN #{commodityCommentDomain.CommodityCommentDateSt} AND #{commodityCommentDomain.CommodityCommentDateEd}
+					</if>
+					<!-- 评分等级-差评 -->
+					<if test="commodityCommentDomain.CommodityCommentLevel == 1" >
+							AND b.commodity_bad > 0
+					</if>
+					<!-- 评分等级-中评 -->
+					<if test="commodityCommentDomain.CommodityCommentLevel == 2" >
+							AND b.commodity_mid > 0
+					</if>
+					<!-- 评分等级-好评 -->
+					<if test="commodityCommentDomain.CommodityCommentLevel == 3" >
+							AND b.commodity_good > 0
+					</if>
+				</if>
+				GROUP BY a.commodity_code
+				<if test="commodityCommentDomain == null" >
+					ORDER BY commodity_good_count DESC
+				</if>
+				<if test="commodityCommentDomain != null" >
+					<if test="commodityCommentDomain.orderBy == null or 
+					commodityCommentDomain.orderBy == '' or
+					commodityCommentDomain.orderBy == 0" >
+					ORDER BY commodity_good_count DESC
+					</if>
+	
+					<if test="commodityCommentDomain.orderBy == 1" >
+					ORDER BY express_good_count ASC
+					</if>
+					
+					<if test="commodityCommentDomain.orderBy == 2" >
+					ORDER BY express_good_count DESC
+					</if>
+					
+					<if test="commodityCommentDomain.orderBy == 3" >
+					ORDER BY express_bad_count ASC
+					</if>
+					
+					<if test="commodityCommentDomain.orderBy == 4" >
+					ORDER BY express_bad_count DESC
+					</if>
+					
+					<if test="commodityCommentDomain.orderBy == 5" >
+					ORDER BY package_good_count ASC
+					</if>
+					
+					<if test="commodityCommentDomain.orderBy == 6" >
+					ORDER BY package_good_count DESC
+					</if>
+					
+					<if test="commodityCommentDomain.orderBy == 7" >
+					ORDER BY package_bad_count ASC
+					</if>
+					
+					<if test="commodityCommentDomain.orderBy == 8" >
+					ORDER BY package_bad_count DESC
+					</if>
+					
+					<if test="commodityCommentDomain.orderBy == 9" >
+					ORDER BY commodity_good_count ASC
+					</if>
+					
+					<if test="commodityCommentDomain.orderBy == 10" >
+					ORDER BY commodity_good_count DESC
+					</if>
+					
+					<if test="commodityCommentDomain.orderBy == 11" >
+					ORDER BY commodity_bad_count ASC
+					</if>
+					
+					<if test="commodityCommentDomain.orderBy == 12" >
+					ORDER BY commodity_bad_count DESC
+					</if>
+				</if>
+				) AS page
+    </select>
+    
+    
+    <select id="selectPageInCommodityForCommentDetail" resultMap="BaseResultMap" parameterType="java.util.List">
+				SELECT a.id,a.category_code,a.commodity_code,a.commodity_name,
+					IF(SUM(b.express_good) IS NULL,0,SUM(b.express_good)) AS express_good_count,
+					IF(SUM(b.express_mid) IS NULL,0,SUM(b.express_mid)) AS express_mid_count,
+					IF(SUM(b.express_bad) IS NULL,0,SUM(b.express_bad)) AS express_bad_count,
+					IF(SUM(b.package_good) IS NULL,0,SUM(b.package_good)) AS package_good_count,
+					IF(SUM(b.package_mid) IS NULL,0,SUM(b.package_mid)) AS package_mid_count,
+					IF(SUM(b.package_bad) IS NULL,0,SUM(b.package_bad)) AS package_bad_count,
+					IF(SUM(b.commodity_good) IS NULL,0,SUM(b.commodity_good)) AS commodity_good_count,
+					IF(SUM(b.commodity_mid) IS NULL,0,SUM(b.commodity_mid)) AS commodity_mid_count,
+					IF(SUM(b.commodity_bad) IS NULL,0,SUM(b.commodity_bad)) AS commodity_bad_count
+				FROM pms_commodity AS a
+				LEFT JOIN
+				 (
+					SELECT  id, comment_usercode, commodity_code, category_code, comment_content,  order_no, comment_time,
+						 CASE WHEN express_grade in (4,5) THEN  COUNT(*)  ELSE 0 END AS express_good ,
+						 CASE WHEN express_grade in (2,3) THEN  COUNT(*)  ELSE 0 END AS express_mid,
+						 CASE WHEN express_grade = 1 THEN  COUNT(*)  ELSE 0 END  AS express_bad,
+
+						CASE WHEN package_grade in (4,5) THEN  COUNT(*)  ELSE 0 END AS package_good ,
+						CASE WHEN package_grade in (2,3) THEN  COUNT(*)  ELSE 0 END AS package_mid,
+						CASE WHEN package_grade = 1 THEN  COUNT(*)  ELSE 0 END AS package_bad,
+
+						CASE WHEN commodity_grade in (4,5) THEN  COUNT(*)  ELSE 0 END AS commodity_good ,
+						CASE WHEN commodity_grade in (2,3) THEN  COUNT(*)  ELSE 0 END AS commodity_mid,
+						CASE WHEN commodity_grade = 1 THEN  COUNT(*)  ELSE 0 END  AS commodity_bad
+					 FROM (SELECT  c.id, c.comment_usercode, c.commodity_code, c.category_code, c.comment_content,  c.order_no, c.comment_time,
+					 MAX(CASE WHEN c.comment_type_code = 1 THEN  c.comment_grade  ELSE 0 END) as express_grade
+					,MAX(CASE WHEN c.comment_type_code = 2 THEN  c.comment_grade  ELSE 0 END) as package_grade
+					,MAX(CASE WHEN c.comment_type_code = 3 THEN  c.comment_grade  ELSE 0 END) as commodity_grade
+					FROM   pms_commodity_comment c  
+							GROUP BY commodity_code,comment_usercode,order_no) as t 
+				GROUP BY t.commodity_code,t.comment_usercode,t.order_no
+				ORDER BY t.id
+				) AS b
+				ON a.commodity_code = b.commodity_code
+				WHERE a.id in 
+					<foreach item="item" index="index" collection="list" open="("
+						separator="," close=")">
+						#{item}
+					</foreach>
+				GROUP BY a.commodity_code
+	</select>
+</mapper>

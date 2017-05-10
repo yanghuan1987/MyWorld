@@ -1,0 +1,107 @@
+package com.spfood.pms.intf.utils;
+
+public class Constant {
+	/**
+	 * 排序类型
+	 * 综合排序、价格、销量
+	 */
+	public enum OrderByCondition{
+		comprehensive,priceToAsc,priceToDesc,salesToAsc,salesToDesc
+	}
+	
+	/**
+	 * 待审核，已通过审核，未通过审核，上架，下架，停售
+	 *
+	 */
+	public enum CommodityState{
+		onCheck,passCheck,unpassCheck,onShift,offShift,stop
+	}
+	
+	/**
+	 * 显示位置
+	 *
+	 */
+	public enum CommodityShowPlace{
+		toB,toC
+	}
+	
+	//销量降序+价格升序 			comprehensive
+	//价格升序+销量降序			
+	/**
+	 * 排序类型
+	 */
+	public enum OrderByComment{
+		ExpressGoodCountAsc(1,"配送好评数升序"),
+		ExpressGoodCountDesc(2,"配送好评数降序"),
+		ExpressBadCountAsc(3,"配送差评数升序"),
+		ExpressBadCountDesc(4,"配送差评数降序"),
+		PackageGoodCountAsc(5,"包装好评数升序"),
+		PackageGoodCountDesc(6,"包装好评数降序"),
+		PackageBadCountAsc(7,"包装差评数升序"),
+		PackageBadCountDesc(8,"包装差评数降序"),
+		CommodityGoodCountAsc(9,"商品好评数升序"),
+		CommodityGoodCountDesc(10,"商品好评数降序"),
+		CommodityBadCountAsc(11,"商品差评数升序"),
+		CommodityBadCountDesc(12,"商品差评数降序"),
+		ExpressGradeAsc(13,"配送评价降序"),
+		ExpressGradeDesc(14,"配送评价降序"),
+		PackageGradeAsc(15,"包装评价降序"),
+		PackageGradeDesc(16,"包装评价降序"),
+		CommodityGradeAsc(17,"商品评价降序"),
+		CommodityGradeDesc(18,"商品评价降序");
+		private int value;
+		private String name;
+		private OrderByComment (int value,String name) {
+			this.value = value;
+			this.name = name;
+		}
+		public int getValue() {
+			return value;
+		}
+		public String getName() {
+			return name;
+		}
+	}
+	
+	/**
+	 * 排序类型
+	 */
+	public enum CategoryCodeSize{
+		categorycodelevelone(2,"一级品类2位编号"),
+		categorycodeleveltwo(5,"二级品类5位编号"),
+		categorycodelevelthree(8,"三级品类8位编号");
+		private int value;
+		private String name;
+		private CategoryCodeSize (int value,String name) {
+			this.value = value;
+			this.name = name;
+		}
+		public int getValue() {
+			return value;
+		}
+		public String getName() {
+			return name;
+		}
+	}
+	
+	/**
+	 * 排序类型
+	 */
+	public enum CommentLevel{
+		goodComment(3,"好评"),
+		middleComment(2,"中评"),
+		badComment(1,"差评");
+		private int value;
+		private String name;
+		private CommentLevel (int value,String name) {
+			this.value = value;
+			this.name = name;
+		}
+		public int getValue() {
+			return value;
+		}
+		public String getName() {
+			return name;
+		}
+	}
+}

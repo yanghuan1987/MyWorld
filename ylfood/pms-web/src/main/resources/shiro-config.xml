@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+	http://www.springframework.org/schema/task   
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-4.0.xsd 
+	http://www.springframework.org/schema/task/spring-task-4.0.xsd
+	http://www.springframework.org/schema/tx  http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+	http://code.alibabatech.com/schema/dubbo        
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+   <!-- SHIRO CONFIG START -->
+	<!-- shiro支持注解方式 -->
+	<aop:config proxy-target-class="true"></aop:config>  
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">  
+	    <property name="securityManager" ref="securityManager"/>  
+	</bean>   
+	
+	<!-- Shiro过滤器 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="successUrl" value="" />
+		<property name="loginUrl" value="${uias.server.url}" />
+		<property name="unauthorizedUrl" value="${uias.server.url}" />
+		<!-- 定义过滤规则 -->
+		<property name="filterChainDefinitions">
+			<value>
+			    /pms/login/* = user
+			    /pms/category/* = user
+			    /pms/product/* = user
+			    /pms/commodity/* = user
+			    /pms/comment/* = user
+			</value>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">  
+	    <property name="exceptionMappings">  
+	        <props>  
+	            <prop key="org.apache.shiro.authz.UnauthorizedException">
+	               /unauthorized
+	            </prop>  
+	            <prop key="org.apache.shiro.authz.UnauthenticatedException">
+	                /unauthorized
+	            </prop>  
+	        </props>  
+	    </property>  
+	</bean> 
+	
+	<!-- 缓存管理器 使用Redis实现 -->
+	<bean id="cacheManager" class="com.spfood.web.common.security.rediscache.RedisCacheManager">
+	   <property name="connectionPool" ref="redisConnectionPool"></property>
+	</bean>
+	
+	<!-- 用于缓存管理的Redis连接池  -->
+	<bean id="redisConnectionPool" class="com.spfood.web.common.security.rediscache.RedisConnectionPool">
+	   <!-- sentinel setting -->
+	   <constructor-arg index="0"><value>${redis.sentinel}</value></constructor-arg>
+	  
+	   <!-- sentinel master setting -->
+	   <constructor-arg index="1"><value>${redis.master}</value></constructor-arg>
+	   
+	   <!-- sentinel password , use <null/> to provide a null password-->
+	   <constructor-arg index="2"><null/></constructor-arg>
+	   
+	   <!-- database selection -->
+	   <constructor-arg index="3"><value>1</value></constructor-arg>
+	   
+	   <!-- timeout setting, in milliseconds -->
+	   <constructor-arg index="4"><value>2000</value></constructor-arg>
+	</bean>
+
+	<!-- Realm实现 -->
+	<bean id="employeeRealm" class="com.spfood.web.common.security.EmployeeRealm">
+		
+<!-- 		<property name="cachingEnabled" value="true" />
+		<property name="authenticationCachingEnabled" value="true" />
+		<property name="authenticationCacheName" value="authenticationCache" />
+		<property name="authorizationCachingEnabled" value="true" />
+		<property name="authorizationCacheName" value="authorizationCache" /> -->
+		<property name="employeeService" ref="employeeUiasService"/>
+	</bean>
+
+ 
+	<!-- 安全管理器 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="employeeRealm" />
+	</bean>
+
+	<!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) -->
+	<bean
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod"
+			value="org.apache.shiro.SecurityUtils.setSecurityManager" />
+		<property name="arguments" ref="securityManager" />
+	</bean>
+
+	<!-- Shiro生命周期处理器 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+	<!-- SHIRO CONFIG END -->
+
+</beans>

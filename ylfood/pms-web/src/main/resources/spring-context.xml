@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"  
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"  
+    xmlns:jpa="http://www.springframework.org/schema/data/jpa" 
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:security="http://www.springframework.org/schema/security"  
+    xmlns:task="http://www.springframework.org/schema/task"
+        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xsi:schemaLocation="  
+        http://www.springframework.org/schema/aop   
+        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd  
+        http://www.springframework.org/schema/mvc   
+        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd 
+        http://www.springframework.org/schema/security   
+        http://www.springframework.org/schema/security/spring-security-3.2.xsd  
+        http://www.springframework.org/schema/beans   
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+        http://www.springframework.org/schema/data/jpa   
+        http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd  
+        http://www.springframework.org/schema/tx   
+        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd  
+        http://www.springframework.org/schema/context   
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/task  
+        http://www.springframework.org/schema/task/spring-task-4.0.xsd
+	    http://code.alibabatech.com/schema/dubbo        
+	    http://code.alibabatech.com/schema/dubbo/dubbo.xsd">  
+    
+    
+
+    <context:annotation-config />
+    <context:component-scan base-package="com.spfood.*" >
+     <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />   
+  </context:component-scan>
+ 
+   
+    
+    <!-- message bundle -->
+       <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>classpath:messages/messages</value>
+                <value>classpath:messages/exceptions</value>
+                <value>classpath:kernel-exceptions</value>
+                <value>classpath:web-common-exception</value>
+            </list>
+        </property>
+        <property name="defaultEncoding" value="UTF-8" />
+        <property name="cacheSeconds" value="3600"/>
+        <property name="useCodeAsDefaultMessage" value="true" />
+    </bean>
+
+        <!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
+    <dubbo:application name="pms-web"  />
+ 
+    <!-- 使用zookeeper注册中心发现服务地址 -->
+    <dubbo:registry protocol="zookeeper" address="${zookeeper.addr}" file="pms-web-registry.properties" />
+    
+        <!-- 从注册中心发现监控中心 -->
+    <dubbo:monitor protocol="registry"/>
+    
+    <dubbo:consumer check="false" timeout="2000" init="true"/>
+    
+    <dubbo:reference id ="productCategoryService" interface="com.spfood.pms.intf.ProductCategoryService" ${localservice.url} check="false" timeout="10000"></dubbo:reference>
+    <dubbo:reference id ="commodityService" interface="com.spfood.pms.intf.CommodityService" ${localservice.url} check="false"  timeout="10000"></dubbo:reference>
+    <dubbo:reference id ="productService" interface="com.spfood.pms.intf.ProductService" ${localservice.url} check="false"  timeout="10000"></dubbo:reference>
+    <dubbo:reference id ="CommodityCommentService" interface="com.spfood.pms.intf.CommodityCommentService" ${localservice.url} check="false"  timeout="10000"></dubbo:reference>
+    <dubbo:reference id ="CommodityCommentTypeService" interface="com.spfood.pms.intf.CommodityCommentTypeService" ${localservice.url} check="false"  timeout="10000"></dubbo:reference>
+    <dubbo:reference id ="employeeUiasService" interface="com.spfood.employeeuias.intf.EmployeeUiasService" check="true" timeout="2000"></dubbo:reference>
+    
+
+</beans>        

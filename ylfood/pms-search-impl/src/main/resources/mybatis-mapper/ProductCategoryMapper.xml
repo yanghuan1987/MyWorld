@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spfood.pms.search.intf.domain.ProductCategory" >
+  <resultMap id="BaseResultMap" type="com.spfood.pms.search.intf.domain.ProductCategory">
+
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="category_code" property="categoryCode" jdbcType="VARCHAR" />
+    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+    <result column="category_another_name" property="categoryAnotherName" jdbcType="VARCHAR"/>
+    <result column="parent_category_code" property="parentCategory.categoryCode" jdbcType="VARCHAR" />
+    <result column="category_comment" property="categoryComment" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <collection property="productCategoryPropertys" ofType="com.spfood.pms.search.intf.domain.ProductCategoryProperty">
+    	<id column="property_id" property="id" jdbcType="BIGINT" />
+	    <result column="category_property_name" property="categoryPropertyName" jdbcType="VARCHAR" />
+	    <result column="select_flag" property="selectFlag" jdbcType="INTEGER" />
+	    <result column="show_order" property="showOrder" jdbcType="DECIMAL" />
+	    <result column="category_property_description" property="categoryPropertyDescription" jdbcType="VARCHAR" />
+	    <collection property="productCategoryPropertyValues" ofType="com.spfood.pms.search.intf.domain.ProductCategoryPropertyValue">
+	    	<id column="property_value_id" property="id" jdbcType="BIGINT" />
+		    <result column="category_property_value" property="categoryPropertyValue" jdbcType="VARCHAR" />
+	    </collection>
+    </collection>
+  </resultMap>
+  
+   <resultMap type="com.spfood.pms.search.intf.domain.ProductCategory" id="category_one">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="category_code" property="categoryCode" jdbcType="VARCHAR" />
+	    <result column="category_type_flag" property="categoryTypeFlag" />
+	    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+	    <result column="parent_category_code" property="parentCategory.categoryCode" jdbcType="VARCHAR" />
+	    <result column="category_comment" property="categoryComment" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="selectCategoryChildren" resultMap="category_one">
+		select * from pms_product_category where parent_category_code = #{categoryCode}
+	</select>
+  
+  
+  <sql id="Base_Column_List" >
+ 
+    id, category_code, category_name, parent_category_code, category_comment, select_flag, 
+    create_date, create_user, last_update_date, last_update_user
+  </sql>
+  <sql id="Base_Where_Case" >
+
+    <where >
+      <if test="id != null" >
+         AND id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="categoryCode != null" >
+         AND category_code = #{categoryCode,jdbcType=VARCHAR}
+      </if>
+      <if test="categoryName != null" >
+         AND category_name = #{categoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="parentCategory.categoryCode != null" >
+         AND parent_category_code = #{parentCategory.categoryCode,jdbcType=VARCHAR}
+      </if>
+      <if test="categoryComment != null" >
+         AND category_comment = #{categoryComment,jdbcType=VARCHAR}
+      </if>
+      <if test="createDate != null" >
+         AND create_date = #{createDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createUser != null" >
+         AND create_user = #{createUser,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdateDate != null" >
+         AND last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdateUser != null" >
+         AND last_update_user = #{lastUpdateUser,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </sql>
+  <select id="selectCount" resultType="java.lang.Long" parameterType="com.spfood.pms.search.intf.domain.ProductCategory" >
+
+    select count(id)
+     from pms_product_category
+    <include refid="Base_Where_Case" />
+  </select>
+  
+  <select id="selectByCommodityCode" resultMap="category_one" parameterType="java.lang.String" >
+    select pms_product_category.id,pms_product_category.category_code,pms_product_category.category_name,
+    pms_product_category.parent_category_code 
+     from pms_product_category,pms_commodity 
+     where pms_product_category.category_code = pms_commodity.category_code
+     and pms_commodity.commodity_code = #{commodityCode,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByCommodityName" resultMap="category_one" parameterType="java.lang.String" >
+    select pms_product_category.id,pms_product_category.category_code,pms_product_category.category_name,
+    pms_product_category.parent_category_code,pms_product_category.category_comment 
+     from pms_product_category,pms_commodity 
+     where pms_product_category.category_code = pms_commodity.category_code
+     and pms_commodity.commodity_name like #{commodityName,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByKeywords" resultMap="category_one" parameterType="com.spfood.pms.search.intf.domain.ProductCategory">
+    select DISTINCT pms_product_category.id,pms_product_category.category_code,pms_product_category.category_name,
+    pms_product_category.parent_category_code,pms_product_category.category_comment 
+     from pms_product_category,pms_commodity 
+     where pms_product_category.category_code = pms_commodity.category_code
+     	<if test="port != null" >
+		    AND pms_commodity.commodity_show_place = #{port,jdbcType=VARCHAR}
+		</if>
+		<if test="keywords != null" >
+			<foreach item="item" index="index" collection="keywords" >
+			 	and(
+				  pms_commodity.commodity_name like '%' #{item,jdbcType=VARCHAR} '%'
+				  or
+				  pms_commodity.search_property like '%:' #{item,jdbcType=VARCHAR} '%'
+				  or
+				  pms_product_category.category_name like '%' #{item,jdbcType=VARCHAR} '%'
+				  or
+				  pms_product_category.category_another_name like '%' #{item,jdbcType=VARCHAR} '%'
+				  ) 
+			</foreach>
+		</if>
+  </select>
+  
+  <select id="select" resultMap="category_one" parameterType="com.spfood.pms.search.intf.domain.ProductCategory" >
+    select id,category_code,category_name,parent_category_code,category_comment 
+     from pms_product_category where parent_category_code is null
+  </select>
+  
+    <select id="selectAll" resultMap="category_one" parameterType="com.spfood.pms.search.intf.domain.ProductCategory" >
+    select id,category_code,category_name,parent_category_code,category_comment 
+     from pms_product_category order by category_code asc
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  
+    SELECT pms_product_category.*,
+	pms_product_category_property.id as property_id,pms_product_category_property.category_property_name,
+	pms_product_category_property.category_property_description,pms_product_category_property.select_flag,
+	pms_product_category_property_value.id as property_value_id,pms_product_category_property_value.category_property_value
+	 from pms_product_category LEFT JOIN pms_product_category_property
+	 ON
+	pms_product_category.category_code = pms_product_category_property.category_code
+	LEFT JOIN pms_product_category_property_value
+	on 
+	pms_product_category_property.id = pms_product_category_property_value.category_property_id
+	where pms_product_category.id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectByCategoryCode" resultMap="category_one" parameterType="java.lang.String" >
+  
+    select pms_product_category.id,pms_product_category.category_code,pms_product_category.category_name,
+    pms_product_category.parent_category_code,pms_product_category.category_comment 
+     from pms_product_category
+     where pms_product_category.category_code = #{categoryCode,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByCategoryNameIsHave" resultType="java.lang.Boolean" parameterType="com.spfood.pms.search.intf.domain.ProductCategory">
+      
+      select CASE when count(id)>0 then true else false end as checkResult 
+       from pms_product_category where category_name = #{categoryName,jdbcType=VARCHAR}
+       <if test="id != null" >
+          and id != #{id,jdbcType=BIGINT}
+      </if>
+  </select>
+  <select id="selectByCategoryCodeIsHave" resultType="java.lang.Boolean" parameterType="com.spfood.pms.search.intf.domain.ProductCategory">
+      
+      select CASE when count(id)>0 then true else false end as checkResult 
+       from pms_product_category where category_code = #{categoryCode,jdbcType=VARCHAR}
+       <if test="id != null" >
+          and id != #{id,jdbcType=BIGINT}
+      </if>
+  </select>
+  
+
+  <insert id="insert" parameterType="com.spfood.pms.search.intf.domain.ProductCategory" useGeneratedKeys="true" keyProperty="id">
+   
+    insert into pms_product_category (category_code, category_name, category_another_name,
+      parent_category_code, category_comment,  
+      create_date, create_user, last_update_date, 
+      last_update_user)
+    values (#{categoryCode,jdbcType=VARCHAR}, #{categoryName,jdbcType=VARCHAR}, #{categoryAnotherName,jdbcType=VARCHAR}, 
+      #{parentCategory.categoryCode,jdbcType=VARCHAR}, #{categoryComment,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{lastUpdateDate,jdbcType=TIMESTAMP}, 
+      #{lastUpdateUser,jdbcType=VARCHAR})
+  </insert>
+ 
+</mapper>

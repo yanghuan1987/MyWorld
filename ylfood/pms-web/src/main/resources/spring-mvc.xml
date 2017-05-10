@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+	http://www.springframework.org/schema/task   
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-4.0.xsd 
+	http://www.springframework.org/schema/task/spring-task-4.0.xsd
+	http://www.springframework.org/schema/tx  http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+	http://code.alibabatech.com/schema/dubbo        
+    http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!-- spring 支持注解方式 -->
+	<context:annotation-config />
+
+	<!-- spring组件扫描器 -->
+	<context:component-scan base-package="com.spfood.*">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />   
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />	   
+	</context:component-scan>
+	
+
+	<!-- 网络资源视图解析器 -->
+	<bean id="interResourceViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/pages/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	   
+    <bean id="requestMappingHandlerMapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"></bean> 
+    <bean id="requestMappingHandlerAdapter" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name='messageConverters'>
+          <list>
+           <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>
+           <bean class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter"/>
+           <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+           <bean class="org.springframework.http.converter.StringHttpMessageConverter"></bean>
+           <bean class="org.springframework.http.converter.ResourceHttpMessageConverter"></bean>
+           <bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter"></bean>
+           <bean class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter"></bean>
+          </list>
+         </property>      
+    </bean>
+	
+
+    <dubbo:reference id ="basicConfigurationService" interface="com.spfood.basicservice.intf.BasicConfigurationService"  check="false"  timeout="10000"></dubbo:reference>
+    <dubbo:reference id ="idGeneratorService" interface="com.spfood.basicservice.intf.IDGeneratorService" check="false"  timeout="100000"></dubbo:reference>
+    <dubbo:reference id ="imageUploadService" interface="com.spfood.imageupload.intf.ImageUploadService"  check="false"  timeout="10000"></dubbo:reference>
+    <dubbo:reference id ="divisionReaderService" interface="com.spfood.basicservice.intf.DivisionReaderService"  check="false"  timeout="10000"></dubbo:reference>
+</beans>

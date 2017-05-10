@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spfood.pms.intf.domain.ProductCategory" >
+  <resultMap id="BaseResultMap" type="com.spfood.pms.intf.domain.ProductCategory">
+
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="category_code" property="categoryCode" jdbcType="VARCHAR" />
+    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+    <result column="category_another_name" property="categoryAnotherName" jdbcType="VARCHAR"/>
+    <result column="parent_category_code" property="parentCategory.categoryCode" jdbcType="VARCHAR" />
+    <result column="category_comment" property="categoryComment" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="express_good_count" property="commodityComment.expressGoodCount" jdbcType="INTEGER" />
+    <result column="express_mid_count" property="commodityComment.expressMidCount" jdbcType="INTEGER" />
+    <result column="express_bad_count" property="commodityComment.expressBadCount" jdbcType="INTEGER" />
+    <result column="package_good_count" property="commodityComment.packageGoodCount" jdbcType="INTEGER" />
+    <result column="package_mid_count" property="commodityComment.packageMidCount" jdbcType="INTEGER" />
+    <result column="package_bad_count" property="commodityComment.packageBadCount" jdbcType="INTEGER" />
+    <result column="commodity_good_count" property="commodityComment.commodityGoodCount" jdbcType="INTEGER" />
+    <result column="commodity_mid_count" property="commodityComment.commodityMidCount" jdbcType="INTEGER" />
+    <result column="commodity_bad_count" property="commodityComment.commodityBadCount" jdbcType="INTEGER" />
+    <collection property="productCategoryPropertys" ofType="com.spfood.pms.intf.domain.ProductCategoryProperty">
+    	<id column="property_id" property="id" jdbcType="BIGINT" />
+	    <result column="category_property_name" property="categoryPropertyName" jdbcType="VARCHAR" />
+	    <result column="select_flag" property="selectFlag" jdbcType="INTEGER" />
+	    <result column="show_order" property="showOrder" jdbcType="DECIMAL" />
+	    <result column="category_property_description" property="categoryPropertyDescription" jdbcType="VARCHAR" />
+	    <collection property="productCategoryPropertyValues" ofType="com.spfood.pms.intf.domain.ProductCategoryPropertyValue">
+	    	<id column="property_value_id" property="id" jdbcType="BIGINT" />
+		    <result column="category_property_value" property="categoryPropertyValue" jdbcType="VARCHAR" />
+	    </collection>
+    </collection>
+  </resultMap>
+  
+   <resultMap type="com.spfood.pms.intf.domain.ProductCategory" id="category_one">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="category_code" property="categoryCode" jdbcType="VARCHAR" />
+	    <result column="category_type_flag" property="categoryTypeFlag" />
+	    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+	    <result column="parent_category_code" property="parentCategory.categoryCode" jdbcType="VARCHAR" />
+	    <result column="category_comment" property="categoryComment" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="selectCategoryChildren" resultMap="category_one">
+		select * from pms_product_category where parent_category_code = #{categoryCode}
+	</select>
+  
+  
+  <sql id="Base_Column_List" >
+ 
+    id, category_code, category_name, parent_category_code, category_comment, select_flag, 
+    create_date, create_user, last_update_date, last_update_user
+  </sql>
+  <sql id="Base_Where_Case" >
+
+    <where >
+      <if test="id != null" >
+         AND id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="categoryCode != null" >
+         AND category_code = #{categoryCode,jdbcType=VARCHAR}
+      </if>
+      <if test="categoryName != null" >
+         AND category_name = #{categoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="parentCategory.categoryCode != null" >
+         AND parent_category_code = #{parentCategory.categoryCode,jdbcType=VARCHAR}
+      </if>
+      <if test="categoryComment != null" >
+         AND category_comment = #{categoryComment,jdbcType=VARCHAR}
+      </if>
+      <if test="createDate != null" >
+         AND create_date = #{createDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createUser != null" >
+         AND create_user = #{createUser,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdateDate != null" >
+         AND last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdateUser != null" >
+         AND last_update_user = #{lastUpdateUser,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </sql>
+  <select id="selectCount" resultType="java.lang.Long" parameterType="com.spfood.pms.intf.domain.ProductCategory" >
+
+    select count( id)
+     from pms_product_category
+    <include refid="Base_Where_Case" />
+  </select>
+  
+  <select id="select" resultMap="category_one" parameterType="com.spfood.pms.intf.domain.ProductCategory" >
+    select 	id,category_code,category_name,parent_category_code,category_comment 
+     from 	pms_product_category 
+     where 	parent_category_code is null
+  </select>
+  
+  <select id="selectAll" resultMap="category_one" parameterType="com.spfood.pms.intf.domain.ProductCategory" >
+    select 		id,category_code,category_name,parent_category_code,category_comment 
+     from 		pms_product_category 
+     order by 	category_code asc
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  
+    SELECT 	pms_product_category.*,
+			pms_product_category_property.id as property_id,
+			pms_product_category_property.category_property_name,
+			pms_product_category_property.category_property_description,
+			pms_product_category_property.select_flag,
+			pms_product_category_property_value.id as property_value_id,
+			pms_product_category_property_value.category_property_value
+	 from pms_product_category 
+	 LEFT JOIN  pms_product_category_property ON pms_product_category.category_code = pms_product_category_property.category_code
+	 LEFT JOIN  pms_product_category_property_value on pms_product_category_property.id = pms_product_category_property_value.category_property_id
+	 where 		pms_product_category.id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByCategoryCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  
+    SELECT  pms_product_category.*,
+			pms_product_category_property.id as property_id,
+			pms_product_category_property.category_property_name,
+			pms_product_category_property.select_flag,
+			pms_product_category_property_value.id as property_value_id,
+			pms_product_category_property_value.category_property_value
+	 from pms_product_category 
+	 LEFT JOIN  pms_product_category_property ON pms_product_category.category_code = pms_product_category_property.category_code
+	 LEFT JOIN  pms_product_category_property_value on pms_product_category_property.id = pms_product_category_property_value.category_property_id
+	 where 		pms_product_category.category_code = #{categoryCode,jdbcType=BIGINT} 
+	 order by 	pms_product_category_property.select_flag,pms_product_category_property.id desc
+  </select>
+  
+  <select id="selectByCategoryNameIsHave" resultType="java.lang.Boolean" parameterType="com.spfood.pms.intf.domain.ProductCategory">
+      select 	CASE when count(id)>0 then true else false end as checkResult 
+       from 	pms_product_category 
+       where 	category_name = #{categoryName,jdbcType=VARCHAR}
+       <if test="id != null" >
+          and id != #{id,jdbcType=BIGINT}
+      </if>
+  </select>
+  
+  <select id="selectByCategoryCodeIsHave" resultType="java.lang.Boolean" parameterType="com.spfood.pms.intf.domain.ProductCategory">
+      select CASE when count(id)>0 then true else false end as checkResult 
+       from  pms_product_category 
+       where category_code = #{categoryCode,jdbcType=VARCHAR}
+       <if test="id != null" >
+          and id != #{id,jdbcType=BIGINT}
+      </if>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  
+    delete from pms_product_category
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insert" parameterType="com.spfood.pms.intf.domain.ProductCategory" useGeneratedKeys="true" keyProperty="id">
+    insert into pms_product_category (  category_code,
+    									category_name,
+    									category_another_name,
+      									parent_category_code,
+      									category_comment,  
+      									create_date,
+      									create_user,
+      									last_update_date, 
+      									last_update_user)
+    							values (#{categoryCode,jdbcType=VARCHAR},
+    									#{categoryName,jdbcType=VARCHAR},
+    									#{categoryAnotherName,jdbcType=VARCHAR}, 
+      									#{parentCategory.categoryCode,jdbcType=VARCHAR},
+      									#{categoryComment,jdbcType=VARCHAR}, 
+      									#{createDate,jdbcType=TIMESTAMP},
+      									#{createUser,jdbcType=VARCHAR},
+      									#{lastUpdateDate,jdbcType=TIMESTAMP}, 
+      									#{lastUpdateUser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.spfood.pms.intf.domain.ProductCategory" >
+    
+    insert into pms_product_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="categoryCode != null" >
+        category_code,
+      </if>
+      <if test="categoryName != null" >
+        category_name,
+      </if>
+      <if test="parentCategory.categoryCode != null" >
+        parent_category_code,
+      </if>
+      <if test="categoryComment != null" >
+        category_comment,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="categoryCode != null" >
+        #{categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryName != null" >
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCategory.categoryCode != null" >
+        #{parentCategory.categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryComment != null" >
+        #{categoryComment,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.spfood.pms.intf.domain.ProductCategory" >
+  
+    update pms_product_category
+    <set >
+      <if test="categoryCode != null" >
+        category_code = #{categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryAnotherName != null">
+          category_another_name = #{categoryAnotherName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryName != null" >
+        category_name = #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCategory.categoryCode != null" >
+        parent_category_code = #{parentCategory.categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryComment != null" >
+        category_comment = #{categoryComment,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.spfood.pms.intf.domain.ProductCategory" >
+  
+    update pms_product_category
+    set 
+      category_name = #{categoryName,jdbcType=VARCHAR},
+      category_another_name = #{categoryAnotherName,jdbcType=VARCHAR},
+      category_comment = #{categoryComment,jdbcType=VARCHAR},
+      last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+    <select id="selectPageInCategoryOneForComment" resultMap="BaseResultMap" parameterType="com.spfood.pms.intf.domain.ProductCategory" >
+    
+    			SELECT id FROM(
+				SELECT a.id,a.category_code,a.category_name,
+					SUM(b.express_good) AS express_good_count,SUM(b.express_mid) AS express_mid_count,SUM(b.express_bad) AS express_bad_count,
+					SUM(b.package_good) AS package_good_count,SUM(b.package_mid) AS package_mid_count,SUM(b.package_bad) AS package_bad_count,
+					SUM(b.commodity_good) AS commodity_good_count,SUM(b.commodity_mid) AS commodity_mid_count,SUM(b.commodity_bad) AS commodity_bad_count
+				FROM pms_product_category AS a
+				LEFT JOIN
+				 (
+					SELECT  id, comment_usercode, commodity_code, category_code, order_no, 
+						 CASE WHEN express_grade in (4,5) THEN  COUNT(*)  ELSE 0 END AS express_good ,
+						 CASE WHEN express_grade in (2,3) THEN  COUNT(*)  ELSE 0 END AS express_mid,
+						 CASE WHEN express_grade = 1 THEN  COUNT(*)  ELSE 0 END  AS express_bad,
+
+						CASE WHEN package_grade in (4,5) THEN  COUNT(*)  ELSE 0 END AS package_good ,
+						CASE WHEN package_grade in (2,3) THEN  COUNT(*)  ELSE 0 END AS package_mid,
+						CASE WHEN package_grade = 1 THEN  COUNT(*)  ELSE 0 END AS package_bad,
+
+						CASE WHEN commodity_grade in (4,5) THEN  COUNT(*)  ELSE 0 END AS commodity_good ,
+						CASE WHEN commodity_grade in (2,3) THEN  COUNT(*)  ELSE 0 END AS commodity_mid,
+						CASE WHEN commodity_grade = 1 THEN  COUNT(*)  ELSE 0 END  AS commodity_bad
+					 FROM (SELECT  c.id, c.comment_usercode, c.commodity_code, c.category_code, c.order_no, 
+					 MAX(CASE WHEN c.comment_type_code = 1 THEN  c.comment_grade  ELSE 0 END) as express_grade
+					,MAX(CASE WHEN c.comment_type_code = 2 THEN  c.comment_grade  ELSE 0 END) as package_grade
+					,MAX(CASE WHEN c.comment_type_code = 3 THEN  c.comment_grade  ELSE 0 END) as commodity_grade
+					FROM   pms_commodity_comment c  
+							GROUP BY commodity_code,comment_usercode,order_no) as t 
+				GROUP BY t.commodity_code,t.comment_usercode,t.order_no
+				ORDER BY t.id
+				) AS b
+				
+				<if test="commodityComment.subStringSize == 2" >
+				ON a.category_code = LEFT (b.category_code, 2)
+				</if>
+				
+				<if test="commodityComment.subStringSize == 5" >
+				ON a.category_code = LEFT (b.category_code, 5)
+				</if>
+				
+				<if test="commodityComment.subStringSize == 8" >
+				ON a.category_code = b.category_code
+				</if>
+				
+				WHERE 
+				1=1
+				<if test="parentCode == null" >
+				AND a.parent_category_code IS NULL
+				</if>
+				
+				<if test="parentCode != null" >
+				AND a.parent_category_code = #{parentCode,jdbcType=VARCHAR}
+				</if>
+				
+				GROUP BY a.category_code
+				<if test="commodityComment != null" >
+					<if test="commodityComment.orderBy == 0" >
+					ORDER BY commodity_good_count DESC
+					</if>
+	
+					<if test="commodityComment.orderBy == 1" >
+					ORDER BY express_good_count ASC
+					</if>
+					
+					<if test="commodityComment.orderBy == 2" >
+					ORDER BY express_good_count DESC
+					</if>
+					
+					<if test="commodityComment.orderBy == 3" >
+					ORDER BY express_bad_count ASC
+					</if>
+					
+					<if test="commodityComment.orderBy == 4" >
+					ORDER BY express_bad_count DESC
+					</if>
+					
+					<if test="commodityComment.orderBy == 5" >
+					ORDER BY package_good_count ASC
+					</if>
+					
+					<if test="commodityComment.orderBy == 6" >
+					ORDER BY package_good_count DESC
+					</if>
+					
+					<if test="commodityComment.orderBy == 7" >
+					ORDER BY package_bad_count ASC
+					</if>
+					
+					<if test="commodityComment.orderBy == 8" >
+					ORDER BY package_bad_count DESC
+					</if>
+					
+					<if test="commodityComment.orderBy == 9" >
+					ORDER BY commodity_good_count ASC
+					</if>
+					
+					<if test="commodityComment.orderBy == 10" >
+					ORDER BY commodity_good_count DESC
+					</if>
+					
+					<if test="commodityComment.orderBy == 11" >
+					ORDER BY commodity_bad_count ASC
+					</if>
+					
+					<if test="commodityComment.orderBy == 12" >
+					ORDER BY commodity_bad_count DESC
+					</if>
+				</if>
+				) AS page
+    
+    </select>
+    	<select id="selectListByIdsOne" resultMap="BaseResultMap" parameterType="java.util.List">
+		SELECT a.id,a.category_code,a.category_name,
+			IF(SUM(b.express_good) IS NULL,0,SUM(b.express_good)) AS express_good_count,
+			IF(SUM(b.express_mid) IS NULL,0,SUM(b.express_mid)) AS express_mid_count,
+			IF(SUM(b.express_bad) IS NULL,0,SUM(b.express_bad)) AS express_bad_count,
+			IF(SUM(b.package_good) IS NULL,0,SUM(b.package_good)) AS package_good_count,
+			IF(SUM(b.package_mid) IS NULL,0,SUM(b.package_mid)) AS package_mid_count,
+			IF(SUM(b.package_bad) IS NULL,0,SUM(b.package_bad)) AS package_bad_count,
+			IF(SUM(b.commodity_good) IS NULL,0,SUM(b.commodity_good)) AS commodity_good_count,
+			IF(SUM(b.commodity_mid) IS NULL,0,SUM(b.commodity_mid)) AS commodity_mid_count,
+			IF(SUM(b.commodity_bad) IS NULL,0,SUM(b.commodity_bad)) AS commodity_bad_count
+		FROM pms_product_category AS a
+		LEFT JOIN
+		 (
+			SELECT  id, comment_usercode, commodity_code, category_code, order_no, 
+				 CASE WHEN express_grade in (4,5) THEN  COUNT(*)  ELSE 0 END AS express_good ,
+				 CASE WHEN express_grade in (2,3) THEN  COUNT(*)  ELSE 0 END AS express_mid,
+				 CASE WHEN express_grade = 1 THEN  COUNT(*)  ELSE 0 END  AS express_bad,
+
+				CASE WHEN package_grade in (4,5) THEN  COUNT(*)  ELSE 0 END AS package_good ,
+				CASE WHEN package_grade in (2,3) THEN  COUNT(*)  ELSE 0 END AS package_mid,
+				CASE WHEN package_grade = 1 THEN  COUNT(*)  ELSE 0 END AS package_bad,
+
+				CASE WHEN commodity_grade in (4,5) THEN  COUNT(*)  ELSE 0 END AS commodity_good ,
+				CASE WHEN commodity_grade in (2,3) THEN  COUNT(*)  ELSE 0 END AS commodity_mid,
+				CASE WHEN commodity_grade = 1 THEN  COUNT(*)  ELSE 0 END  AS commodity_bad
+			 FROM (SELECT  c.id, c.comment_usercode, c.commodity_code, c.category_code,c.order_no,
+			 MAX(CASE WHEN c.comment_type_code = 1 THEN  c.comment_grade  ELSE 0 END) as express_grade
+			,MAX(CASE WHEN c.comment_type_code = 2 THEN  c.comment_grade  ELSE 0 END) as package_grade
+			,MAX(CASE WHEN c.comment_type_code = 3 THEN  c.comment_grade  ELSE 0 END) as commodity_grade
+			FROM   pms_commodity_comment c  
+					GROUP BY commodity_code,comment_usercode,order_no) as t 
+		GROUP BY t.commodity_code,t.comment_usercode,t.order_no
+		ORDER BY t.id
+		) AS b
+		ON a.category_code = LEFT (b.category_code, 2)
+		WHERE a.id in 
+			<foreach item="item" index="index" collection="list" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		GROUP BY a.category_code
+	</select>
+    	<select id="selectListByIdsTwo" resultMap="BaseResultMap" parameterType="java.util.List">
+		SELECT a.id,a.category_code,a.category_name,
+			IF(SUM(b.express_good) IS NULL,0,SUM(b.express_good)) AS express_good_count,
+			IF(SUM(b.express_mid) IS NULL,0,SUM(b.express_mid)) AS express_mid_count,
+			IF(SUM(b.express_bad) IS NULL,0,SUM(b.express_bad)) AS express_bad_count,
+			IF(SUM(b.package_good) IS NULL,0,SUM(b.package_good)) AS package_good_count,
+			IF(SUM(b.package_mid) IS NULL,0,SUM(b.package_mid)) AS package_mid_count,
+			IF(SUM(b.package_bad) IS NULL,0,SUM(b.package_bad)) AS package_bad_count,
+			IF(SUM(b.commodity_good) IS NULL,0,SUM(b.commodity_good)) AS commodity_good_count,
+			IF(SUM(b.commodity_mid) IS NULL,0,SUM(b.commodity_mid)) AS commodity_mid_count,
+			IF(SUM(b.commodity_bad) IS NULL,0,SUM(b.commodity_bad)) AS commodity_bad_count
+		FROM pms_product_category AS a
+		LEFT JOIN
+		 (
+			SELECT  id, comment_usercode, commodity_code, category_code,order_no,
+				 CASE WHEN express_grade in (4,5) THEN  COUNT(*)  ELSE 0 END AS express_good ,
+				 CASE WHEN express_grade in (2,3) THEN  COUNT(*)  ELSE 0 END AS express_mid,
+				 CASE WHEN express_grade = 1 THEN  COUNT(*)  ELSE 0 END  AS express_bad,
+
+				CASE WHEN package_grade in (4,5) THEN  COUNT(*)  ELSE 0 END AS package_good ,
+				CASE WHEN package_grade in (2,3) THEN  COUNT(*)  ELSE 0 END AS package_mid,
+				CASE WHEN package_grade = 1 THEN  COUNT(*)  ELSE 0 END AS package_bad,
+
+				CASE WHEN commodity_grade in (4,5) THEN  COUNT(*)  ELSE 0 END AS commodity_good ,
+				CASE WHEN commodity_grade in (2,3) THEN  COUNT(*)  ELSE 0 END AS commodity_mid,
+				CASE WHEN commodity_grade = 1 THEN  COUNT(*)  ELSE 0 END  AS commodity_bad
+			 FROM (SELECT  c.id, c.comment_usercode, c.commodity_code, c.category_code,c.order_no,
+			 MAX(CASE WHEN c.comment_type_code = 1 THEN  c.comment_grade  ELSE 0 END) as express_grade
+			,MAX(CASE WHEN c.comment_type_code = 2 THEN  c.comment_grade  ELSE 0 END) as package_grade
+			,MAX(CASE WHEN c.comment_type_code = 3 THEN  c.comment_grade  ELSE 0 END) as commodity_grade
+			FROM   pms_commodity_comment c  
+					GROUP BY commodity_code,comment_usercode,order_no) as t 
+		GROUP BY t.commodity_code,t.comment_usercode,t.order_no
+		ORDER BY t.id
+		) AS b
+		ON a.category_code = LEFT (b.category_code, 5)
+		WHERE a.id in 
+			<foreach item="item" index="index" collection="list" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		GROUP BY a.category_code
+	</select>
+    	<select id="selectListByIdsThree" resultMap="BaseResultMap" parameterType="java.util.List">
+		SELECT a.id,a.category_code,a.category_name,
+			IF(SUM(b.express_good) IS NULL,0,SUM(b.express_good)) AS express_good_count,
+			IF(SUM(b.express_mid) IS NULL,0,SUM(b.express_mid)) AS express_mid_count,
+			IF(SUM(b.express_bad) IS NULL,0,SUM(b.express_bad)) AS express_bad_count,
+			IF(SUM(b.package_good) IS NULL,0,SUM(b.package_good)) AS package_good_count,
+			IF(SUM(b.package_mid) IS NULL,0,SUM(b.package_mid)) AS package_mid_count,
+			IF(SUM(b.package_bad) IS NULL,0,SUM(b.package_bad)) AS package_bad_count,
+			IF(SUM(b.commodity_good) IS NULL,0,SUM(b.commodity_good)) AS commodity_good_count,
+			IF(SUM(b.commodity_mid) IS NULL,0,SUM(b.commodity_mid)) AS commodity_mid_count,
+			IF(SUM(b.commodity_bad) IS NULL,0,SUM(b.commodity_bad)) AS commodity_bad_count
+		FROM pms_product_category AS a
+		LEFT JOIN
+		 (
+			SELECT  id, comment_usercode, commodity_code, category_code,order_no,
+				 CASE WHEN express_grade in (4,5) THEN  COUNT(*)  ELSE 0 END AS express_good ,
+				 CASE WHEN express_grade in (2,3) THEN  COUNT(*)  ELSE 0 END AS express_mid,
+				 CASE WHEN express_grade = 1 THEN  COUNT(*)  ELSE 0 END  AS express_bad,
+
+				CASE WHEN package_grade in (4,5) THEN  COUNT(*)  ELSE 0 END AS package_good ,
+				CASE WHEN package_grade in (2,3) THEN  COUNT(*)  ELSE 0 END AS package_mid,
+				CASE WHEN package_grade = 1 THEN  COUNT(*)  ELSE 0 END AS package_bad,
+
+				CASE WHEN commodity_grade in (4,5) THEN  COUNT(*)  ELSE 0 END AS commodity_good ,
+				CASE WHEN commodity_grade in (2,3) THEN  COUNT(*)  ELSE 0 END AS commodity_mid,
+				CASE WHEN commodity_grade = 1 THEN  COUNT(*)  ELSE 0 END  AS commodity_bad
+			 FROM (SELECT  c.id, c.comment_usercode, c.commodity_code, c.category_code,c.order_no,
+			 MAX(CASE WHEN c.comment_type_code = 1 THEN  c.comment_grade  ELSE 0 END) as express_grade
+			,MAX(CASE WHEN c.comment_type_code = 2 THEN  c.comment_grade  ELSE 0 END) as package_grade
+			,MAX(CASE WHEN c.comment_type_code = 3 THEN  c.comment_grade  ELSE 0 END) as commodity_grade
+			FROM   pms_commodity_comment c  
+					GROUP BY commodity_code,comment_usercode,order_no) as t 
+		GROUP BY t.commodity_code,t.comment_usercode,t.order_no
+		ORDER BY t.id
+		) AS b
+		ON a.category_code = b.category_code
+		WHERE a.id in 
+			<foreach item="item" index="index" collection="list" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		GROUP BY a.category_code
+	</select>
+	
+	
+</mapper>
