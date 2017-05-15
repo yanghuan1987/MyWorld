@@ -316,25 +316,25 @@ LOOP:
 	Book1.title = "Go 语言"
 	Book1.author = "www.runoob.com"
 	Book1.subject = "Go 语言教程"
-	Book1.bookId = 6495407
+	Book1.bookID = 6495407
 
 	/* book 2 描述 */
 	Book2.title = "Python 教程"
 	Book2.author = "www.runoob.com"
 	Book2.subject = "Python 语言教程"
-	Book2.bookId = 6495700
+	Book2.bookID = 6495700
 
 	/* 打印 Book1 信息 */
 	fmt.Printf("Book 1 title : %s\n", Book1.title)
 	fmt.Printf("Book 1 author : %s\n", Book1.author)
 	fmt.Printf("Book 1 subject : %s\n", Book1.subject)
-	fmt.Printf("Book 1 bookId : %d\n", Book1.bookId)
+	fmt.Printf("Book 1 bookID : %d\n", Book1.bookID)
 
 	/* 打印 Book2 信息 */
 	fmt.Printf("Book 2 title : %s\n", Book2.title)
 	fmt.Printf("Book 2 author : %s\n", Book2.author)
 	fmt.Printf("Book 2 subject : %s\n", Book2.subject)
-	fmt.Printf("Book 2 bookId : %d\n", Book2.bookId)
+	fmt.Printf("Book 2 bookID : %d\n", Book2.bookID)
 
 	printBook(&Book1)
 	printBook(&Book2)
@@ -385,6 +385,49 @@ LOOP:
 	//range也可以用来枚举Unicode字符串。第一个参数是字符的索引，第二个是字符（Unicode的值）本身。
 	for i, c := range "go" {
 		println(i, c)
+	}
+	//语言Map(集合)
+	var mapEx map[string]string
+	//果不初始化 map，那么就会创建一个 nil map。nil map 不能用来存放键值对，否则会报运行时错误：
+	mapEx = make(map[string]string)
+	//or
+	dict := make(map[string]int)
+	dict["a"] = 1
+	dict2 := map[string]string{"red": "#da1337", "orange": "#e95a22"}
+	dict2["yellow"] = "i don't know"
+	for k, v := range dict2 {
+		println(k, v)
+	}
+	///* 删除元素 */
+	delete(dict2, "yellow")
+	for k, v := range dict2 {
+		println(k, v)
+	}
+	delete(dict2, "yellow") //再次删除不会报错
+	mapEx["China"] = "Yang"
+	mapEx["Japan"] = "Yamagata Suzuki"
+	/* 查看元素在集合中是否存在 */
+	captial, ok := mapEx["Italy"]
+	/* 如果 ok 是 true, 则存在，否则不存在 */
+	if ok {
+		println(true, captial)
+	} else {
+		println(false)
+	}
+
+	var phone Phone
+
+	phone = new(NokiaPhone)
+	phone.call()
+
+	phone = new(Iphone)
+	phone.call()
+
+	if result, errorMsg := Divide(100, 10); errorMsg == "" {
+		println("100/10=", result)
+	}
+	if _, errorMsg := Divide(100, 0); errorMsg != "" {
+		println("errorMsg is:", errorMsg)
 	}
 }
 func printSlice(x []int) {
@@ -459,6 +502,7 @@ func getAverage(arr []int, size int) int {
 }
 
 /*
+	Books
 	定义结构体
 	结构体定义需要使用 type 和 struct 语句。struct 语句定义一个新的数据类型，
 	结构体有中一个或多个成员。type 语句设定了结构体的名称。结构体的格式如下：
@@ -467,12 +511,62 @@ type Books struct {
 	title   string
 	author  string
 	subject string
-	bookId  int
+	bookID  int
 }
 
 func printBook(book *Books) {
 	fmt.Printf("Book title : %s\n", book.title)
 	fmt.Printf("Book author : %s\n", book.author)
 	fmt.Printf("Book subject : %s\n", book.subject)
-	fmt.Printf("Book bookId : %d\n", book.bookId)
+	fmt.Printf("Book bookID : %d\n", book.bookID)
+}
+
+//Phone 电话接口
+type Phone interface {
+	call()
+}
+
+//NokiaPhone 诺基亚
+type NokiaPhone struct {
+}
+
+//Iphone 苹果
+type Iphone struct {
+}
+
+func (nokiaPhone NokiaPhone) call() {
+	println("I am Noika,I can call you!")
+}
+func (iphone Iphone) call() {
+	println("I am Iphone,I can call you!")
+}
+
+// 定义一个error结构
+type DivideError struct {
+	dividee int
+	divider int
+}
+
+//实现error接口
+func (de *DivideError) Error() string {
+	strFormat := `
+	Cannot proceed,the divider is zero.
+	dividee: %d
+	divider:0
+	`
+	return fmt.Sprintf(strFormat, de.dividee)
+}
+
+//定义 int 类型书法运算函数
+func Divide(varDividee int, varDivider int) (result int, errorMsg string) {
+	if varDivider == 0 {
+		dData := DivideError{
+			dividee: varDividee,
+			divider: varDivider,
+		}
+		errorMsg = dData.Error()
+		return
+	}
+	return varDividee / varDivider, ""
+
 }
