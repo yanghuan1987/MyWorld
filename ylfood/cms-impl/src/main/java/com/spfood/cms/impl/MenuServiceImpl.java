@@ -51,4 +51,14 @@ public class MenuServiceImpl implements MenuService {
 	public List<Menu> getMenuInfoForB2C() {
 		return menuManager.getMenuInfoForB2C();
 	}
+
+	/**
+	 * 通过菜单编码查询所有显示的子菜单
+	 * @param menuCode 菜单编码
+	 * @return menu对象,里面只封装了产品编码和名称
+	 */
+	@Override
+	public List<Menu> getSonMenus(String menuCode) {
+		return menuManager.getSonMenus(menuCode);
+	}
 }

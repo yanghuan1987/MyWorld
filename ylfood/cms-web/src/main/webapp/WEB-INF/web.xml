@@ -7,9 +7,9 @@
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
-    <context-param>
-        <param-name>static-file</param-name>
-        <param-value>http://10.8.48.230:9090</param-value>
+    <context-param>  
+        <param-name>static-file</param-name>  
+        <param-value>${static.file.addr}</param-value>  
     </context-param>
     
 	<!-- 编码格式设置 -->

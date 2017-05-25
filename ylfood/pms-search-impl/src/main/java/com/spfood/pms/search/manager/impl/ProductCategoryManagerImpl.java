@@ -115,7 +115,12 @@ public class ProductCategoryManagerImpl extends BaseManagerImpl<ProductCategory>
 			log.error("search productCategory fail.categoryCode:["+categoryCode+"]", e);
 			return null;
 		}
+		
 	}
 
-
+	@Override
+	public List<ProductCategory> selectCategoryChildrenByCode(
+			String categoryCode) {
+		return productCategoryDao.selectCategoryChildrenByCode(categoryCode);
+	}
 }

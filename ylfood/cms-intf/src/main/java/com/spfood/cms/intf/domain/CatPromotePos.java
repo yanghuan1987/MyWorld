@@ -50,6 +50,25 @@ public class CatPromotePos implements DomainObject {
     @Size(min=1,max=64)
     private String advert;
     
+    @Size(min=1,max=64)
+    private String categoryCode;
+    
+    
+    
+    /**
+     * @return the categoryCode
+     */
+    public String getCategoryCode() {
+        return categoryCode;
+    }
+
+    /**
+     * @param categoryCode the categoryCode to set
+     */
+    public void setCategoryCode(String categoryCode) {
+        this.categoryCode = categoryCode;
+    }
+
     private List<CatPromotedCommodity> catPromotedCommodityList;
 
     /**

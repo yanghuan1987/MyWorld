@@ -48,6 +48,8 @@
     <result column="commodity_good_count" property="commodityCommentDomain.commodityGoodCount" jdbcType="INTEGER" />
     <result column="commodity_mid_count" property="commodityCommentDomain.commodityMidCount" jdbcType="INTEGER" />
     <result column="commodity_bad_count" property="commodityCommentDomain.commodityBadCount" jdbcType="INTEGER" />
+    <result column="tax_rate_name" property="taxRateName" jdbcType="VARCHAR" />
+    <result column="tax_rate_value" property="taxRateValue" jdbcType="VARCHAR" />
     
     <collection property="commodityPropertys" ofType="com.spfood.pms.intf.domain.CommodityProperty">
         <id column="cid" property="id" jdbcType="BIGINT" />
@@ -136,6 +138,8 @@
       			commodity_name,
       			commodity_show_name,
       			commodity_status,
+				tax_rate_name,
+				tax_rate_value,
       			commodity_quantity,
       			commodity_weight,
       			commodity_weight_unit,
@@ -147,17 +151,47 @@
   <select id="select" resultMap="BaseResultMap" parameterType="com.spfood.pms.intf.domain.Commodity" >
 		select pms_commodity.id
 		from pms_commodity 
-		where pms_commodity.category_code = #{category.categoryCode}
+		where pms_commodity.category_code like #{category.categoryCode,jdbcType=VARCHAR} '%'
+         AND commodity_status != 6
 		 <if test="commodityCode != null and commodityCode != ''" >
 	         AND commodity_code like #{commodityCode,jdbcType=VARCHAR}
 	     </if>
 		 order by id desc 
   </select>
   
+  
+    <select id="selectCommodityDetail" resultMap="BaseResultMap" parameterType="com.spfood.pms.intf.domain.Commodity" >
+		SELECT
+			pms_commodity.id
+		FROM
+			pms_commodity
+		WHERE
+			1 = 1
+		AND commodity_status != 6
+		 <if test="commodityCode != null and commodityCode != ''" >
+			AND commodity_code LIKE '%' #{commodityCode,jdbcType=VARCHAR} '%'
+	     </if>
+		 <if test="commodityGs1Code != null and commodityGs1Code != ''" >
+			AND commodity_gs1_code LIKE '%' #{commodityGs1Code,jdbcType=VARCHAR} '%'
+	     </if>
+		 <if test="commodityName != null and commodityName != ''" >
+			AND commodity_name LIKE '%' #{commodityName,jdbcType=VARCHAR} '%'
+	     </if>
+		 <if test="commodityShowPlace != null and commodityShowPlace != ''" >
+			AND commodity_show_place = #{commodityShowPlace,jdbcType=VARCHAR}
+	     </if>
+		 <if test="commodityStatus != null and commodityStatus != ''" >
+			AND commodity_status = #{commodityStatus,jdbcType=INTEGER}
+	     </if>
+		ORDER BY
+			id DESC
+  </select>
+  
   <select id="selectByCategory" resultMap="BaseResultMap" parameterType="com.spfood.pms.intf.domain.Commodity" >
 		select pms_commodity.id
 		from pms_commodity 
 		where 1=1
+         AND commodity_status != 6
 		<if test="category != null and category.categoryCode != null" >
          AND pms_commodity.category_code like #{category.categoryCode}
       </if>
@@ -183,6 +217,8 @@
 				pms_commodity.commodity_name,
 				pms_commodity.commodity_status,
 				pms_commodity.product_code,
+				pms_commodity.tax_rate_name,
+				pms_commodity.tax_rate_value,
 				pms_product.product_name,
 				pms_product_category.category_code,
 				pms_product.product_buy_unit_code,
@@ -231,6 +267,8 @@
      			pms_commodity.commodity_code,
      			pms_commodity.commodity_name,
      			pms_commodity.commodity_status,
+				pms_commodity.tax_rate_name,
+				pms_commodity.tax_rate_value,
      			pms_commodity.product_code,
 			    pms_commodity.sales_amount,
 			    pms_commodity.commodity_comment,
@@ -279,6 +317,8 @@
       							default_flag,
       							commodity_quantity, 
       							commodity_status,
+								tax_rate_name,
+								tax_rate_value,
       							create_date,
       							create_user, 
       							last_update_date,
@@ -304,6 +344,8 @@
       							#{defaultFlag,jdbcType=INTEGER},
       							#{commodityQuantity,jdbcType=INTEGER}, 
       							#{commodityStatus,jdbcType=INTEGER},
+      							#{taxRateName,jdbcType=VARCHAR},
+      							#{taxRateValue,jdbcType=VARCHAR},
       							#{createDate,jdbcType=TIMESTAMP},
       							#{createUser,jdbcType=VARCHAR}, 
       							#{lastUpdateDate,jdbcType=TIMESTAMP},
@@ -460,6 +502,8 @@
 	      default_flag = #{defaultFlag,jdbcType=INTEGER},
 	      commodity_quantity = #{commodityQuantity,jdbcType=INTEGER},
 	      commodity_product_quantity = #{commodityProductQuantity,jdbcType=DECIMAL},
+		  tax_rate_name = #{taxRateName,jdbcType=VARCHAR},
+		  tax_rate_value = #{taxRateValue,jdbcType=VARCHAR},
 	      last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
 	      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
@@ -472,6 +516,8 @@
 			pms_commodity.commodity_code,
 			pms_commodity.commodity_name,
 			pms_commodity.commodity_status,
+			pms_commodity.tax_rate_name,
+			pms_commodity.tax_rate_value,
 			pms_commodity.product_code,
 			pms_commodity.commodity_comment,
 			pms_commodity.commodity_price,
@@ -508,6 +554,8 @@
 			pms_commodity.commodity_code,
 			pms_commodity.commodity_name,
 			pms_commodity.commodity_status,
+			pms_commodity.tax_rate_name,
+			pms_commodity.tax_rate_value,
 			pms_commodity.product_code,
 			pms_commodity.sales_amount,
 			pms_commodity.commodity_comment,
@@ -554,6 +602,8 @@
 			pms_commodity.commodity_code,
 			pms_commodity.commodity_name,
 			pms_commodity.commodity_status,
+			pms_commodity.tax_rate_name,
+			pms_commodity.tax_rate_value,
 			pms_commodity.product_code,
 			pms_commodity.sales_amount,
 			pms_commodity.commodity_comment,
@@ -765,4 +815,18 @@
 					</foreach>
 				GROUP BY a.commodity_code
 	</select>
+	
+   <update id="updateListForQuantity" parameterType="java.util.List">
+	    update pms_commodity set commodity_quantity = 
+	        <foreach collection="list" item="item" index="index" open="CASE commodity_code"
+				separator=" " close="END" > 
+		           WHEN #{item.commodityCode,jdbcType=VARCHAR} THEN 
+		           (IF(commodity_quantity IS NULL,#{item.count,jdbcType=INTEGER},commodity_quantity + #{item.count,jdbcType=INTEGER} ))
+	    	</foreach>
+	     where id in 
+	    	<foreach item="item" index="index" collection="list" open="("
+				separator="," close=")">
+				#{item.commodityCode}
+			</foreach>
+  </update>
 </mapper>

@@ -10,6 +10,11 @@ public interface CmsSqlIds {
 	public static final String MENU_SELECT_FOR_B2C = "selecForB2C";//B2C接口
 	public static final String MENU_UPDATE_ALL_STATE = "updateAllState";// 修改所有子菜单
 	
+	/**
+	 * 通过菜单编码查询子菜单
+	 */
+	public static final String SELECT_MENUS_BY_MENUCODE = "selectSonMenusByMenuCode";
+	
 	
 	// 广告位用SQL
 	public static final String SLIDEADSPOSITION_SELECT_ONE = "selectByName";//检索表中所有信息

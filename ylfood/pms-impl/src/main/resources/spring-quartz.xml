@@ -23,8 +23,12 @@
 
     <!-- 定时任务bean -->
    <bean id="startJob" class="com.spfood.pms.msg.TaskTimer" />
+   <bean id="salesCount" class="com.spfood.pms.msg.SalesTask" />
     <!-- 定时调度的任务列表 -->
     <task:scheduled-tasks>
-          <task:scheduled ref="startJob" method="doJob" cron="0 0/90 * * * ?" />
-    </task:scheduled-tasks>     
+          <task:scheduled ref="startJob" method="doJob" cron="0 0/5 * * * ?" />
+          <task:scheduled ref="salesCount" method="doJob" cron="59 59 23 * * ?" />
+    </task:scheduled-tasks>
+    
+    
 </beans>

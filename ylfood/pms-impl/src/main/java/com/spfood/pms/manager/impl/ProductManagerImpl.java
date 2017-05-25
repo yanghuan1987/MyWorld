@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spfood.kernel.dao.BaseDao;
 import com.spfood.kernel.dao.PageInfo;
 import com.spfood.kernel.manager.impl.BaseManagerImpl;
+import com.spfood.pms.dao.PmsCommodityMsgTempDao;
 import com.spfood.pms.dao.ProductCategoryDao;
 import com.spfood.pms.dao.ProductDao;
 import com.spfood.pms.dao.ProductItemDao;
@@ -21,6 +22,7 @@ import com.spfood.pms.dao.ProductPackUnitDao;
 import com.spfood.pms.dao.ProductPictureDao;
 import com.spfood.pms.dao.ProductPropertyDao;
 import com.spfood.pms.intf.domain.CompositeProduct;
+import com.spfood.pms.intf.domain.PmsCommodityMsgTemp;
 import com.spfood.pms.intf.domain.Product;
 import com.spfood.pms.intf.domain.ProductCategory;
 import com.spfood.pms.intf.domain.ProductItem;
@@ -28,6 +30,7 @@ import com.spfood.pms.intf.domain.ProductPackUnit;
 import com.spfood.pms.intf.domain.ProductPicture;
 import com.spfood.pms.intf.domain.ProductProperty;
 import com.spfood.pms.intf.domain.ProductSearchCriteria;
+import com.spfood.pms.intf.utils.Constant.itemType;
 import com.spfood.pms.manager.ProductManager;
 
 /**
@@ -58,6 +61,9 @@ public class ProductManagerImpl extends BaseManagerImpl<Product> implements
 	
 	@Autowired
 	private ProductPackUnitDao productPackUnitDao;
+	
+	@Autowired
+	private PmsCommodityMsgTempDao pmsCommodityMsgTempDat;
 
 	@Override
 	protected BaseDao<Product> getBaseDao() {
@@ -73,10 +79,10 @@ public class ProductManagerImpl extends BaseManagerImpl<Product> implements
 		Product product = new Product();
 		// 实现产品编码的模糊查询
 		String productCode = searchCriteria.getProductCode();
-		if (productCode != null) {
+		if (productCode != null && !"".equals(productCode)) {
 			product.setProductCode("%" + searchCriteria.getProductCode() + "%");
 		}
-		if(searchCriteria.getProductName() != null)
+		if(searchCriteria.getProductName() != null && !"".equals(searchCriteria.getProductName()))
 			product.setProductName("%"+searchCriteria.getProductName()+"%");
 		product.setSaleFlag(searchCriteria.getSaleFlag());
 		product.setCompositeFlag(searchCriteria.getCompositeFlag());
@@ -96,7 +102,26 @@ public class ProductManagerImpl extends BaseManagerImpl<Product> implements
 			else
 				product.setProductBuyUnitCode("false");
 		}
-			
+		//产品GS1编码
+		if (searchCriteria.getProductGs1Code() != null && !"".equals(searchCriteria.getProductGs1Code())) {
+			product.setProductGs1Code("%" + searchCriteria.getProductGs1Code() + "%");
+		}
+		//产品状态
+		if (searchCriteria.getProductStatus() != null) {
+			product.setProductStatus(searchCriteria.getProductStatus());
+		}
+		//产品是否可售
+		if (searchCriteria.getSaleFlag() != null) {
+			product.setSaleFlag(searchCriteria.getSaleFlag());
+		}
+		//产品温区
+		if (searchCriteria.getProductTemperatureZoneCode() != null && !"".equals(searchCriteria.getProductTemperatureZoneCode())) {
+			product.setProductTemperatureZoneCode(searchCriteria.getProductTemperatureZoneCode());
+		}
+		//是否组合产品
+		if (searchCriteria.getCompositeFlag() != null) {
+			product.setCompositeFlag(searchCriteria.getCompositeFlag());
+		}
 
 		// 先查询主表信息，在设置从表信息，实现关联分页查询
 		PageInfo<Product> pageResult = this.selectListByPage(product,
@@ -155,7 +180,11 @@ public class ProductManagerImpl extends BaseManagerImpl<Product> implements
 			}
 			productPackUnitDao.insertInBatch(ProductPackUnitList);
 		}
-		
+
+		PmsCommodityMsgTemp pmsCommodityMsgTemp = new PmsCommodityMsgTemp();
+		pmsCommodityMsgTemp.setCommdityCode(product.getProductCode());
+		pmsCommodityMsgTemp.setType(itemType.product.getValue());
+		pmsCommodityMsgTempDat.insert(pmsCommodityMsgTemp);
 	}
 
 	@Override
@@ -200,6 +229,11 @@ public class ProductManagerImpl extends BaseManagerImpl<Product> implements
 		}
 		// 3. 更新产品主要信息
 		product.setLastUpdateDate(new Date());
+
+		PmsCommodityMsgTemp pmsCommodityMsgTemp = new PmsCommodityMsgTemp();
+		pmsCommodityMsgTemp.setCommdityCode(product.getProductCode());
+		pmsCommodityMsgTemp.setType(itemType.product.getValue());
+		pmsCommodityMsgTempDat.insert(pmsCommodityMsgTemp);
 		return productDao.updateByIdSelective(product);
 	}
 

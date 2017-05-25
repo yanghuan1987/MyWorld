@@ -85,4 +85,20 @@ public class CommodityCommentDaoImpl extends BaseDaoImpl<CommodityComment> imple
 		}
 	}
 
+	
+	/**
+	 * 通过商品编码集合获得对应的好评数评价,总条数
+	 * @param commodityCodes 商品编码可变数组
+	 * @return 对应的商品评价集合
+	 */
+	@Override
+	public List<CommodityComment> selectGoodCommentPercent(
+			String... commodityCodes) {
+		try {
+			return sqlSessionTemplate.selectList(getSqlName(CategorySqlIds.SELECT_TYPECOUNT_BY_COMMODITYCODEARRAY), commodityCodes);
+		} catch (Exception e) {
+			throw new PersistenceException("commodityComment.dao.selectGoodCommentPercent", e, getSqlName(CategorySqlIds.SELECT_TYPECOUNT_BY_COMMODITYCODEARRAY), commodityCodes);
+		}
+	}
+
 }

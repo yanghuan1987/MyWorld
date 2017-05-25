@@ -55,6 +55,10 @@
 							<label class="viewlabel text-right" style="width: 25%;">温区： </label> <label
 								class="viewlabel text-left" style="width: 75%;">{{addedProduct.productTemperatureZone.optionName}}</label><br>
 						</div>
+						<div class="titlebar">
+							<label class="viewlabel text-right" style="width: 25%;">税率： </label> <label
+								class="viewlabel text-left" style="width: 75%;">{{addedProduct.taxRate.optionName}}</label><br>
+						</div>
 						<!-- 产品属性显示 -->
 
 						<div
@@ -175,11 +179,15 @@
 						</div>
 						<div style="float: left;">
 							<input type="number" class="sp-input-sm sp-input"
-								name="productSpecificationValue" step="0.01" ng-patten="/^\d+$/"
+								name="productSpecificationValue" step="1" ng-pattern="/^\d+$/"
 								ng-model="addedProduct.productSpecificationValue" required
-								style="float: left; width: 80px;" placeholder="规格值" /> <span
-								style="color: red"
-								ng-show="addedProduct.productSpecificationValue <= 0 || (productDetailAddForm.productSpecificationValue.$error.required && !productDetailAddForm.productSpecificationValue.$pristine)">产品的规格值大于0且不能为空！</span>
+								style="float: left; width: 80px;" placeholder="规格值" />
+								<span style="color: red"
+								ng-show="productDetailAddForm.productSpecificationValue.$error.required && !productDetailAddForm.productSpecificationValue.$pristine">产品的规格值不能为空！</span>
+								<span style="color: red"
+								ng-show="productDetailAddForm.productSpecificationValue.$error.number && !productDetailAddForm.productSpecificationValue.$pristine">产品的规格值必须为数字！</span>
+								<span style="color: red"
+								ng-show="productDetailAddForm.productSpecificationValue.$error.pattern && !productDetailAddForm.productSpecificationValue.$pristine">产品的规格值必须为正整数！</span>
 							<select ng-model="addedProduct.productSpecificationUnitFirst"
 								class="sp-select sp-select-sm"
 								style="float: left; height: 30px;" required
@@ -247,6 +255,22 @@
 							</select> <span style="color: red"
 								ng-show="(!(addedProduct.productTemperatureZone.optionValue >= 0) && addedProduct.productTemperatureZone.optionValue != null) ||
 								(productDetailAddForm.productTemperatureZone.$error.required && !productDetailAddForm.productTemperatureZone.$pristine)">温区不能为空！</span>
+						</div>
+					</div>
+
+
+					<div class="titlebar form-group">
+						<div class="valueName control-label sp-input-p"
+							style="text-align: right; padding: 3px;">
+							<span style="color: red">*</span>税率：
+						</div>
+						<div style="float: left;">
+							<select ng-model="addedProduct.taxRate"
+								class="sp-select sp-select-md" required name="taxRate"
+								ng-options="x.optionName for x in severTaxRate"
+								style="height: 30px;" placeholder="温区">
+							</select> <span style="color: red"
+								ng-show="(productDetailAddForm.taxRate.$error.required && !productDetailAddForm.taxRate.$pristine)">税率不能为空！</span>
 						</div>
 					</div>
 
@@ -374,11 +398,12 @@
 					<div style="margin-bottom: 60px;">
 						<button ng-click="onAddSaveClick()"
 							class="sp-input-button btn btn-default"
-							ng-disabled="productDetailAddForm.productName.$error.required ||addedProduct.productSpecificationValue <= 0 ||
+							ng-disabled="productDetailAddForm.productName.$error.required ||addedProduct.productSpecificationValue <= 0 ||productDetailAddForm.taxRate.$error.required ||
 								 productDetailAddForm.productSpecificationValue.$error.required || !(addedProduct.productTemperatureZone.optionValue >= 0) ||
 								 productDetailAddForm.productSpecificationUnitFirst.$error.required ||  !isHeaderPictureSatified ||!isDetailPictureSatified || 
 								 productDetailAddForm.productSpecificationUnitSecond.$error.required || productDetailAddForm.productBuyUnit.$error.required ||
-                                 isProductPropertyMissed  || productDetailAddForm.productStatus.$error.required||
+                                 isProductPropertyMissed  || productDetailAddForm.productStatus.$error.required|| productDetailAddForm.productSpecificationValue.$error.number||
+                                 productDetailAddForm.productSpecificationValue.$error.pattern ||
                                  !serverGs1Code || !Gs1Exist|| doubleClick"
 							style="width: 100%;">完成</button>
 					</div>

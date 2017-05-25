@@ -15,15 +15,18 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spfood.kernel.dao.BaseDao;
 import com.spfood.kernel.dao.PageInfo;
 import com.spfood.kernel.manager.impl.BaseManagerImpl;
+import com.spfood.pms.dao.PmsCommodityMsgTempDao;
 import com.spfood.pms.dao.ProductCategoryDao;
 import com.spfood.pms.dao.ProductCategoryPropertyDao;
 import com.spfood.pms.dao.ProductCategoryPropertyValueDao;
 import com.spfood.pms.dao.impl.ProductCategorySqlIds;
 import com.spfood.pms.intf.domain.CommodityComment;
+import com.spfood.pms.intf.domain.PmsCommodityMsgTemp;
 import com.spfood.pms.intf.domain.ProductCategory;
 import com.spfood.pms.intf.domain.ProductCategoryProperty;
 import com.spfood.pms.intf.domain.ProductCategoryPropertyValue;
 import com.spfood.pms.intf.utils.Constant.CategoryCodeSize;
+import com.spfood.pms.intf.utils.Constant.itemType;
 import com.spfood.pms.manager.ProductCategoryManager;
 
 /**
@@ -44,6 +47,9 @@ public class ProductCategoryManagerImpl extends BaseManagerImpl<ProductCategory>
 	
 	@Resource
 	private ProductCategoryPropertyValueDao propertiesValueDao;
+	
+	@Resource
+	private PmsCommodityMsgTempDao pmsCommodityMsgTempDat;
 
 	@Override
 	protected BaseDao<ProductCategory> getBaseDao() {
@@ -91,6 +97,11 @@ public class ProductCategoryManagerImpl extends BaseManagerImpl<ProductCategory>
 		}
 		//保存属性值数据
 		propertiesValueDao.insertProductCategoryPropertyValueList(pvList);
+		//更新MQ临时表
+		PmsCommodityMsgTemp pmsCommodityMsgTemp = new PmsCommodityMsgTemp();
+		pmsCommodityMsgTemp.setCommdityCode(category.getCategoryCode());
+		pmsCommodityMsgTemp.setType(itemType.category.getValue());
+		pmsCommodityMsgTempDat.insert(pmsCommodityMsgTemp);
 		
 		return category.getId();
 	}
@@ -118,12 +129,22 @@ public class ProductCategoryManagerImpl extends BaseManagerImpl<ProductCategory>
 		category.setCreateDate(new Date());
 		category.setLastUpdateDate(new Date());
 		productCategoryDao.insert(category);
+		//更新MQ临时表
+		PmsCommodityMsgTemp pmsCommodityMsgTemp = new PmsCommodityMsgTemp();
+		pmsCommodityMsgTemp.setCommdityCode(category.getCategoryCode());
+		pmsCommodityMsgTemp.setType(itemType.category.getValue());
+		pmsCommodityMsgTempDat.insert(pmsCommodityMsgTemp);
 		return category;
 	}
 
 	@Override
 	public int updateFirstLevelOrSecondLevelCategroy(ProductCategory category) {
 		category.setLastUpdateDate(new Date());
+		//更新MQ临时表
+		PmsCommodityMsgTemp pmsCommodityMsgTemp = new PmsCommodityMsgTemp();
+		pmsCommodityMsgTemp.setCommdityCode(category.getCategoryCode());
+		pmsCommodityMsgTemp.setType(itemType.category.getValue());
+		pmsCommodityMsgTempDat.insert(pmsCommodityMsgTemp);
 		return productCategoryDao.updateById(category);
 	}
 

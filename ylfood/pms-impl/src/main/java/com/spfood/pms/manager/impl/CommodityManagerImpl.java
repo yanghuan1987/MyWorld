@@ -30,6 +30,7 @@ import com.spfood.pms.intf.domain.Product;
 import com.spfood.pms.intf.domain.ProductCategory;
 import com.spfood.pms.intf.domain.ProductCategoryProperty;
 import com.spfood.pms.intf.domain.ProductProperty;
+import com.spfood.pms.intf.utils.Constant.itemType;
 import com.spfood.pms.manager.CommodityManager;
 @Service
 public class CommodityManagerImpl extends BaseManagerImpl<Commodity> implements CommodityManager {
@@ -149,6 +150,7 @@ public class CommodityManagerImpl extends BaseManagerImpl<Commodity> implements 
 		}
 		PmsCommodityMsgTemp pmsCommodityMsgTemp = new PmsCommodityMsgTemp();
 		pmsCommodityMsgTemp.setCommdityCode(commodity.getCommodityCode());
+		pmsCommodityMsgTemp.setType(itemType.commodity.getValue());
 		pmsCommodityMsgTempDat.insert(pmsCommodityMsgTemp);
 	}
 	
@@ -170,6 +172,11 @@ public class CommodityManagerImpl extends BaseManagerImpl<Commodity> implements 
 			//插入新的商品图片
 			commodityPictureDao.insertPictureList(commodity.getCommodityPictures());
 		}
+
+		PmsCommodityMsgTemp pmsCommodityMsgTemp = new PmsCommodityMsgTemp();
+		pmsCommodityMsgTemp.setCommdityCode(commodity.getCommodityCode());
+		pmsCommodityMsgTemp.setType(itemType.commodity.getValue());
+		pmsCommodityMsgTempDat.insert(pmsCommodityMsgTemp);
 	}
 
 	@Override
@@ -258,4 +265,17 @@ public class CommodityManagerImpl extends BaseManagerImpl<Commodity> implements 
             
         return pageInfos;
     }
+    
+	@Override
+	public PageInfo<Commodity> selectCommodityListByPage(Commodity commodity, PageInfo<Commodity> pageInfo) {
+		return selectCommodityPageInfo(commodity,pageInfo,CommoditySqlIds.SELECT_COMMODITY_DETAIL);
+	}
+
+	/**
+	 * 更新销售数量
+	 * @return
+	 */
+	public Boolean updateCommodityQuantity(){
+		return true;
+	}
 }

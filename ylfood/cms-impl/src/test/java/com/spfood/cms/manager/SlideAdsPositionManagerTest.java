@@ -1,6 +1,6 @@
 package com.spfood.cms.manager;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
@@ -8,22 +8,29 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.spfood.basicservice.intf.BasicConfigurationService;
 import com.spfood.cms.intf.domain.Advertisement;
 import com.spfood.cms.intf.domain.SlideAdsPosition;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"/local-spring-environment.xml","/spring-context.xml"})
+@ContextConfiguration({"/local-spring-environment.xml","/spring-dubbo.xml","/spring-context.xml"})
 public class SlideAdsPositionManagerTest {
 
 	@Resource
 	private SlideAdsPositionManager slideAdsPositionManager;
 	
+	@Autowired
+	private AdvertisementManager advertisementManager;
+	
+	@Autowired
+	private BasicConfigurationService basicConfigurationService;
 	
 	/**
 	 * 测试获得banner数据
@@ -53,14 +60,13 @@ public class SlideAdsPositionManagerTest {
 		}
 	}
 	
-	
 	/**
 	 * 向数据库插入数据
 	 */
 	private void insert() {
 		SlideAdsPosition slideAdsPosition = new SlideAdsPosition();
 		slideAdsPosition.setName("第一个");
-		slideAdsPosition.setMinSlot(0);
+		slideAdsPosition.setMinSlot("0");
 		slideAdsPositionManager.insert(slideAdsPosition);
 	}
 	

@@ -18,9 +18,9 @@
     <dubbo:monitor protocol="registry"/>
     
     <!-- 声明需要暴露的服务接口 -->
-    <dubbo:service interface="com.spfood.pms.search.intf.CommoditySearchService" ref="commoditySearchService" timeout="6000"/>
-    <dubbo:service interface="com.spfood.pms.search.intf.CategorySearchService" ref="categorySearchService" timeout="6000"/>
-    <dubbo:service interface="com.spfood.pms.search.intf.CommodityCommentService" ref="commodityCommentService" timeout="6000"/>
+    <dubbo:service interface="com.spfood.pms.search.intf.CommoditySearchService" ref="commoditySearchService" timeout="10000"/>
+    <dubbo:service interface="com.spfood.pms.search.intf.CategorySearchService" ref="categorySearchService" timeout="10000"/>
+    <dubbo:service interface="com.spfood.pms.search.intf.CommodityCommentService" ref="commodityCommentService" timeout="10000"/>
         
      
     <!-- 和本地bean一样实现服务 -->

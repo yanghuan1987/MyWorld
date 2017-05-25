@@ -41,4 +41,11 @@ public interface CommodityCommentService {
 	 * @return 商品评价集合
 	 */
 	List<CommodityComment> selectCommodityCommentByOrderNo(String orderNo);
+	
+	/**
+	 * B2C通过商品编码集合获得对应的好评数,评价总条数
+	 * @param commodityCodes 商品编码可变数组
+	 * @return 对应的商品评价集合
+	 */
+	List<CommodityComment> selectGoodCommentPercent(String... commodityCodes);
 }

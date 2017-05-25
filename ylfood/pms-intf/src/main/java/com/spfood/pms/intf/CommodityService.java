@@ -26,6 +26,11 @@ public interface CommodityService {
 	 * @return
 	 */
 	public PageInfo<Commodity> selectCommodityAll(Commodity commodity,PageInfo<Commodity> pageInfo);
+	/**
+	 * 获取商品列表-详细查询
+	 * @return
+	 */
+	public PageInfo<Commodity> selectCommodityDetial(Commodity commodity,PageInfo<Commodity> pageInfo);
 	
 	/**
 	 * 根据品类模糊查询
@@ -54,7 +59,12 @@ public interface CommodityService {
 	 * @return
 	 */
 	public Boolean updateCommodityStateDown(Long id);
-	
+	/**
+	 * 单个商品删除
+	 * @param id
+	 * @return
+	 */
+	public Boolean updateCommodityStateDelete(Long id);
 	/**
 	 * 商品批量上架
 	 * @param ids
@@ -68,6 +78,12 @@ public interface CommodityService {
 	 * @return
 	 */
 	public Boolean updateCOmmodityStateDowns(Long ids[]);
+	/**
+	 * 商品批量删除
+	 * @param id
+	 * @return
+	 */
+	public Boolean updateCommodityStateDeletes(Long ids[]);
 	
 	/**
 	 * 根据商品编码获取商品图片集合

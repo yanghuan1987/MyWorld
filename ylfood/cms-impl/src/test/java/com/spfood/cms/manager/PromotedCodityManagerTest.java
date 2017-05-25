@@ -25,7 +25,7 @@ public class PromotedCodityManagerTest {
         PromotedCommodity promotedCommodity=new PromotedCommodity();
         promotedCommodity.setCommodityCode("123");
         promotedCommodity.setCommodityName("商品名称");
-        promotedCommodity.setCommPromotePos(1L);
+        promotedCommodity.setCommPromotePos("cms_commodity_pos_homePage");
         promotedCommodity.setProductCode("456");
         promotedCommodity.setCommoditySpec("商品规格");
         promotedCommodity.setImageUrl("图片地址");

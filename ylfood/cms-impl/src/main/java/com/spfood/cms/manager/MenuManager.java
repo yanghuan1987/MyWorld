@@ -37,5 +37,12 @@ public interface MenuManager extends BaseManager<Menu> {
 	 * @return 菜单list集合
 	 */
 	public List<Menu> getMenuInfoForB2C();
+	
+	/**
+	 * 通过菜单编码查询所有子菜单
+	 * @param menuCode 菜单编码
+	 * @return menu对象,里面只封装了产品编码和名称
+	 */
+	List<Menu> getSonMenus(String menuCode);
 
 }

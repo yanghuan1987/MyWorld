@@ -1,6 +1,9 @@
 package com.spfood.cms.impl;
 import java.util.List;
+
 import javax.annotation.Resource;
+
+import com.spfood.basicservice.intf.BasicConfigurationService;
 import com.spfood.cms.intf.PromotedCommodityService;
 import com.spfood.cms.intf.domain.PromotedCommodity;
 import com.spfood.cms.manager.PromotedCommodityManager;
@@ -10,13 +13,15 @@ public class PromotedCommodityServiceImpl implements PromotedCommodityService {
     @Resource
     private PromotedCommodityManager promotedCommodityManager;
 
+    @Resource
+    private BasicConfigurationService basicConfigurationService;
     
     /**
      * 指定推荐位的推荐商品列表
      * @param commPromotePos 推荐位编码，不能为空
      */
     @Override
-    public List<PromotedCommodity> getPromotedCommoditys(Long commPromotePos) {
+    public List<PromotedCommodity> getPromotedCommoditys(String commPromotePos) {
         return promotedCommodityManager.getPromotedCommoditys(commPromotePos);
     }
 

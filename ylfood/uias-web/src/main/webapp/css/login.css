@@ -1,0 +1,252 @@
+@CHARSET "UTF-8";
+html,body {
+    font-size: 12px;
+    font-family: "Microsoft Yahei", Arial, Helvetica, sans-serif;
+    color: #333;
+	/*background: url('../img/logo-bg.png');*/
+	/*background-repeat:no-repeat;*/
+	/*background-size:100%,100%;*/
+}
+body
+{
+    margin:0px;
+	padding:0px;	
+	display:inline-block;
+	*display:inline;
+	zoom:1;
+	z-index:-1;
+	width:100%;
+	overflow:auto;			
+	height: 100%;
+ }
+ *::-webkit-input-placeholder 
+   {
+    color:#dedede;
+　　color:#dedede;
+  
+ }
+
+　*:-moz-placeholder 
+    { /* Mozilla Firefox 4 to 18 */
+    color:#dedede;
+　　color:#dedede;
+    
+　　}
+
+　*::-moz-placeholder 
+    { /* Mozilla Firefox 19+ */
+    color:#dedede;
+　　color:#dedede;
+    
+　　}
+
+　*:-ms-input-placeholder 
+    { /* Internet Explorer 10+ */
+    color:#dedede;
+　　color:#dedede;
+    
+　　}
+.sp-bg{
+	width: 100%;
+	height: 100%;
+	background: url('../img/logo-bg.png') no-repeat 0/100% ;
+	/*background: url('../img/logo-bg.png') no-repeat center;*/
+	position: absolute;
+	min-width: 1024px;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+.sp-login-div
+{
+
+	position:absolute;
+	width:100%;
+	/*top:43%;*/
+    
+	
+	
+}
+.sp-login-content
+{
+    margin:0px;
+	padding:0px;
+    display:block;
+	width:16%;
+	margin:0 auto;
+	text-align:left;
+	background-color:#fff;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+	padding:20px 40px 20px 40px;
+}
+.sp-login-div form
+{
+    display:block;		
+	width:100%;
+}
+
+.sp-login-div form p
+{
+	width:100%;
+	padding:0px;
+}
+.sp-login-div form p.sp-p-normal
+{
+/*
+position:inherit;
+text-align:left;*/
+
+
+margin:12px 0px 12px 0px;
+}
+
+
+@media screen and (min-height: 800px) {
+	
+	.sp-login-div-top
+	{
+	top:31%;
+	}
+
+	
+	
+}
+@media screen and (max-height: 800px) and (min-height: 600px) and (min-width:1281px) {
+	
+	.sp-login-div-top
+	{
+	top:31%;
+	}
+
+}
+@media screen and (max-height: 800px) and (min-height: 600px) and (min-width:1025px) and (max-width:1281px) {
+	
+	.sp-login-div-top
+	{
+	top:30%;
+	}
+
+}
+@media screen and (max-height: 800px) and (min-height: 600px) and (max-width:1025px) {
+	
+	.sp-login-div-top
+	{
+	top:28%;
+	}
+
+}
+@media screen and (max-height: 601px) and (min-height: 500px){
+	
+	.sp-login-div-top
+	{
+	top:22%;
+	}
+   
+	
+}
+@media screen and (max-height: 500px){
+	
+	.sp-login-div-top
+	{
+	top:32%;
+	}
+   
+	
+}
+.sp-login-qr
+{
+margin:12px 0px 5px 0px;
+}
+.sp-login-title
+{
+	font-size:14px;
+	font-weight:bold;
+	margin:5px 0px 12px 0px;
+}
+.sp-login-btn
+{
+    margin:5px 0px 5px 0px;
+}
+.sp-login-comments
+{
+    margin:5px 0px 5px 0px;
+    
+}
+.sp-login-comments span
+{
+    color:#ccc;
+	vertical-align:middle;
+	margin:0px;
+	padding:0px;
+}
+ .sp-input-text-width
+	{
+	display:block;
+	width:90%;
+	}
+
+.sp-input-text
+{
+   
+    /*height: 40px;
+	width:100%;
+	width:100px;*/
+	padding:7px 0px 7px 24px;
+    font-family: "Microsoft Yahei", Arial, Helvetica, sans-serif;;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 13px;
+    text-decoration: none;
+    color: #989898;
+    border:1px solid #99c731;
+    text-align: left;    
+    
+}
+.sp-input-qr
+{
+	padding:7px 0px 7px 5px;
+    font-family: "Microsoft Yahei", Arial, Helvetica, sans-serif;;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 13px;
+    text-decoration: none;
+    color: #989898;
+    border:1px solid #99c731;
+    text-align: left; 
+}
+.sp-input-chkbox
+{
+	margin:0px;
+	padding:0px;
+	width:15px;
+	height:15px;
+	background: -webkit-linear-gradient(#ffffff,#f6f6f6); /* Safari 5.1 - 6.0 */
+	background: -o-linear-gradient(#ffffff,#f6f6f6); /* Opera 11.1 - 12.0 */
+	background: -moz-linear-gradient(#ffffff,#f6f6f6); /* Firefox 3.6 - 15 */
+	background: linear-gradient(#f6f6f6,#ffffff); /* ��׼���﷨ */
+}
+.sp-input-user-bg
+{
+ background:url('../img/User-login.png') no-repeat 0 center;
+}
+.sp-input-lock-bg
+{
+ background:url('../img/Password.png') no-repeat 0 center;
+}
+.sp-input-btn
+{
+	/*
+	width:124px;*/
+	background-color:#515151;
+	border:1px solid #515151;
+	padding:8px 0px 8px 0px;
+	width:100%;
+	color:white;
+	font-size:14px;
+	font-weight:bold;
+}

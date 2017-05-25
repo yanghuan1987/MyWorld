@@ -135,5 +135,20 @@ public class MenuManagerImpl extends BaseManagerImpl<Menu> implements MenuManage
 		log.info("B2CCall interface to get the menu data");
 		return dao.getMenuInfoForB2C();
 	}
+
+
+	/**
+	 * 通过菜单编码查询所有子菜单
+	 * @param menuCode 菜单编码
+	 * @return menu对象,里面只封装了产品编码和名称
+	 */
+	@Override
+	public List<Menu> getSonMenus(String menuCode) {
+		if (menuCode == null || "".equals(menuCode.trim())) {
+			return null;
+		}
+		return dao.getSonMenus(menuCode);
+		
+	}
 	
 }

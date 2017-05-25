@@ -162,4 +162,20 @@ public class CommodityCommentManagerImpl extends BaseManagerImpl<CommodityCommen
 		return dao.selectCommodityCommentByOrderNo(orderNo.trim());
 	}
 
+
+	/**
+	 * B2C通过商品编码集合获得对应的好评数,评价总条数
+	 * @param commodityCodes 商品编码可变数组
+	 * @return 对应的商品评价集合
+	 */
+	@Override
+	public List<CommodityComment> selectGoodCommentPercent(
+			String... commodityCodes) {
+		if (commodityCodes == null || commodityCodes.length == 0) {
+			return null;
+		}
+		// 从数据库拿到数据
+		return dao.selectGoodCommentPercent(commodityCodes);
+	}
+
 }

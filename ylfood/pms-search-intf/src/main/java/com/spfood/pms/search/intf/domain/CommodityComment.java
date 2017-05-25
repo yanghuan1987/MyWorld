@@ -102,6 +102,17 @@ public class CommodityComment implements DomainObject {
      */
     private String mobilePhone;
     
+    /**
+     * 好评条数 
+     */
+    private Long goodComment;
+    
+    /**
+     * 评价总数 
+     */
+    private Long countComment;
+    
+    
     public String getNickname() {
 		return nickname;
 	}
@@ -367,4 +378,23 @@ public class CommodityComment implements DomainObject {
     public void setCommentTypeCode(Integer commentTypeCode) {
         this.commentTypeCode = commentTypeCode;
     }
+
+    
+	public Long getGoodComment() {
+		return goodComment;
+	}
+
+	public void setGoodComment(Long goodComment) {
+		this.goodComment = goodComment;
+	}
+
+	public Long getCountComment() {
+		return countComment;
+	}
+
+	public void setCountComment(Long countComment) {
+		this.countComment = countComment;
+	}
+    
+    
 }

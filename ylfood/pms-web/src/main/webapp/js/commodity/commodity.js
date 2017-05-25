@@ -7,6 +7,7 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 	};
 	$rootScope.isProduct = false;//用于详细图片BUTTON显示，表示此为不是产品业务
  	$scope.colorone = "";//菜单背景颜色
+ 	$scope.colorones = "";//菜单背景颜色
 	$scope.newEditQuit = true;//新增页面是否放弃当前编辑FLG
 	$scope.newEditCount = 0;//新增页面是否放弃当前编辑FLG
 	$scope.oldEditQuit = true;//编辑页面是否放弃当前编辑FLG
@@ -16,6 +17,9 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 	$scope.total = 1;//总共条数
 	$scope.pageSize = 15;//每页件数
 	$rootScope.pictureCheck = true;//是否check图片
+	$scope.showSearch = true;//显示详细检索页面
+	$scope.commodityStatusList = [{Name:"上架",Value:"3"},{Name:"下架",Value:"4"}];
+	$scope.showNewButton = false;//显示新增按钮
 	// 前台分页的数据结构
 	$scope.pagination = {
 			pageNum : $scope.pageNum,//翻页页数
@@ -24,8 +28,16 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 			onChange : function() {
 				if($scope.initd == undefined)
 					return;
-				var commodity = {category:$scope.category,commodityCode:$scope.commodityCode};
-				var res = $http.post("/pms-web/pms/commodity/selectCommodityList?pageNum="+$scope.pagination.pageNum
+				if($scope.type != null){
+					var commodity = {commodityCode:$scope.commodityCodes,commodityGs1Code:$scope.commodityGs1Codes
+							,commodityName:$scope.commodityNames,commodityShowPlace:$scope.commodityShowPlaces
+							,commodityStatus:$scope.commodityStatuss};
+					url = "/pms-web/pms/commodity/selectCommodityDetial"
+				}else{
+					var commodity = {category:$scope.category,commodityCode:$scope.commodityCode};
+					url = "/pms-web/pms/commodity/selectCommodityList"
+				}
+				var res = $http.post(url+"?pageNum="+$scope.pagination.pageNum
 						+"&pageSize="+$scope.pagination.pageSize,commodity);
 				res.success(function(data, status, headers, config) {
 					$scope.commodityList = data.result;//返回结果
@@ -61,18 +73,102 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		$scope.stateSure = false;
 		showPopup('showInfo',true);
 	});
+	//客户类型基础数据列表
+	$http.get("getBasicCustomerType").
+	success(function(data, status, headers, config) {
+		$scope.basicCustomerType = data;
+	});
 	//获取城市区域列表
 	$http.get("getDivisionNode").
 	success(function(data, status, headers, config) {
 		$scope.divisionNode = data;
 	});
+
+	//获取税率
+	$http.get("/pms-web/pms/product/getTaxRate")
+	     .success(function(data) {
+	    	 $rootScope.severTaxRate = data;
+	     });
+	$scope.showSearchPage = function(){
+		//离开新增页面提示
+		if(!$scope.newEditQuit){
+			var con = confirm("您当前正处于新增状态，请确认是否放弃");
+			if(!con){
+				return false;
+			}else{
+				$scope.newEditQuit = true;//放弃当前编辑	
+				$scope.newEditCount = 0;//确认放弃，次数归0
+			}
+		}
+		//离开编辑页面提示
+		if(!$scope.oldEditQuit){
+			var con = confirm("您当前正处于编辑状态，请确认是否放弃");
+			if(!con){
+				return false;
+			}else{
+				$scope.oldEditQuit = true;//放弃当前编辑	
+			}
+		}
+		$scope.showSearch = true;//显示详细检索页面
+		$scope.show = false;//不显示展示页面
+		$scope.showEdit = false;//不显示编辑页面
+		$scope.commodityList = null;
+		$scope.clearDetail();
+	 	$scope.colorone = "";//菜单背景颜色
+   	 	$scope.colorones = "#99C731";//菜单背景颜色
+		
+	}
 	//点击一级菜单
 	$scope.updateOne = function(updatecatone) {
-		$scope.category = {categoryName:updatecatone.categoryName,id:updatecatone.id};
+		//离开新增页面提示
+		if(!$scope.newEditQuit){
+			var con = confirm("您当前正处于新增状态，请确认是否放弃");
+			if(!con){
+				return false;
+			}else{
+				$scope.newEditQuit = true;//放弃当前编辑	
+				$scope.newEditCount = 0;//确认放弃，次数归0
+			}
+		}
+		//离开编辑页面提示
+		if(!$scope.oldEditQuit){
+			var con = confirm("您当前正处于编辑状态，请确认是否放弃");
+			if(!con){
+				return false;
+			}else{
+				$scope.oldEditQuit = true;//放弃当前编辑	
+			}
+		}
+		$scope.showSearch = false;//显示详细检索页面
+		$scope.commodityList = null;
+		$scope.type = null;
+		$scope.showNewButton = false;//显示新增按钮
+		$scope.categoryName = null;//品类名字
+		$scope.category = {categoryName:updatecatone.categoryName,id:updatecatone.id,categoryCode:updatecatone.categoryCode};
    	 	$scope.colorone = "#99C731";//菜单背景颜色
+   	 	$scope.colorones = "";//菜单背景颜色
 		var response = $http.post("/pms-web/pms/category/selectCategoryChildren?categoryCode="+updatecatone.categoryCode,{headers:{'Accept':'application/json'}});
 		response.success(function(data, status, headers, config) {
 			updatecatone.productCategorys = data;
+			var commodity = {category:$scope.category,commodityCode:null};
+			//获取商品列表
+			var res = $http.post("/pms-web/pms/commodity/selectCommodityList?pageNum="+$scope.pageNum+"&pageSize="+$scope.pageSize,commodity);
+			res.success(function(data, status, headers, config) {
+				$scope.pagination.pageNum = data.pageNum;//返回结果页数
+				$scope.pagination.total = data.total;//返回结果总共条数
+				$scope.pagination.pageSize = data.pageSize;//返回结果每页件数
+				$scope.commodityList = data.result;//返回结果
+				var cb = $scope.pageSize ;//为满足条数时填补空行
+				if($scope.commodityList != undefined && $scope.commodityList != {})
+					cb = cb - $scope.commodityList.length;//计算需要填补几行
+				$scope.tempList = [cb];//占位
+				while(cb > 0){
+					$scope.tempList.push([cb]);//占位添加
+					cb--;
+				}
+				$scope.tempList.pop();//去除最后一行
+				$scope.initd = "0";//第一次页面检索完成
+			});
 		});
 		//收起或显示一级菜单
 		if($scope.spMenuShow != updatecatone.id)
@@ -82,10 +178,54 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 	};
 	//点击二级菜单
 	$scope.updateTwo = function(cat1name,updatecattwo) {
-		$scope.category = {categoryName:updatecattwo.categoryName,id:updatecattwo.id};
+		//离开新增页面提示
+		if(!$scope.newEditQuit){
+			var con = confirm("您当前正处于新增状态，请确认是否放弃");
+			if(!con){
+				return false;
+			}else{
+				$scope.newEditQuit = true;//放弃当前编辑	
+				$scope.newEditCount = 0;//确认放弃，次数归0
+			}
+		}
+		//离开编辑页面提示
+		if(!$scope.oldEditQuit){
+			var con = confirm("您当前正处于编辑状态，请确认是否放弃");
+			if(!con){
+				return false;
+			}else{
+				$scope.oldEditQuit = true;//放弃当前编辑	
+			}
+		}
+		$scope.showSearch = false;//显示详细检索页面
+		$scope.commodityList = null;
+		$scope.type = null;
+	 	$scope.colorones = "";//菜单背景颜色
+		$scope.showNewButton = false;//显示新增按钮
+		$scope.categoryName = null;//品类名字
+		$scope.category = {categoryName:updatecattwo.categoryName,id:updatecattwo.id,categoryCode:updatecattwo.categoryCode};
 		var response = $http.post("/pms-web/pms/category/selectCategoryChildren?categoryCode="+updatecattwo.categoryCode,{headers: { 'Content-Type': 'application/json'}});
 		response.success(function(data, status, headers, config) {
 			updatecattwo.productCategorys = data;
+			var commodity = {category:$scope.category,commodityCode:null};
+			//获取商品列表
+			var res = $http.post("/pms-web/pms/commodity/selectCommodityList?pageNum="+$scope.pageNum+"&pageSize="+$scope.pageSize,commodity);
+			res.success(function(data, status, headers, config) {
+				$scope.pagination.pageNum = data.pageNum;//返回结果页数
+				$scope.pagination.total = data.total;//返回结果总共条数
+				$scope.pagination.pageSize = data.pageSize;//返回结果每页件数
+				$scope.commodityList = data.result;//返回结果
+				var cb = $scope.pageSize ;//为满足条数时填补空行
+				if($scope.commodityList != undefined && $scope.commodityList != {})
+					cb = cb - $scope.commodityList.length;//计算需要填补几行
+				$scope.tempList = [cb];//占位
+				while(cb > 0){
+					$scope.tempList.push([cb]);//占位添加
+					cb--;
+				}
+				$scope.tempList.pop();//去除最后一行
+				$scope.initd = "0";//第一次页面检索完成
+			});
 		});
 		//收起或显示二级菜单
 		if($scope.spMenuShowT != updatecattwo.id)
@@ -114,6 +254,10 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 				$scope.oldEditQuit = true;//放弃当前编辑	
 			}
 		}
+		$scope.showSearch = false;//显示详细检索页面
+		$scope.commodityList = null;
+		$scope.type = null;
+	 	$scope.colorones = "";//菜单背景颜色
 		$scope.categoryName = name;//品类名字
 		//获取品类属性
 		$scope.show = false;//不显示展示页面
@@ -121,6 +265,7 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		$scope.categoryName = name;//获取选择品类名
 		var categoryCode = ccode;//品类code，检索用
 		$scope.tccode = ccode;//品类code，修改上下架后在检索用
+		$scope.showNewButton = true;//显示新增按钮
 		//获取品类属性
 		var response = $http.post("/pms-web/pms/commodity/selectCategoryPropertyList?categoryCode="+categoryCode);
 		response.success(function(data, status, headers, config) {
@@ -149,9 +294,20 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 	};
 
 	//根据编码搜索商品信息，模糊匹配
-	$scope.searchCommotyByCode = function(){
-		var commodity = {category:$scope.category,commodityCode:$scope.commodityCode};
-		var res = $http.post("/pms-web/pms/commodity/selectCommodityList?pageNum=1"
+	$scope.searchCommotyByCode = function(type){
+		if (type != undefined){
+			$scope.type = type;
+			$scope.categoryName = "商品检索";
+			var commodity = {commodityCode:$scope.commodityCodes,commodityGs1Code:$scope.commodityGs1Codes
+					,commodityName:$scope.commodityNames,commodityShowPlace:$scope.commodityShowPlaces
+					,commodityStatus:$scope.commodityStatuss};
+			url = "/pms-web/pms/commodity/selectCommodityDetial"
+		}else{
+			$scope.type = null;
+			var commodity = {category:$scope.category,commodityCode:$scope.commodityCode};
+			url = "/pms-web/pms/commodity/selectCommodityList"
+		}
+		var res = $http.post(url+"?pageNum=1"
 				+"&pageSize="+$scope.pagination.pageSize,commodity);
 		res.success(function(data, status, headers, config) {
 			$scope.commodityList = data.result;//返回结果
@@ -167,6 +323,7 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 				cb--;
 			}
 			$scope.tempList.pop();//去除最后一行
+			$scope.initd = "0";//第一次页面检索完成
 		});
 	};
 	//增加选择产品数量
@@ -200,7 +357,11 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 	//编辑商品状态
 	$scope.editSta = function (now,s) {
 		$scope.allState = undefined;//不是批量
-		$scope.message = "确认对该商品的状态修改";
+		if(s == 6){
+			$scope.message = "确认删除商品";
+		}else{
+			$scope.message = "确认对商品的状态修改";
+		}
 		$scope.oldCommodity = now;//选择商品
 		$scope.state = s;//选择状态
 		//模态框显示确认按钮
@@ -222,6 +383,10 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		if($scope.state == 4){
 			urls = "/pms-web/pms/commodity/updateCommodityStateDown";
 		}
+		//如果删除操作，发送删除的URL
+		if($scope.state == 6){
+			urls = "/pms-web/pms/commodity/updateCommodityStateDelete";
+		}
 		//获取需要修改的商品状态赋值给商品对象
 		$scope.oldCommodity.commodityStatus = $scope.state;
 		var response = $http.post(urls, $scope.oldCommodity);//调用controller
@@ -231,6 +396,15 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 			//模态框显示确认按钮
 			$scope.stateSure = true;
 			exitPop('showInfo');
+			if($scope.state == 6){
+				if($scope.type != null){
+					$scope.searchCommotyByCode('detail')
+					$scope.selectAll = false;
+				}else{
+					$scope.updateThree(null,$scope.categoryName,$scope.tccode,null,null);
+					$scope.selectAll = false;
+				}
+			}
 		});
 	}
 	//批量修改商品状态
@@ -242,6 +416,10 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		}
 		if(state == 4){
 			urls = "/pms-web/pms/commodity/updateCommodityStateDowns";
+		}
+		//如果删除操作，发送删除的URL
+		if(state == 6){
+			urls = "/pms-web/pms/commodity/updateCommodityStateDeletes";
 		}
 		//添加选择的商品index
 		var obj = document.getElementsByName("cbx");
@@ -255,8 +433,13 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		response.success(function(data, status, headers, config) {
 			exitPop('showInfo');
 			if(data == 'success'){
-				$scope.updateThree(null,$scope.categoryName,$scope.tccode,null,null);
-				$scope.selectAll = false;
+				if($scope.type != null){
+					$scope.searchCommotyByCode('detail')
+					$scope.selectAll = false;
+				}else{
+					$scope.updateThree(null,$scope.categoryName,$scope.tccode,null,null);
+					$scope.selectAll = false;
+				}
 			}
 		});
 	};
@@ -276,7 +459,11 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 			showPopup('showInfo',true);
 			return;
 		}
-		$scope.message = "确认对商品的状态修改";
+		if(state == 6){
+			$scope.message = "确认删除商品";
+		}else{
+			$scope.message = "确认对商品的状态修改";
+		}
 		$scope.allState = state;//批量更新
 		$scope.stateSure = true;//更新状态
 		showPopup('showInfo',true);
@@ -304,6 +491,7 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 				$scope.oldEditQuit = true;//放弃当前编辑	
 			}
 		}
+		$scope.showSearch = false;//显示详细检索页面
 		//获取商品对应的产品信息
 		var response = $http.post("/pms-web/pms/product/getAllProductsByCriteria",{productCode : commodity.product.productCode},{headers:{'Accept':'application/json'}});
 		response.success(function(data, status, headers, config) {
@@ -337,7 +525,7 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 				commodityWeight:commodity.commodityWeight,commodityWeightUnit:commodity.commodityWeightUnit,
 				commodityShowPlace:commodity.commodityShowPlace,commodityComment:commodity.commodityComment,
 				commodityPropertys:commodity.commodityPropertys,commodityPictures:commodity.commodityPictures,
-				id:commodity.id
+				id:commodity.id,taxRateName:commodity.taxRateName,taxRateValue:commodity.taxRateValue
 		}; 
 		var divisionflg = false;//有无该省flg
 		var nowcitys = $scope.commodity.commodityCity;//已保存的城市
@@ -429,11 +617,13 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		if($scope.newEditQuit){
 			$scope.newEditQuit = false;//是否放弃当前编辑FLG
 		}
+		$scope.showSearch = false;//显示详细检索页面
 		document.commodityAddForm.oneinput.value='';//上传详细图片文件名清除
 		//新建页面城市显示flg
 		$scope.citylistDB = [];//页面显示城市清空
 		$scope.divisionlist = [];//页面显示省清空
 		$scope.showcity = false;//不表示旧数据城市
+		$scope.chonseProductOne = null;
 		//显示右侧商品编辑div内容
 		$scope.show = false;//展示页面不表示
 		$scope.showEdit = true;//新增页面表示
@@ -448,11 +638,6 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		$http.get("getBasicWeightUnit").
 		success(function(data, status, headers, config) {
 			$scope.basicWeightUnit = data;
-		});
-		//客户类型基础数据列表
-		$http.get("getBasicCustomerType").
-		success(function(data, status, headers, config) {
-			$scope.basicCustomerType = data;
 		});
 
 		//循环省，把显示FLG初始化
@@ -581,9 +766,6 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 			}
 		}
 
-
-
-
 		//放入可选城市
 		$scope.selected = [];
 		$scope.selectedTags = [];
@@ -624,8 +806,9 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		});
 	};
 	//选择产品
-	$scope.chooseProduct = function(product){ 
-
+	$scope.chooseProduct = function(product){
+		
+		$scope.chonseProductOne = product;
 		//为选择tr加上背景色
 		var trs = document.getElementById('table1').getElementsByTagName('tr');
 		for( var i=0; i<trs.length; i++ ){
@@ -848,17 +1031,27 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 			showPopup('showInfo',true);
 			return;
 		}
+		//为单位赋值
+		$scope.commodity.commodityWeightUnit = $scope.chonseProductOne.productSpecificationUnitFirst;
 		//请选择单位
-		if($scope.commodity.commodityWeightUnit == null || $scope.commodity.commodityWeightUnit.length==0){
-			$scope.message = "请选择单位";
+//		if($scope.commodity.commodityWeightUnit == null || $scope.commodity.commodityWeightUnit.length==0){
+//			$scope.message = "请选择单位";
+//			//模态框隐藏确认按钮
+//			$scope.stateSure = false;
+//			showPopup('showInfo',true);
+//			return;
+//		}
+		//请选择显示端
+		if($scope.commodity.commodityShowPlace == null || $scope.commodity.commodityShowPlace.length==0){
+			$scope.message = "请选择显示端";
 			//模态框隐藏确认按钮
 			$scope.stateSure = false;
 			showPopup('showInfo',true);
 			return;
 		}
-		//请选择显示端
-		if($scope.commodity.commodityShowPlace == null || $scope.commodity.commodityShowPlace.length==0){
-			$scope.message = "请选择显示端";
+		//请选择税率
+		if($scope.commodity.taxRateName == null || $scope.commodity.taxRateName.length==0){
+			$scope.message = "请选择税率";
 			//模态框隐藏确认按钮
 			$scope.stateSure = false;
 			showPopup('showInfo',true);
@@ -1018,7 +1211,13 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 				}
 			index ++;
 		}
-		
+
+		//税率Value赋值
+		for(i in $rootScope.severTaxRate){
+			if($scope.commodity.taxRateName == $rootScope.severTaxRate[i].optionName){
+				$scope.commodity.taxRateValue = $rootScope.severTaxRate[i].optionValue;
+			}
+		}
 		//去除头部图片的空位置
 		$scope.commodity.commodityPictures = $rootScope.deletBlank($scope.commodity.commodityPictures);
 		//新增商品信息
@@ -1152,16 +1351,24 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 			return;
 		}
 		//请选择单位
-		if($scope.commodity.commodityWeightUnit == null || $scope.commodity.commodityWeightUnit.length==0){
-			$scope.message = "请选择单位";
+//		if($scope.commodity.commodityWeightUnit == null || $scope.commodity.commodityWeightUnit.length==0){
+//			$scope.message = "请选择单位";
+//			//模态框隐藏确认按钮
+//			$scope.stateSure = false;
+//			showPopup('showInfo',true);
+//			return;
+//		}
+		//请选择显示端
+		if($scope.commodity.commodityShowPlace == null || $scope.commodity.commodityShowPlace.length==0){
+			$scope.message = "请选择显示端";
 			//模态框隐藏确认按钮
 			$scope.stateSure = false;
 			showPopup('showInfo',true);
 			return;
 		}
-		//请选择显示端
-		if($scope.commodity.commodityShowPlace == null || $scope.commodity.commodityShowPlace.length==0){
-			$scope.message = "请选择显示端";
+		//请选择税率
+		if($scope.commodity.taxRateName == null || $scope.commodity.taxRateName.length==0){
+			$scope.message = "请选择税率";
 			//模态框隐藏确认按钮
 			$scope.stateSure = false;
 			showPopup('showInfo',true);
@@ -1300,6 +1507,12 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 			index ++;
 		}
 
+		//税率Value赋值
+		for(i in $rootScope.severTaxRate){
+			if($scope.commodity.taxRateName == $rootScope.severTaxRate[i].optionName){
+				$scope.commodity.taxRateValue = $rootScope.severTaxRate[i].optionValue;
+			}
+		}
 		//去除头部图片的空位置
 		$scope.commodity.commodityPictures = $rootScope.deletBlank($scope.commodity.commodityPictures);
 		//修改商品数据
@@ -1342,5 +1555,11 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 			return changeCount.substring(0, length - 5) + "0万+";
 		}
 	}
-
+	$scope.clearDetail = function(){
+		$scope.commodityCodes = null;
+		$scope.commodityGs1Codes = null;
+		$scope.commodityNames = null;
+		$scope.commodityShowPlaces = null;
+		$scope.commodityStatuss = null;
+	}
 });

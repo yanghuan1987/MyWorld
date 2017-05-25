@@ -47,4 +47,12 @@ public interface ProductCategoryManager extends BaseManager<ProductCategory> {
 	 * @return
 	 */
 	public List<ProductCategory> selectCategoryByCategoryCode(String categoryCode);
+	
+	/**
+	 * 根据编码查询子类
+	 * @param categoryCode
+	 * @return
+	 */
+	public List<ProductCategory> selectCategoryChildrenByCode(String categoryCode);
+	
 }

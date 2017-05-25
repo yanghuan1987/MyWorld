@@ -99,5 +99,15 @@ public interface CommodityManager extends BaseManager<Commodity> {
      * @return
      */
     public PageInfo<Commodity> selectCommodityCommentByPage(PageInfo<Commodity> pageInfo, Commodity commodity);
-	
+	/**
+	 * 详细条件查询商品
+	 * @return
+	 */
+	public PageInfo<Commodity> selectCommodityListByPage(Commodity commodity,PageInfo<Commodity> pageInfo);
+
+	/**
+	 * 更新销售数量
+	 * @return
+	 */
+	public Boolean updateCommodityQuantity();
 }

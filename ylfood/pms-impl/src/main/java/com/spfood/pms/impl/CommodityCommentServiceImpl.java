@@ -102,6 +102,20 @@ public class CommodityCommentServiceImpl implements CommodityCommentService {
 	@Override
 	public boolean updateCommodityCommentCountStatus(
 			CommodityComment commodityComment) {
+		
+		//根据页面的电话查找用户编码，根据编码查询
+		if (null != commodityComment.getCommentUserTel() &&
+				!"".equals(commodityComment.getCommentUserTel())) {
+			//调用CRM接口
+			List<Customer> list = customerService.getCustomerByNumber(commodityComment.getCommentUserTel());
+			List<String> userCodeList = new ArrayList<String>(300);
+			//获取用户编码
+			for (Customer customer : list) {
+				userCodeList.add(customer.getCustomerId().toString());
+			}
+			commodityComment.setCommentUsercodeList(userCodeList);
+		}
+		
 		return commodityCommentManager.updateCommodityCommentCountStatus(commodityComment);
 	}
 

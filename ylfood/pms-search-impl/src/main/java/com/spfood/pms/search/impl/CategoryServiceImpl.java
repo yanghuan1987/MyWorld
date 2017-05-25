@@ -29,4 +29,10 @@ public class CategoryServiceImpl implements CategorySearchService{
 		return productCategoryManager.selectCategoryByCategoryCode(categoryCode);
 	}
 	
+	@Override
+	public List<ProductCategory> selectCategoryChildrenByCode(
+			String categoryCode) {
+		log.info("selectCategoryByCategoryCode by ["+categoryCode+"]");
+		return productCategoryManager.selectCategoryChildrenByCode(categoryCode);
+	}
 }

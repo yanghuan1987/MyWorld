@@ -141,10 +141,10 @@ public class CommodityManagerTest {
     @Rollback
     @Transactional
 	public void selectCommodityListByPage() {
-	    PageInfo<Commodity> cInfo=new PageInfo<Commodity>(1, 5);
+	    PageInfo<Commodity> cInfo=new PageInfo<Commodity>(1, 100);
 	    List<String> keyWordsList=new ArrayList<String>();
-	    keyWordsList.add("23");
-	    commodityManager.selectCommodityListByPage(cInfo, keyWordsList, null, Constant.OrderByCondition.priceToAsc, Constant.CommodityState.onCheck, Constant.CommodityShowPlace.toB);
+	    keyWordsList.add("肉");
+	    commodityManager.selectCommodityListByPage(cInfo, keyWordsList, null, Constant.OrderByCondition.priceToAsc, Constant.CommodityState.onShift, Constant.CommodityShowPlace.toC);
     }
 	@Test
     @Rollback

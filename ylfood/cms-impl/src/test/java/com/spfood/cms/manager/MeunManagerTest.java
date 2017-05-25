@@ -1,17 +1,15 @@
 package com.spfood.cms.manager;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -24,7 +22,7 @@ import com.spfood.cms.intf.domain.Menu;
 
 public class MeunManagerTest {
 	
-	@Resource
+	@Autowired
 	private MenuManager menuManager;
 	
 //	private JSONArray list;
@@ -246,6 +244,15 @@ public class MeunManagerTest {
 		}
 	}
 	
-
-
+	/**
+	 * 测试通过菜单编码获得子菜单
+	 * @throws Exception
+	 */
+	@Test
+	public void testGetSonMenus() throws Exception {
+		String menuCode = "01001";
+		List<Menu> sonMenus = menuManager.getSonMenus(menuCode);
+		assertNotNull(sonMenus);
+	}
+	
 }

@@ -54,7 +54,16 @@ public class CommodityServiceImpl implements CommodityService{
 		log.info("commodityCode：["+id+"]to down");
 		return commodityManager.updateCommodityState(ids, 4);
 	}
-
+	@Override
+	public Boolean updateCommodityStateDelete(Long id) {
+		Long ids[] = {id};
+		log.info("commodityCode：["+id+"]to delete");
+		return commodityManager.updateCommodityState(ids, 6);
+	}
+	@Override
+	public Boolean updateCommodityStateDeletes(Long[] ids) {
+		return commodityManager.updateCommodityState(ids, 6);
+	}
 	@Override
 	public Boolean updateCommodityStateUps(Long[] ids) {
 		return commodityManager.updateCommodityState(ids, 3);
@@ -69,7 +78,10 @@ public class CommodityServiceImpl implements CommodityService{
 	public PageInfo<Commodity> selectCommodityAll(Commodity commodity,PageInfo<Commodity> pageInfo) {
 		return commodityManager.selectCommodityListByPage(commodity,pageInfo,null,null,null);
 	}
-
+	@Override
+	public PageInfo<Commodity> selectCommodityDetial(Commodity commodity,PageInfo<Commodity> pageInfo) {
+		return commodityManager.selectCommodityListByPage(commodity,pageInfo);
+	}
 	@Override
 	public List<CommodityPicture> selectCommodityPictureByCommodityCode(Commodity commodity) {
 		CommodityPicture commodityPicture = new CommodityPicture();

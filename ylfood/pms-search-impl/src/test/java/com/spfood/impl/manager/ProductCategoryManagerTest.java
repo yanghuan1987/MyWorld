@@ -160,5 +160,9 @@ public class ProductCategoryManagerTest {
 		return productCategoryProperty;
 	}
 	
-	
+	@Test
+	public void testChren(){
+		List<ProductCategory> aCategories = productCategoryManager.selectCategoryChildrenByCode("04001");
+		aCategories.size();
+	}
 }

@@ -238,4 +238,9 @@
   	update cms_menu set visualable = 0 where MenuCode like concat(#{menuCode}, '%')
   </update>
   
+  
+  <!-- 通过菜单编码获取所有子菜单 -->
+  <select id="selectSonMenusByMenuCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select menuCode, name from cms_menu where parent = #{menuCode} AND visualable = 1 order by display_order
+  </select>
 </mapper>

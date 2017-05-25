@@ -13,6 +13,8 @@
 	    <result column="product_buy_unit_code" property="productBuyUnitCode" jdbcType="VARCHAR" />
 	    <result column="product_temperature_zone_name" property="productTemperatureZoneName" jdbcType="VARCHAR" />
 	    <result column="product_temperature_zone_code" property="productTemperatureZoneCode" jdbcType="VARCHAR" />
+	    <result column="tax_rate_name" property="taxRateName" jdbcType="VARCHAR" />
+	    <result column="tax_rate_value" property="taxRateValue" jdbcType="VARCHAR" />
 	    <result column="product_show_name" property="productShowName" jdbcType="VARCHAR" />
 	    <result column="product_terminal" property="productTerminal" jdbcType="DECIMAL" />
 	    <result column="product_status" property="productStatus" jdbcType="INTEGER" />
@@ -191,9 +193,9 @@
 		property.product_code
 		left join pms_product_category 
 		on product.category_code = pms_product_category.category_code 
-		where 1= 1
+		where 1= 1 
 		<if test="categoryCode != null">
-			and product.category_code = #{categoryCode,jdbcType=VARCHAR}
+			and product.category_code like #{categoryCode,jdbcType=VARCHAR} '%'
 		</if>
 		<if test="productCode != null">
 			and product.product_code like #{productCode,jdbcType=VARCHAR}
@@ -215,6 +217,15 @@
 		</if>
 		<if test="category != null and category.categoryName != null">
 			and pms_product_category.category_name like #{category.categoryName,jdbcType=VARCHAR}
+		</if>
+		<if test="productGs1Code != null">
+			and product.product_gs1_code like #{productGs1Code,jdbcType=VARCHAR}
+		</if>
+		<if test="productStatus != null">
+			and product.product_status = #{productStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="productTemperatureZoneCode != null">
+			and product.product_temperature_zone_code = #{productTemperatureZoneCode,jdbcType=VARCHAR}
 		</if>
 		<if test="propertySearchCriteria != null">
 			and property.product_property_name = #{propertySearchCriteria.productPropertyName}
@@ -236,7 +247,7 @@
 		on product.category_code = pms_product_category.category_code 
 		where 1=1 
 		<if test="categoryCode != null">
-			and product.category_code = #{categoryCode,jdbcType=VARCHAR}
+			and product.category_code like #{categoryCode,jdbcType=VARCHAR} '%'
 		</if>
 		<if test="productCode != null">
 			and product.product_code like #{productCode,jdbcType=VARCHAR}
@@ -258,6 +269,15 @@
 		</if>
 		<if test="category != null and category.categoryName != null">
 			and pms_product_category.category_name like #{category.categoryName,jdbcType=VARCHAR}
+		</if>
+		<if test="productGs1Code != null">
+			and product.product_gs1_code like #{productGs1Code,jdbcType=VARCHAR}
+		</if>
+		<if test="productStatus != null">
+			and product.product_status = #{productStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="productTemperatureZoneCode != null">
+			and product.product_temperature_zone_code = #{productTemperatureZoneCode,jdbcType=VARCHAR}
 		</if>
 		<if test="propertySearchCriteria != null">
 			and property.product_property_name = #{propertySearchCriteria.productPropertyName}
@@ -343,24 +363,26 @@
 	<select id="selectListByIdsSecond" resultMap="BaseResultMap"
 		parameterType="java.util.List">
 		
-		select product.*,category.category_name parent_category_name,pms_product_category.category_name,pms_product_category.parent_category_code,
-		product_property_name, product_property_value,product_buy_unit_name,product_buy_unit_code,
-		property.id as property_id, property.product_code property_product_code,
-		property.customer_define_flag
-		from pms_product
-		product
-		
-		left join
-		pms_product_property property
-		on
-		product.product_code =
-		property.product_code
-		LEFT JOIN pms_product_category
-		ON product.category_code = pms_product_category.category_code
-		
-		join pms_product_category category on pms_product_category.parent_category_code = category.category_code
-		where product.id in
-
+		SELECT
+			product.*, category.category_name parent_category_name,
+			pms_product_category.category_name,
+			pms_product_category.parent_category_code,
+			categoryOne.category_name AS category_another_name,
+			product_property_name,
+			product_property_value,
+			product_buy_unit_name,
+			product_buy_unit_code,
+			property.id AS property_id,
+			property.product_code property_product_code,
+			property.customer_define_flag
+		FROM
+			pms_product product
+		LEFT JOIN pms_product_property property ON product.product_code = property.product_code
+		LEFT JOIN pms_product_category ON product.category_code = pms_product_category.category_code
+		JOIN pms_product_category category ON pms_product_category.parent_category_code = category.category_code
+		JOIN pms_product_category categoryOne ON categoryOne.category_code = LEFT (product.category_code, 2)
+		WHERE
+			product.id IN
 		<foreach item="item" index="index" collection="list" open="("
 			separator="," close=")">
 			#{item}
@@ -391,6 +413,8 @@
 			product_buy_unit_name,
 			product_temperature_zone_code,
 			product_temperature_zone_name,
+			tax_rate_name,
+			tax_rate_value,
 			create_date,
 			create_user,
 			last_update_date,
@@ -406,6 +430,7 @@
 				#{productSpecificationUnitFirstValue,jdbcType=VARCHAR}, #{productSpecificationUnitSecondValue,jdbcType=VARCHAR},
 				#{productBuyUnitCode,jdbcType=VARCHAR},  #{productBuyUnitName,jdbcType=VARCHAR},
 				#{productTemperatureZoneCode,jdbcType=VARCHAR},  #{productTemperatureZoneName,jdbcType=VARCHAR}, 
+				#{taxRateName,jdbcType=VARCHAR},  #{taxRateValue,jdbcType=VARCHAR}, 
 				#{createDate,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{lastUpdateDate,jdbcType=TIMESTAMP}, 
 				#{lastUpdateUser,jdbcType=VARCHAR})
 	</insert>
@@ -518,6 +543,12 @@
       </if>
       <if test="productBuyUnitCode != null" >
         product_buy_unit_code = #{productBuyUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="taxRateName != null" >
+        tax_rate_name = #{taxRateName,jdbcType=VARCHAR},
+      </if>
+      <if test="taxRateValue != null" >
+        tax_rate_value = #{taxRateValue,jdbcType=VARCHAR},
       </if>
       <if test="productShowName != null" >
         product_show_name = #{productShowName,jdbcType=VARCHAR},

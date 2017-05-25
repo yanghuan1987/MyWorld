@@ -32,7 +32,7 @@ public class AdvertisementManagerTest {
 	@Transactional
 	public void testSelectList() throws Exception {
 		Advertisement advertisement = new Advertisement();
-		advertisement.setSlideAdsPosId(1L);
+		advertisement.setSlideAdsPosId("cms_slide_ads_pos_pc");
 		List<Advertisement> list = advertisementManager.selectList(advertisement);
 		if (list.size() == 0) {
 			insert();
@@ -41,14 +41,14 @@ public class AdvertisementManagerTest {
 			int size = list1.size();
 			for (int i = 0; i < size; i++) {
 				Advertisement advertisement1 = list1.get(i);
-				assertEquals(1L, advertisement1.getSlideAdsPosId().longValue());
+				assertEquals("cms_slide_ads_pos_pc", advertisement1.getSlideAdsPosId());
 				assertEquals("图片来源地址" + i, advertisement1.getImageUrl());
 				assertEquals("点击图片访问地址" + i, advertisement1.getTargetUrl());
 				assertEquals(i, advertisement1.getDisplayOrder().intValue());
 			}
 		} else {
 			Advertisement advertisement2 = list.get(0);
-			assertEquals(1, advertisement2.getSlideAdsPosId().intValue());
+			assertEquals("cms_slide_ads_pos_pc", advertisement2.getSlideAdsPosId());
 		}
 	}
 	
@@ -62,7 +62,7 @@ public class AdvertisementManagerTest {
 		insert();
 		List<Advertisement> list = advertisementManager.selectAll();
 		Advertisement advertisement = list.get(0);
-		advertisement.setSlideAdsPosId(1L);
+		advertisement.setSlideAdsPosId("cms_slide_ads_pos_pc");
 		advertisement.setImageUrl("图片来源地址");
 		advertisementManager.updateById(advertisement);
 		// 验证修改后的数据
@@ -94,7 +94,7 @@ public class AdvertisementManagerTest {
 	public void insert() {
 		for (int i = 0; i < 6; i++) {
 			Advertisement advertisement = new Advertisement();
-			advertisement.setSlideAdsPosId(1L);
+			advertisement.setSlideAdsPosId("cms_slide_ads_pos_pc");
 			advertisement.setImageUrl("图片来源地址" + i);
 			advertisement.setTargetUrl("点击图片访问地址" + i);
 			advertisement.setDisplayOrder(i);

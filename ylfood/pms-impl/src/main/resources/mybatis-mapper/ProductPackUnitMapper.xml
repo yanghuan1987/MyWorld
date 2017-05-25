@@ -10,7 +10,7 @@
     <result column="product_code" property="productCode" jdbcType="VARCHAR" />
     <result column="unit_code" property="unitCode" jdbcType="VARCHAR" />
     <result column="unit_name" property="unitName" jdbcType="VARCHAR" />
-    <result column="unit_value" property="unitValue" jdbcType="INTEGER" />
+    <result column="unit_value" property="unitValue" jdbcType="FLOAT" />
   </resultMap>
   <sql id="Base_Column_List" >
     <!--
@@ -38,7 +38,7 @@
          AND unit_name = #{unitName,jdbcType=VARCHAR}
       </if>
       <if test="unitValue != null" >
-         AND unit_value = #{unitValue,jdbcType=INTEGER}
+         AND unit_value = #{unitValue,jdbcType=FLOAT}
       </if>
     </where>
   </sql>
@@ -87,7 +87,7 @@
 		VALUES 
 		<foreach collection="list" item="item" index="index" separator="," >
 		(#{item.productCode,jdbcType=VARCHAR}, #{item.unitCode,jdbcType=VARCHAR},
-		#{item.unitName,jdbcType=VARCHAR}, #{item.unitValue,jdbcType=INTEGER})
+		#{item.unitName,jdbcType=VARCHAR}, #{item.unitValue,jdbcType=FLOAT})
 		</foreach>
   </insert>
 </mapper>

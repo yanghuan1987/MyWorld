@@ -6,6 +6,7 @@ public interface CategorySqlIds {
 	public String SELECT_BY_KEYWORDS = "selectByKeywords";
 	public String SELECT_BY_COMMODITYCODE = "selectByCommodityCode";
 	public String SELECT_BY_CATEGORYCODE = "selectByCategoryCode";
+	public String SELECTCHILDREN_BY_CATEGORYCODE = "selectCategoryChildren";
 	
 	/**
 	 * 查询指定商品总条数
@@ -26,4 +27,9 @@ public interface CategorySqlIds {
 	 * 通过订单查询商品评价
 	 */
 	public String SELECT_COMMENT_BY_ORDERNO = "selectCommentByOrderNo";
+	
+	/**
+	 * 通过商品编码查询对应的好评,中评,差评总数
+	 */
+	public String SELECT_TYPECOUNT_BY_COMMODITYCODEARRAY = "selectGoodCommentPercent";
 }

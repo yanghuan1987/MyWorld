@@ -10,11 +10,11 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spfood.kernel.dao.BaseDao;
 import com.spfood.cms.dao.PromotedCommodityDao;
 import com.spfood.cms.intf.domain.PromotedCommodity;
-import com.spfood.kernel.manager.impl.BaseManagerImpl;
 import com.spfood.cms.manager.PromotedCommodityManager;
+import com.spfood.kernel.dao.BaseDao;
+import com.spfood.kernel.manager.impl.BaseManagerImpl;
 
 /**
  * PromotedCommodity Manager
@@ -38,8 +38,9 @@ public class PromotedCommodityManagerImpl extends BaseManagerImpl<PromotedCommod
      * 通过推荐位编码查询推荐商品
      */
     @Override
-    public List<PromotedCommodity> getPromotedCommoditys(Long commPromotePos) {
+    public List<PromotedCommodity> getPromotedCommoditys(String commPromotePos) {
         log.info("Through the recommended location code query recommended goods");
+        
         PromotedCommodity promotedCommodity=new PromotedCommodity();
         promotedCommodity.setCommPromotePos(commPromotePos);
         return dao.selectList(promotedCommodity);

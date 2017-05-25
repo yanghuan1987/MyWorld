@@ -69,6 +69,10 @@
 						<label class="viewlabel text-right" style="width: 25%;">温区：
 						</label> <label class="viewlabel text-left" style="width: 75%;">{{addedProduct.productTemperatureZone.optionName}}</label><br>
 					</div>
+					<div class="titlebar">
+						<label class="viewlabel text-right" style="width: 25%;">税率：
+						</label> <label class="viewlabel text-left" style="width: 75%;">{{addedProduct.taxRate.optionName}}</label><br>
+					</div>
 					<!-- 产品属性显示 -->
 					<div
 						ng-repeat="productCategoryProperty in addedProduct.productProperty"
@@ -280,13 +284,16 @@
 							<span style="color: red">*</span>产品规格：
 						</div>
 						<div style="float: left;">
-							<input type="number" ng-patten="/^\d+$/" step="0.01"
+							<input type="number" ng-pattern="/^\d+$/" step="1"
 								class="sp-input-sm sp-input" name="productSpecificationValue"
 								style="float: left;" placeholder="规格值"
-								ng-model="addedProduct.productSpecificationValue" required /> <span
-								style="color: red"
-								ng-show="addedProduct.productSpecificationValue<=0 || (compositeProductDetailAddForm.productSpecificationValue.$error.required 
-									&& !compositeProductDetailAddForm.productSpecificationValue.$pristine)">*产品的规格值大于0且不能为空！</span>
+								ng-model="addedProduct.productSpecificationValue" required />
+								<span style="color: red"
+								ng-show="(compositeProductDetailAddForm.productSpecificationValue.$error.required && !compositeProductDetailAddForm.productSpecificationValue.$pristine)">产品的规格值不能为空！</span>
+								<span style="color: red"
+								ng-show="(compositeProductDetailAddForm.productSpecificationValue.$error.number && !compositeProductDetailAddForm.productSpecificationValue.$pristine)">产品的规格值必须为数字！</span>
+								<span style="color: red"
+								ng-show="(compositeProductDetailAddForm.productSpecificationValue.$error.pattern && !compositeProductDetailAddForm.productSpecificationValue.$pristine)">产品的规格值必须为正整数！</span>
 							<select class="sp-select sp-select-sm"
 								style="float: left; height: 30px;"
 								ng-model="addedProduct.productSpecificationUnitFirst" required
@@ -353,6 +360,24 @@
 							</select> <span style="color: red"
 								ng-show=" (!(addedProduct.productTemperatureZone.optionValue >= 0) && addedProduct.productTemperatureZone.optionValue != null) ||
 								(compositeProductDetailAddForm.productTemperatureZone.$error.required && !compositeProductDetailAddForm.productTemperatureZone.$pristine)">温区不能为空！</span>
+						</div>
+					</div>
+					
+					
+					
+					<div class="titlebar">
+						<div class="valueName control-label sp-input-p"
+							style="text-align: right; padding: 3px;">
+							<span style="color: red">*</span>税率：
+						</div>
+						<div style="float: left;">
+							<select ng-model="addedProduct.taxRate"
+								class="sp-select sp-select-md" required name="taxRate"
+								style="height: 30px;"
+								ng-options="x.optionName for x in severTaxRate"
+								style="width: 100px;" placeholder="税率">
+							</select> <span style="color: red"
+								ng-show="(compositeProductDetailAddForm.taxRate.$error.required && !compositeProductDetailAddForm.taxRate.$pristine)">税率不能为空！</span>
 						</div>
 					</div>
 					<!-- 产品详细显示结束 -->
@@ -436,11 +461,11 @@
 					<div style="margin-bottom: 60px;">
 						<button ng-click="onAddSaveClick()"
 							class="sp-input-button btn btn-default"
-							ng-disabled="compositeProductDetailAddForm.productName.$error.required ||!(addedProduct.productTemperatureZone.optionValue >= 0) ||
+							ng-disabled="compositeProductDetailAddForm.productName.$error.required ||!(addedProduct.productTemperatureZone.optionValue >= 0) || compositeProductDetailAddForm.taxRate.$error.required ||
 								 isProductCodeDuplicated ||addedProduct.productSpecificationValue<=0 || compositeProductDetailAddForm.productBuyUnit.$error.required ||
 								 compositeProductDetailAddForm.productSpecificationValue.$error.required || !isHeaderPictureSatified ||!isDetailPictureSatified || 
-								 compositeProductDetailAddForm.productSpecificationUnitFirst.$error.required || 
-								 compositeProductDetailAddForm.productSpecificationUnitSecond.$error.required ||
+								 compositeProductDetailAddForm.productSpecificationUnitFirst.$error.required || compositeProductDetailAddForm.productSpecificationValue.$error.number ||
+								 compositeProductDetailAddForm.productSpecificationUnitSecond.$error.required || compositeProductDetailAddForm.productSpecificationValue.$error.pattern ||
                                  isProductPropertyMissed || !haveprodect || compositeProductDetailAddForm.productStatus.$error.required ||
                                  !serverGs1Code || !Gs1Exist || doubleClick"
 							style="width: 100%;">完成</button>

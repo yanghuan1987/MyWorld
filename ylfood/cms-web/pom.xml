@@ -10,6 +10,25 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <build>
+  <plugins>
+		<plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-war-plugin</artifactId>
+          <version>2.2</version>
+          <configuration>
+            <webResources>
+              <resource>
+                <filtering>true</filtering>
+                <targetPath>WEB-INF</targetPath>
+                <directory>src/main/webapp/WEB-INF</directory>
+                <includes>
+                  <include>web.xml</include>
+                </includes>
+              </resource>
+            </webResources>
+          </configuration>
+        </plugin>
+	</plugins>
     <finalName>cms-web</finalName>
     	<filters> 
 	    	<filter>${project.basedir}/src/main/resources/environments/${env}.properties</filter> 
@@ -39,18 +58,7 @@
             </exclusion>  
         </exclusions>
     </dependency>
-	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-test</artifactId>
-		<version>${spring.version}</version>
-		<scope>test</scope>
-		<exclusions>
-	    	<exclusion>  
-	            <groupId>org.springframework</groupId>  
-	            <artifactId>spring-core</artifactId>  
-	        </exclusion>  
-	    </exclusions>
-	</dependency>
+
     <dependency>
         <groupId>com.netflix.curator</groupId>
         <artifactId>curator-framework</artifactId>

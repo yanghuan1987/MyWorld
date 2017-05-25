@@ -104,4 +104,52 @@ public class Constant {
 			return name;
 		}
 	}
+
+	/**
+	 * 业务类型
+	 */
+	public enum itemType{
+		commodity(0,"商品"),
+		product(1,"产品"),
+		category(2,"品类");
+		private int value;
+		private String name;
+		private itemType (int value,String name) {
+			this.value = value;
+			this.name = name;
+		}
+		public int getValue() {
+			return value;
+		}
+		public String getName() {
+			return name;
+		}
+	}
+	
+	/**
+	 * 待审核，已通过审核，未通过审核，上架，下架，停售，已删除
+	 *
+	 */
+	public enum CommodityStateDetial{
+		onCheck(0,"待审核"),
+		passCheck(1,"已通过审核"),
+		unpassCheck(2,"未通过审核"),
+		onShift(3,"上架"),
+		offShift(4,"下架"),
+		stop(5,"停售"),
+		deleted(6,"已删除");
+		private int value;
+		private String name;
+		private CommodityStateDetial (int value,String name) {
+			this.value = value;
+			this.name = name;
+		}
+		public int getValue() {
+			return value;
+		}
+		public String getName() {
+			return name;
+		}
+	}
+
 }

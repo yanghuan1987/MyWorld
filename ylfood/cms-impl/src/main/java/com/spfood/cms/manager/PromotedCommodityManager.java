@@ -22,7 +22,7 @@ public interface PromotedCommodityManager extends BaseManager<PromotedCommodity>
      * @param commPromotePos 推荐位置
      * @return
      */
-    List<PromotedCommodity> getPromotedCommoditys(Long commPromotePos);
+    List<PromotedCommodity> getPromotedCommoditys(String commPromotePos);
 
     
     /**

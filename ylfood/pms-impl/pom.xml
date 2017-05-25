@@ -4,7 +4,7 @@
 
   <groupId>com.spfood</groupId>
   <artifactId>pms-impl</artifactId>
-  <version>1.0.1.1.RELEASE</version>
+  <version>1.0.1.3.RELEASE</version>
   <packaging>jar</packaging>
 
   <name>pms-impl</name>
@@ -55,7 +55,7 @@
     <dependency>
     	<groupId>com.spfood</groupId>
     	<artifactId>pms-intf</artifactId>
-    	<version>1.0.1.1.RELEASE</version>
+    	<version>1.0.1.3.RELEASE</version>
     </dependency>
     <dependency>
     	<groupId>com.spfood</groupId>
@@ -103,8 +103,9 @@
 		<groupId>com.spfood</groupId>
 		<artifactId>crm-customer-service-intf</artifactId>
 		<version>1.0.1.0.RELEASE</version>
-	</dependency> 
+	</dependency>
   </dependencies>
+  
   <parent>
   	<groupId>com.spfood</groupId>
   	<artifactId>spfood-site</artifactId>

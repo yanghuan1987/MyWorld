@@ -69,6 +69,10 @@
 										<td class="td-right">显示端：</td>
 										<td colspan="2" class="ng-binding text-left">{{commodity.commodityShowPlace}}</td>
 									</tr>
+									<tr style="height: 30px;">
+										<td class="td-right">税率：</td>
+										<td colspan="2" class="ng-binding text-left">{{commodity.taxRateName}}</td>
+									</tr>
 								</tbody>
 							</table>
 							<br>
@@ -253,19 +257,29 @@
 								<td colspan="2"><input size="4" class="sp-input sp-input-lg" style="float: left;"
 									maxlength="5" type="text" ng-model="commodity.commodityWeight" /></td>
 								<td class="td-right"><span style="color: red">*</span>单位：</td>
-								<td  colspan="2" style="float: left;">
-								
-								<select class="sp-select sp-select-lg"
+								<td  colspan="2" style="text-align: left;" ng-if="!flg">
+									{{commodity.commodityWeightUnit}}
+								</td>
+								<td  colspan="2" style="text-align: left;" ng-if="flg">
+								{{chonseProductOne.productSpecificationUnitFirst}}
+<!-- 								<select class="sp-select sp-select-lg"
 									style="float: left; height: 30px;"
 									ng-model="commodity.commodityWeightUnit">
 									<option ng-repeat="x in basicWeightUnit"
 										value="{{x.optionName}}">{{x.optionName}}</option>
-								</select>
+								</select> -->
 								</td>
 							</tr>
 							<tr style="height: 40px;">
-								<td class="td-right"></td>
-								<td colspan="2" class="ng-binding text-left"></td>
+								<td class="td-right">税率：</td>
+								<td colspan="2" class="ng-binding text-left">
+									<select ng-model="commodity.taxRateName"
+										class="sp-select sp-select-md" required name="taxRate"
+										style="height: 30px;" placeholder="税率">
+									<option ng-repeat="x in severTaxRate"
+										value="{{x.optionName}}">{{x.optionName}}</option>
+									</select>
+								</td>
 								<td class="td-right"><span style="color: red">*</span>显示端：</td>
 								<td  colspan="2" style="float: left;">
 								

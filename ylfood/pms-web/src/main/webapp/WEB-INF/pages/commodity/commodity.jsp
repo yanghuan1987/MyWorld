@@ -31,10 +31,11 @@
 		<!-- main container -->
 			<div class="row">
 				<jsp:include page="commodityMenu.jsp"></jsp:include>
+				<jsp:include page="commodityDetilSearch.jsp"></jsp:include>
 				
 				<!-- commodity list start -->
 				<div class="sp-menu-right tab-content"
-					style="height: 90%; padding-left: 0px; padding-right: 0px;" ng-show="!show && !showEdit">
+					style="height: 90%; padding-left: 0px; padding-right: 0px;" ng-show="!show && !showEdit && !showSearch">
 					
 					<div class="titlebar" style="height: 20px;">
 						<i ></i>
@@ -48,7 +49,7 @@
 							<div class="sp-panel-body panel-body"
 								style="background-color: white; font-size =14; color: black; font-weight: bold; height: 40px;">
 								<span style="padding-left: 15px;"> 商品 - {{categoryName}} </span>
-									<button type="button" ng-click="showCommodityInfoEdut()"
+									<button type="button" ng-click="showCommodityInfoEdut()" ng-show = "showNewButton" 
 										class="sp-btn sp-btn-gray-md" style="margin-top: -5px;">新增商品</button>
 							<!-- 搜索按钮设置 -->
 							<div style="float: right !important; margin-right: 15px;">
@@ -70,6 +71,8 @@
 										ng-click="updateStateEdit(3)" style="margin-left: 15px;">批量上架</button>
 									<button type="button" class="sp-btn sp-btn-gray-sm"
 										ng-click="updateStateEdit(4)">批量下架</button>
+									<button type="button" class="sp-btn sp-btn-gray-sm"
+										ng-click="updateStateEdit(6)">批量删除</button>
 								</div>
 								<!--按钮工具栏结束-->
 								<!--绑定表格开始-->
@@ -78,7 +81,7 @@
 									<tr>
 										<!--表头，这只排序字段，-->
 										<th class="th-width-mini"></th>
-										<th class="th-width-md">编码</th>
+										<th class="th-width-sm">编码</th>
 										<th class="th-width-md">商品名称</th>
 										<th class="th-width-md">商品说明</th>
 										<th class="th-width-sm">原价</th>
@@ -86,6 +89,7 @@
 										<th class="th-width-sm">重量</th>
 										<th class="th-width-sm">显示端</th>
 										<th class="th-width-sm">上/下架</th>
+										<th class="th-width-sm">操作</th>
 									</tr>
 									<!--重复项开始，设置排序字段，数据源，names代表数据源，x表示names中遍历的每一个对象，id表示模糊搜索输入的内容，要与输入的input的ng-model一致，col表示排序名称，要与表头中一致-->
 									<tr ng-repeat="x in commodityList | filter: id | orderBy:col:desc">
@@ -110,8 +114,13 @@
 												ng-if="x.commodityStatus == 3"
 												class="sp-btn sp-btn-gray-sm">下架</button>
 										</td>
+										<td style="height: 30px" class="autobreak">
+										<button type="button" ng-click="editSta(x,6)"
+											class="sp-btn sp-btn-gray-sm" style="color: #ff0000;">删除</button>
+										</td>
 									</tr>
 									<tr ng-repeat="y in tempList">
+										<td style="height: 30px"></td>
 										<td style="height: 30px"></td>
 										<td style="height: 30px"></td>
 										<td style="height: 30px"></td>

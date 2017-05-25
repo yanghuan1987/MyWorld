@@ -59,6 +59,10 @@
 						<label class="viewlabel text-right" style="width: 25%;">温区：
 						</label> <label class="viewlabel text-left" style="width: 75%;">{{product.productTemperatureZoneName}}</label><br>
 					</div>
+					<div class="titlebar">
+						<label class="viewlabel text-right" style="width: 25%;">税率：
+						</label> <label class="viewlabel text-left" style="width: 75%;">{{product.taxRateName}}</label><br>
+					</div>
 					<!-- 产品属性显示 -->
 					<div ng-repeat="productProperty in product.productProperties"
 						class="titlebar">
@@ -180,6 +184,12 @@
 							style="text-align: right; padding: 3px;">温区：</div>
 						<div class="valueName" style="padding-left: 0px;">
 							{{product.productTemperatureZoneName}}</div>
+					</div>
+					<div class="titlebar">
+						<div class="valueName control-label sp-input-p"
+							style="text-align: right; padding: 3px;">税率：</div>
+						<div class="valueName" style="padding-left: 0px;">
+							{{product.taxRateName}}</div>
 					</div>
 					<!-- 产品属性  start-->
 					<div class="titlebar sp-mune-title">
@@ -316,7 +326,7 @@
 								<span style="color: red">*</span>产品规格：
 							</div>
 							<div class="valueName" style="padding-left: 0px;">
-								<input type="number" name="productSpecificationValue"
+								<input type="number" name="productSpecificationValue"  ng-disabled="true"
 									ng-patten="/^\d+$/" class="sp-input-sm sp-input" step="0.01"
 									ng-model="product.productSpecificationValue" required
 									style="float: left; width: 80px;" placeholder="规格值" /> <span
@@ -324,7 +334,7 @@
 									ng-show="product.productSpecificationValue <= 0 || 
 									productDetailEditForm.productSpecificationValue.$error.required || 
 									productDetailEditForm.productSpecificationValue.$invalid">*产品的规格值大于0且不能为空！</span>
-								<select class="sp-select sp-select-sm"
+								<select class="sp-select sp-select-sm"  ng-disabled="true"
 								ng-change = "productSpecificationUnitFirstChange(product.productSpecificationUnitFirst)"
 									style="float: left; height: 30px;"
 									ng-model="product.productSpecificationUnitFirst">
@@ -332,7 +342,7 @@
 									<option ng-repeat="x in specificationFirstValues"
 										value="{{x.optionName}}">{{x.optionName}}</option>
 								</select><span style="float: left;">/</span> <select
-									class="sp-select sp-select-sm"
+									class="sp-select sp-select-sm"  ng-disabled="true"
 									ng-change = "productSpecificationUnitSecondChange(product.productSpecificationUnitSecond)"
 									style="float: left; height: 30px;"
 									ng-model="product.productSpecificationUnitSecond">
@@ -359,7 +369,7 @@
 							<span style="color: red">*</span>采购基本单位：
 						</span>
 						<span>
-							<select ng-model="product.productBuyUnitName" ng-disabled = "UnitDisable"
+							<select ng-model="product.productBuyUnitName" ng-disabled = "UnitDisable || true"
 								class="sp-select sp-select-md" required name="productBuyUnit"
 								style="height: 30px;" placeholder="采购基本单位">
 								<option ng-repeat="x in BasicPurchaseUnit"
@@ -375,6 +385,21 @@
 								<span style="color: red">*</span>温区：
 							</div>
 							<div class="valueName" style="padding-left: 0px;">{{product.productTemperatureZoneName}}</div>
+						</div>
+
+						<div class="titlebar">
+							<div class="valueName control-label sp-input-p"
+								style="text-align: right; padding: 3px;">
+								<span style="color: red">*</span>税率：
+							</div>
+							<div style="float: left;">
+							<select style="float: left; height: 30px;"
+										class="sp-select sp-select-sm"
+										ng-model="product.taxRateName">
+										<option ng-repeat="x in severTaxRate"
+											value="{{x.optionName}}">{{x.optionName}}</option>
+									</select>
+							</div>
 						</div>
 						<!-- 产品属性  start-->
 						<div class="titlebar sp-mune-title">

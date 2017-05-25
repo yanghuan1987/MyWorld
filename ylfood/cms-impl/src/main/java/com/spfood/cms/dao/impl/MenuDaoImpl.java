@@ -66,4 +66,18 @@ public class MenuDaoImpl extends BaseDaoImpl<Menu> implements MenuDao, CmsSqlIds
 		}
 	}
 
+	/**
+	 * 通过菜单编码查询所有子菜单
+	 * @param menuCode 菜单编码
+	 * @return menu对象,里面只封装了产品编码和名称
+	 */
+	@Override
+	public List<Menu> getSonMenus(String menuCode) {
+		try {
+			return sqlSessionTemplate.selectList(getSqlName(SELECT_MENUS_BY_MENUCODE), menuCode);
+		} catch (Exception e) {
+			throw new PersistenceException("menu.dao.getSonMenus", e, getSqlName(SELECT_MENUS_BY_MENUCODE), menuCode);
+		}
+	}
+
 }

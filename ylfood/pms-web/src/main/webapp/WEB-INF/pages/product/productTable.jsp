@@ -14,7 +14,7 @@
 				<div class="sp-panel-body"
 					style="background-color: white; font-size = 14; color: black; font-weight: bold; height: 44px;">
 					<span style="padding-left: 15px;"> 产品 - {{categoryName}} </span>
-					<button type="button" ng-click="onAddProductClick()"
+					<button type="button" ng-click="onAddProductClick()" ng-show = "showNewButton" 
 						class="sp-btn sp-btn-gray-md" style="margin-top: -5px;">新增产品</button>
 					<!-- 搜索按钮设置 -->
 					<div style="float: right !important; margin-right: 15px;">

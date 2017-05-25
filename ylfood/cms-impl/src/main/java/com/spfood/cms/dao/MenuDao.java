@@ -34,4 +34,11 @@ public interface MenuDao extends BaseDao<Menu> {
 	 * @param menu 菜单对象,不为空
 	 */
 	void updateAllState(Menu menu);
+	
+	/**
+	 * 通过菜单编码查询所有子菜单
+	 * @param menuCode 菜单编码
+	 * @return menu对象,里面只封装了产品编码和名称
+	 */
+	List<Menu> getSonMenus(String menuCode);
 }

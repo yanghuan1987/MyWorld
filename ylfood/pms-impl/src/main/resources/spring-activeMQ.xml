@@ -17,6 +17,7 @@
 	<bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
 		<!-- ActiveMQ服务地址 -->
  		<property name="brokerURL" value="failover:(tcp://10.8.48.230:61616,tcp://10.8.48.233:61616,tcp://10.8.48.234:61616)" />
+ 		<!-- <property name="brokerURL" value="tcp://127.0.0.1:61616" /> -->
 		<property name="userName" value="admin"></property>
 		<property name="password" value="admin"></property>
 	</bean>
@@ -89,14 +90,17 @@
 		<property name="deliveryPersistent" value="true" />
 		<!--这里注意:如果不开启事务，消息在异常的情况下是不会重试的 -->
 		<property name="sessionTransacted" value="false" />
+		<!-- 订阅发布模式 -->
+		<property name="pubSubDomain" value="true"/>
+		<property name="receiveTimeout" value="10000"/>
 	</bean>
 
 
 	<!-- 队列目的地 -->
 	<bean id="msgQueue" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg index="0" value="pms_commodity_wms_dev" />
+		<constructor-arg index="0" value="pms_commodity_wms_test" />
 	</bean>
-	<bean id="msgQueueTwo" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg index="0" value="pms_commodity_pws_dev" />
+	<bean id="msgQueueTwo" class="org.apache.activemq.command.ActiveMQTopic">
+		<constructor-arg index="0" value="pms_commodity_pws_test" />
 	</bean>
 </beans> 

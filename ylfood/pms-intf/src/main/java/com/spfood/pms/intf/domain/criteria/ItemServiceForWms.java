@@ -23,7 +23,7 @@ public class ItemServiceForWms implements DomainObject {
 	private String itemCategoryCode;
 	
 	/*物品类别名称*/
-	private String itmeCategoryName;
+	private String itemCategoryName;
 	
 	/*物品规格*/
 	private String itemSpecificationValue;
@@ -61,7 +61,28 @@ public class ItemServiceForWms implements DomainObject {
      * 温区编码
      */
     private String itemTemperatureZoneCode;
-
+	
+    /**
+     * 属性名称
+     */
+    private String itemPropertyName;
+    
+    /**
+     * 属性值
+     */
+    private String itemPropertyValue;
+	
+    /**
+     * 税率名称
+     */
+    private String itemTaxRateName;
+    
+    /**
+     * 税率编码
+     */
+    private String itemTaxRateValue;
+    //状态
+    private int itemStatus;
 	/**
 	 * @return the itemCode
 	 */
@@ -108,14 +129,14 @@ public class ItemServiceForWms implements DomainObject {
 	 * @return the itmeCategoryName
 	 */
 	public String getItmeCategoryName() {
-		return itmeCategoryName;
+		return itemCategoryName;
 	}
 
 	/**
 	 * @param itmeCategoryName the itmeCategoryName to set
 	 */
 	public void setItmeCategoryName(String itmeCategoryName) {
-		this.itmeCategoryName = itmeCategoryName;
+		this.itemCategoryName = itmeCategoryName;
 	}
 
 	/**
@@ -247,32 +268,101 @@ public class ItemServiceForWms implements DomainObject {
 	}
 
 	/**
-	 * @return the productTemperatureZoneName
+	 * @return the itemTemperatureZoneName
 	 */
-	public String getProductTemperatureZoneName() {
+	public String getItemTemperatureZoneName() {
 		return itemTemperatureZoneName;
 	}
 
 	/**
-	 * @param productTemperatureZoneName the productTemperatureZoneName to set
+	 * @param itemTemperatureZoneName the itemTemperatureZoneName to set
 	 */
-	public void setProductTemperatureZoneName(String productTemperatureZoneName) {
-		this.itemTemperatureZoneName = productTemperatureZoneName;
+	public void setItemTemperatureZoneName(String itemTemperatureZoneName) {
+		this.itemTemperatureZoneName = itemTemperatureZoneName;
 	}
 
 	/**
-	 * @return the productTemperatureZoneCode
+	 * @return the itemTemperatureZoneCode
 	 */
-	public String getProductTemperatureZoneCode() {
+	public String getItemTemperatureZoneCode() {
 		return itemTemperatureZoneCode;
 	}
 
 	/**
-	 * @param productTemperatureZoneCode the productTemperatureZoneCode to set
+	 * @param itemTemperatureZoneCode the itemTemperatureZoneCode to set
 	 */
-	public void setProductTemperatureZoneCode(String productTemperatureZoneCode) {
-		this.itemTemperatureZoneCode = productTemperatureZoneCode;
+	public void setItemTemperatureZoneCode(String itemTemperatureZoneCode) {
+		this.itemTemperatureZoneCode = itemTemperatureZoneCode;
 	}
-	
+
+	/**
+	 * @return the itemPropertyName
+	 */
+	public String getItemPropertyName() {
+		return itemPropertyName;
+	}
+
+	/**
+	 * @param itemPropertyName the itemPropertyName to set
+	 */
+	public void setItemPropertyName(String itemPropertyName) {
+		this.itemPropertyName = itemPropertyName;
+	}
+
+	/**
+	 * @return the itemPropertyValue
+	 */
+	public String getItemPropertyValue() {
+		return itemPropertyValue;
+	}
+
+	/**
+	 * @param itemPropertyValue the itemPropertyValue to set
+	 */
+	public void setItemPropertyValue(String itemPropertyValue) {
+		this.itemPropertyValue = itemPropertyValue;
+	}
+
+	/**
+	 * @return the itemStatus
+	 */
+	public int getItemStatus() {
+		return itemStatus;
+	}
+
+	/**
+	 * @param itemStatus the itemStatus to set
+	 */
+	public void setItemStatus(int itemStatus) {
+		this.itemStatus = itemStatus;
+	}
+
+	/**
+	 * @return the itemTaxRateName
+	 */
+	public String getItemTaxRateName() {
+		return itemTaxRateName;
+	}
+
+	/**
+	 * @param itemTaxRateName the itemTaxRateName to set
+	 */
+	public void setItemTaxRateName(String itemTaxRateName) {
+		this.itemTaxRateName = itemTaxRateName;
+	}
+
+	/**
+	 * @return the itemTaxRateValue
+	 */
+	public String getItemTaxRateValue() {
+		return itemTaxRateValue;
+	}
+
+	/**
+	 * @param itemTaxRateValue the itemTaxRateValue to set
+	 */
+	public void setItemTaxRateValue(String itemTaxRateValue) {
+		this.itemTaxRateValue = itemTaxRateValue;
+	}
 
 }

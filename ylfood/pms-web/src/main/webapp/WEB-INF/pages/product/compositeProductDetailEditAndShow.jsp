@@ -80,6 +80,11 @@
 						</label> <label
 							class="viewlabel text-left" style="width: 75%;">{{compositeProduct.product.productTemperatureZoneName}}</label><br>
 					</div>
+					<div class="titlebar">
+						<label class="viewlabel text-right" style="width: 25%;">税率：
+						</label> <label
+							class="viewlabel text-left" style="width: 75%;">{{compositeProduct.product.taxRateName}}</label><br>
+					</div>
 					<!-- 产品属性显示 -->
 					<div
 						ng-repeat="productProperty in compositeProduct.product.productProperties"
@@ -214,6 +219,12 @@
 							style="text-align: right; padding: 3px;">温区：</div>
 						<div class="valueName"
 							style="padding: 3px;">{{compositeProduct.product.productTemperatureZoneName}}</div>
+					</div>
+					<div class="titlebar">
+						<div class="valueName control-label sp-input-p"
+							style="text-align: right; padding: 3px;">温区：</div>
+						<div class="valueName"
+							style="padding: 3px;">{{compositeProduct.product.taxRateName}}</div>
 					</div>
 					<!-- 产品属性  start-->
 					<div class="titlebar sp-mune-title">
@@ -448,20 +459,20 @@
 							</div>
 							<div style="padding-left: 0px;">
 								<input type="number" name="productSpecificationValue"
-									step="0.01" class="sp-input-sm sp-input"
+									step="0.01" class="sp-input-sm sp-input" ng-disabled="true"
 									ng-model="compositeProduct.product.productSpecificationValue"
 									style="float: left;" required /> <span style="color: red"
 									ng-show="compositeProduct.product.productSpecificationValue <= 0 || compositeProductDetailEditForm.productSpecificationValue.$error.required 
 										|| compositeProductDetailEditForm.productSpecificationValue.$invalid">*产品的规格值大于0且不能为空！</span>
 								<select style="float: left; height: 30px;"
-									class="sp-select sp-select-sm"
+									class="sp-select sp-select-sm" ng-disabled="true"
 									ng-change = "productSpecificationUnitFirstChange(compositeProduct.product.productSpecificationUnitFirst)"
 									ng-model="compositeProduct.product.productSpecificationUnitFirst">
 									<option ng-repeat="x in specificationFirstValues"
 										value="{{x.optionName}}">{{x.optionName}}</option>
 								</select> <span style="float: left;">/</span> <select
 									style="float: left; height: 30px;"
-									class="sp-select sp-select-sm"
+									class="sp-select sp-select-sm" ng-disabled="true"
 									ng-change = "productSpecificationUnitSecondChange(compositeProduct.product.productSpecificationUnitSecond)"
 									ng-model="compositeProduct.product.productSpecificationUnitSecond">
 									<option ng-repeat="x in specificationSecondValues"
@@ -486,10 +497,10 @@
 							<span style="color: red">*</span>采购基本单位：
 						</span>
 						<span>
-							<select ng-model="compositeProduct.product.productBuyUnitName" ng-disabled = "UnitDisable"
+							<select ng-model="compositeProduct.product.productBuyUnitName" ng-disabled = "UnitDisable || true"
 								class="sp-select sp-select-md" required name="productBuyUnit"
 								style="height: 30px;" placeholder="采购基本单位">
-								<option ng-repeat="x in BasicPurchaseUnit"
+								<option ng-repeat="x in BasicPurchaseUnit" 
 										value="{{x.optionName}}">{{x.optionName}}</option>
 							</select><span style="color: red">当产品规格第一单位为非重量单位时，该选项等于产品规格第二单位并且不可选</span>
 								 <span style="color: red"
@@ -504,6 +515,21 @@
 								<div style="padding: 3px;">{{compositeProduct.product.productTemperatureZoneName}}</div>
 							</div>
 						</div>
+
+					<div class="titlebar">
+						<div class="valueName control-label sp-input-p"
+							style="text-align: right; padding: 3px;">
+							<span style="color: red">*</span>税率：
+						</div>
+						<div style="float: left;">
+						<select style="float: left; height: 30px;"
+									class="sp-select sp-select-sm"
+									ng-model="compositeProduct.product.taxRateName">
+									<option ng-repeat="x in severTaxRate"
+										value="{{x.optionName}}">{{x.optionName}}</option>
+								</select>
+						</div>
+					</div>
 						<!-- 产品属性  start-->
 						<div class="titlebar sp-mune-title">
 							<i class="pms-icon-kz"></i> 产品属性

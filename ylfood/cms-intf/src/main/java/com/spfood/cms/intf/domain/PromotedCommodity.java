@@ -22,8 +22,7 @@ public class PromotedCommodity implements DomainObject {
      * This field corresponds to the database column promoted_commodity.comm_promote_pos
      *
      */
-    @Min(1)
-    private Long commPromotePos;
+    private String commPromotePos;
 
 
     /**
@@ -104,7 +103,7 @@ public class PromotedCommodity implements DomainObject {
      * @return the value of promoted_commodity.comm_promote_pos
      *
      */
-    public Long getCommPromotePos() {
+    public String getCommPromotePos() {
         return commPromotePos;
     }
 
@@ -115,7 +114,7 @@ public class PromotedCommodity implements DomainObject {
      * @param commPromotePos the value for promoted_commodity.comm_promote_pos
      *
      */
-    public void setCommPromotePos(Long commPromotePos) {
+    public void setCommPromotePos(String commPromotePos) {
         this.commPromotePos = commPromotePos;
     }
 

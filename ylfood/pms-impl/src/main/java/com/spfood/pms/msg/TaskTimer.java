@@ -62,7 +62,7 @@ public class TaskTimer {
 			}
 			try {
 				// 发送
-				mailSendPWS(list);
+				mailSendPWS(listItemServiceForWms);
 				mailSendWMS(listItemServiceForWms);
 			} catch (Exception e1) {
 				// 手动回滚
@@ -98,15 +98,17 @@ public class TaskTimer {
 	 * 发送PWS消息队列
 	 */
 
-	public void mailSendPWS(final List<String> listCode)
+	public void mailSendPWS(final List<ItemServiceForWms> listItemServiceForWms)
 			throws Exception {
+		//将数组转成JSON格式
+		final JSONArray jsonArray = JSONArray.fromObject(listItemServiceForWms);
 		pmsCommodityPWSMQ.setSessionTransacted(true);
 		// 创建消息并发送
 		pmsCommodityPWSMQ.send(new MessageCreator() {
 			@Override
 			public Message createMessage(Session session)
 					throws JMSException {
-				return session.createTextMessage(listCode.toString());
+				return session.createTextMessage(jsonArray.toString());
 			}
 		});
 		logger.info("==>finish send message to PWS");

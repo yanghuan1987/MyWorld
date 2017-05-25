@@ -33,4 +33,7 @@
     <bean id="commodityPromotionPosService" class="com.spfood.cms.impl.CommodityPromotionPosServiceImpl" />
     <bean id="advertisementService" class="com.spfood.cms.impl.AdvertisementServiceImpl" />
     <bean id="slideAdsPositionService" class="com.spfood.cms.impl.SlideAdsPositionServiceImpl" />
+    
+    <!-- 引入基础服务 -->
+    <dubbo:reference id ="basicConfigurationService" interface="com.spfood.basicservice.intf.BasicConfigurationService" check="true" timeout="2000"></dubbo:reference>
 </beans>       

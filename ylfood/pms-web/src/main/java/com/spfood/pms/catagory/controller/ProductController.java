@@ -315,4 +315,11 @@ public class ProductController {
 	public @ResponseBody List<ConfigureOptionDTO> getBasicWeightUnit() throws Exception{
 		return basicConfigurationService.getConfigureOptions("BasicWeightUnit");
 	}
+	
+	//获取温区
+	@RequiresPermissions("pms:product:show")
+	@RequestMapping(method = RequestMethod.GET, value = "/getTaxRate", produces = {"application/json" })
+	public @ResponseBody List<ConfigureOptionDTO> getTaxRate() throws Exception{
+		return basicConfigurationService.getConfigureOptions("tax_rate");
+	}
 }

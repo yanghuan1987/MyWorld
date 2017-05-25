@@ -28,6 +28,7 @@
 	<div class="row">
 		<jsp:include page="productMenu.jsp"></jsp:include>
 		<jsp:include page="productTable.jsp"></jsp:include>
+		<jsp:include page="productDetailSerch.jsp"></jsp:include>
 			<!-- 自定义属性弹出编辑框  start-->
 			  <!---弹出框-普通---->
 			  <div id='addNewPropertypopUp'class='sp-popup sp-popup-normal'>
@@ -65,6 +66,8 @@
 			
 			<!-- 自定义属性弹出编辑框  start-->
 			  <!---弹出框-普通---->
+			<form name="unitValueFrom" id="unitValueFrom"
+				enctype="multipart/form-data">
 			  <div id='addProductPackUnit'class='sp-popup sp-popup-normal'>
 			    <div class='sp-pop-header'>
 			    <div id="pop-logo" class="sp-pop-logo"><span>包装单位</span></div>
@@ -76,8 +79,8 @@
 								<tr>
 									<td><span style="color: red">*</span> 包装单位:
 									<input type="number" class="sp-input-sm sp-input"
-										name="unitValueAdd" step="0.01" ng-patten="/^\d+$/"
-										ng-model="unitValueAdd" 
+										name="unitValueAdd" step="0.01" 
+										ng-model="unitValueAdd" required 
 										style="width: 80px;margin: 0;" placeholder="规格值" />
 										{{productBuyUnitShow}}
 									/
@@ -89,7 +92,11 @@
 								</tr>
 							</tbody>
 						</table>
-						<div ng-show="showProductPackUnit" style="width: 100%;padding-left: 25%;color:red">属性值必须为大于0的数字且属性名和属性值不能为空！</div>
+						<div ng-show="checknull" style="width: 100%;padding-left: 25%;color:red">属性值不能为空！</div>
+						<div ng-show="checkNumberIf" style="width: 100%;padding-left: 25%;color:red">属性值必须为大于0的数字！</div>
+						<div ng-show="checkNumberOnepoint" style="width: 100%;padding-left: 25%;color:red">属性值最多为1位小数！</div>
+						<div ng-show="checkNumberFormat" style="width: 100%;padding-left: 25%;color:red">基本采购单位是非重量单位时属性值必须为正整数！</div>
+						<div ng-show="checkunitObjAdd" style="width: 100%;padding-left: 25%;color:red">请选择单位！</div>
 						<br><br>
 						<div style="text-align: center;">
 							<button type="button" class="sp-btn sp-btn-gray-md"
@@ -97,6 +104,7 @@
 						</div>
 				</div>
 			  </div>
+			  </form>
 			<!-- 自定义属性弹出编辑框  end-->
 			<jsp:include page="compositeProductDetailAdd.jsp"></jsp:include>
 			<jsp:include page="compositeProductDetailEditAndShow.jsp"></jsp:include>

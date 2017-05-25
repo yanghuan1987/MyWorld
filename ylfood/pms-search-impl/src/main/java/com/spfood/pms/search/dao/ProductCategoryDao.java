@@ -44,4 +44,11 @@ public interface ProductCategoryDao extends BaseDao<ProductCategory>{
 	 * @return
 	 */
 	public ProductCategory selectCategoryByCategoryCode(String categoryCode);
+	
+	/**
+	 * 根据编码查询子类
+	 * @param categoryCode
+	 * @return
+	 */
+	public List<ProductCategory> selectCategoryChildrenByCode(String categoryCode);
 }

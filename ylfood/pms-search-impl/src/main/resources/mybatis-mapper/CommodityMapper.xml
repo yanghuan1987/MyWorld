@@ -183,7 +183,7 @@
 		            AND pms_commodity.commodity_show_place = #{commodityShowPlace}
 		        </if>
 				<if test="category != null and category.categoryCode != null" >
-		            AND pms_commodity.category_code = #{category.categoryCode,jdbcType=VARCHAR}
+		            AND pms_commodity.category_code like #{category.categoryCode,jdbcType=VARCHAR} '%'
 		        </if>
 		        <if test="keywords != null" >
 			      	<foreach item="item" index="index" collection="keywords" >

@@ -33,6 +33,15 @@ public class ProductSearchCriteria implements DomainObject {
 	private String productName;
 	//是否有采购单位
 	private Boolean isBuyUnit;
+	//gs1编码
+    private String productGs1Code;
+    /**
+     * 温区编码
+     */
+    private String productTemperatureZoneCode;
+
+	//产品状态
+    private Integer productStatus;
 
 	public int getPageNum() {
 		return pageNum;
@@ -121,5 +130,47 @@ public class ProductSearchCriteria implements DomainObject {
 				+ ", productCode=" + productCode + ", saleFlag=" + saleFlag
 				+ ", compositeFlag=" + compositeFlag + ", productProperty="
 				+ productProperty + "]";
+	}
+
+	/**
+	 * @return the productGs1Code
+	 */
+	public String getProductGs1Code() {
+		return productGs1Code;
+	}
+
+	/**
+	 * @param productGs1Code the productGs1Code to set
+	 */
+	public void setProductGs1Code(String productGs1Code) {
+		this.productGs1Code = productGs1Code;
+	}
+
+	/**
+	 * @return the productTemperatureZoneCode
+	 */
+	public String getProductTemperatureZoneCode() {
+		return productTemperatureZoneCode;
+	}
+
+	/**
+	 * @param productTemperatureZoneCode the productTemperatureZoneCode to set
+	 */
+	public void setProductTemperatureZoneCode(String productTemperatureZoneCode) {
+		this.productTemperatureZoneCode = productTemperatureZoneCode;
+	}
+
+	/**
+	 * @return the productStatus
+	 */
+	public Integer getProductStatus() {
+		return productStatus;
+	}
+
+	/**
+	 * @param productStatus the productStatus to set
+	 */
+	public void setProductStatus(Integer productStatus) {
+		this.productStatus = productStatus;
 	}
 }

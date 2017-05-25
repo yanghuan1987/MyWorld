@@ -77,6 +77,8 @@
 							<tr style="height: 30px;">
 								<td class="td-right-view">商品评价：</td>
 								<td colspan="2" class="ng-binding text-left">好评:{{commodityCommentGood}}&nbsp;&nbsp;&nbsp;&nbsp;差评:{{commodityCommentBad}}</td>
+								<td class="td-right-view">税率：</td>
+								<td colspan="2"class="ng-binding text-left">{{commodity.taxRateName}}</td>
 							</tr>
 						</tbody>
 					</table>

@@ -115,13 +115,13 @@ public class ProductManagerTest {
 		packUnit.setProductCode("PPP1234567");
 		packUnit.setUnitCode("code");
 		packUnit.setUnitName("name");
-		packUnit.setUnitValue(99);
+		packUnit.setUnitValue(99f);
 		packUnits.add(packUnit);
 		ProductPackUnit packUnit1 = new ProductPackUnit();
 		packUnit1.setProductCode("PPP1234567");
 		packUnit1.setUnitCode("code1");
 		packUnit1.setUnitName("name1");
-		packUnit1.setUnitValue(100);
+		packUnit1.setUnitValue(100f);
 		packUnits.add(packUnit1);
 		newProduct.setProductPackUnit(packUnits);
 		
@@ -178,13 +178,13 @@ public class ProductManagerTest {
 		uppackUnit.setProductCode("PPP1234567");
 		uppackUnit.setUnitCode("code3");
 		uppackUnit.setUnitName("name3");
-		uppackUnit.setUnitValue(991);
+		uppackUnit.setUnitValue(991f);
 		uppackUnits.add(uppackUnit);
 		ProductPackUnit uppackUnit1 = new ProductPackUnit();
 		uppackUnit1.setProductCode("PPP1234567");
 		uppackUnit1.setUnitCode("code4");
 		uppackUnit1.setUnitName("name4");
-		uppackUnit1.setUnitValue(1001);
+		uppackUnit1.setUnitValue(1001f);
 		uppackUnits.add(uppackUnit1);
 		upProduct.setProductPackUnit(uppackUnits);
 		
@@ -592,7 +592,7 @@ public class ProductManagerTest {
 		updaPackUnit.setProductCode("PPP1234567C");
 		updaPackUnit.setUnitCode("testproCU");
 		updaPackUnit.setUnitName("testvalCU");
-		updaPackUnit.setUnitValue(121);
+		updaPackUnit.setUnitValue(121f);
 		upProductPackUnit.add(updaPackUnit);
 		upCProduct.setProductPackUnit(upProductPackUnit);
 		upComproProduct.setProduct(upCProduct);

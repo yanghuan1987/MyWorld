@@ -13,7 +13,7 @@ public interface PromotedCommodityService {
      * @param commPromotePos 推荐位ID
      * @return
      */
-     List<PromotedCommodity> getPromotedCommoditys(Long commPromotePos);
+     List<PromotedCommodity> getPromotedCommoditys(String commPromotePos);
     
      /**
       * 修改推荐商品排序

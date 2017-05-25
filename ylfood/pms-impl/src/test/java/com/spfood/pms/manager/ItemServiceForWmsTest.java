@@ -7,8 +7,10 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spfood.pms.intf.domain.criteria.ItemServiceForWms;
 
@@ -19,21 +21,25 @@ public class ItemServiceForWmsTest {
 	@Resource
 	private ItemServiceForWmsManager itemServiceForWmsManager;
 	
+	@SuppressWarnings("unused")
+	@Transactional
+	@Rollback
 	@Test
 	public void select(){
 		List<ItemServiceForWms> aForWms = itemServiceForWmsManager.SelectAllInfo();
-		ItemServiceForWms bForWms = itemServiceForWmsManager.SelectByCommodityCode("YLC0000000094");
-		ItemServiceForWms cForWms = itemServiceForWmsManager.SelectByProductCode("YLP0000000144");
+		ItemServiceForWms bForWms = itemServiceForWmsManager.SelectByCommodityCode("YLC0000000122");
+		ItemServiceForWms cForWms = itemServiceForWmsManager.SelectByProductCode("YLP0000000181");
 		List<String> listC = new ArrayList<String>(3);
 		List<String> listP = new ArrayList<String>(3);
-		listC.add("YLC0000000025");
-		listC.add("YLC0000000026");
+		listC.add("YLC0000000122");
+		listC.add("YLC0000000124");
 		listC.add("YLC0000000027");
-		listP.add("YLP0000000149");
-		listP.add("YLP0000000150");
-		listP.add("YLP0000000151");
+		listP.add("YLP0000000181");
+		listP.add("YLP0000000194");
+		listP.add("YLP0000000195");
 		List<ItemServiceForWms> dForWms = itemServiceForWmsManager.SelectByCommodityCodeList(listC);
 		List<ItemServiceForWms> eForWms = itemServiceForWmsManager.SelectByProductCodeList(listP);
+		List<ItemServiceForWms> mq = itemServiceForWmsManager.sendDate();
 		eForWms.size();
 	}
 }

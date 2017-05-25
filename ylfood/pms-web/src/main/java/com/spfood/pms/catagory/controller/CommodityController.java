@@ -80,6 +80,15 @@ public class CommodityController{
 	}
 	
 	/**
+	 * 获取商品列表
+	 */
+	@RequiresPermissions("pms:commodity:show")
+	@RequestMapping(method=RequestMethod.POST,value="/selectCommodityDetial", produces={"application/xml", "application/json"})
+	public @ResponseBody PageInfo<Commodity> selectCommodityDetial(@RequestParam Integer pageNum,@RequestParam Integer pageSize,@RequestBody Commodity commodity){
+		return commodityService.selectCommodityDetial(commodity, new PageInfo<Commodity>(pageNum, pageSize));
+	}
+	
+	/**
 	 *单个商品上架
 	 */
 	@RequiresPermissions("pms:commodity:show")
@@ -104,7 +113,18 @@ public class CommodityController{
 		}else
 			return null;
 	}
-	
+	/**
+	 *单个商品删除
+	 */
+	@RequiresPermissions("pms:commodity:show")
+	@RequestMapping(method=RequestMethod.POST,value="/updateCommodityStateDelete", produces={"application/xml", "application/json"})
+	public @ResponseBody Commodity updateCommodityStateDelete(@RequestBody Commodity commodity){
+		commodity.setCreateUser(((EmployeeDTO)SecurityUtils.getSubject().getPrincipal()).getAccount());
+		if(commodityService.updateCommodityStateDelete(commodity.getId())){
+			return commodity;
+		}else
+			return null;
+	}
 	/**
 	 *多个商品批量上架
 	 */
@@ -128,7 +148,17 @@ public class CommodityController{
 		}else
 			return null;
 	}
-
+	/**
+	 *多个商品批量删除
+	 */
+	@RequiresPermissions("pms:commodity:show")
+	@RequestMapping(method=RequestMethod.POST,value="/updateCommodityStateDeletes", produces={"application/xml", "application/json"})
+	public @ResponseBody String updateCommodityStateDeletes(@RequestBody Long ids[]){
+		if(commodityService.updateCommodityStateDeletes(ids)){
+			return MessageTransferObject.SUCCESS;
+		}else
+			return null;
+	}
 	/**
 	 *获取商品图片
 	 */

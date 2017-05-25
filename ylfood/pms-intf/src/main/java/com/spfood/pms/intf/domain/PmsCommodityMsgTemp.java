@@ -22,6 +22,8 @@ public class PmsCommodityMsgTemp implements DomainObject {
      * @mbggenerated
      */
     private Date SendDate;
+    
+    private int type;
 
     private List<Commodity> ListMsgTemps;
     /**
@@ -85,5 +87,19 @@ public class PmsCommodityMsgTemp implements DomainObject {
     public void setPwsSendDate(Date SendDate) {
         this.SendDate = SendDate;
     }
+
+	/**
+	 * @return the type
+	 */
+	public int getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(int type) {
+		this.type = type;
+	}
 
 }

@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.spfood.crm.customer.domain.Customer;
@@ -15,6 +17,7 @@ import com.spfood.pms.search.intf.domain.Commodity;
 import com.spfood.pms.search.intf.domain.CommodityComment;
 import com.spfood.pms.search.intf.utils.CommentGrade;
 import com.spfood.pms.search.intf.utils.CommentType;
+import com.spfood.pms.search.intf.utils.StringUtils;
 import com.spfood.pms.search.manager.CommodityCommentManager;
 import com.spfood.pms.search.manager.CommodityManager;
 
@@ -27,7 +30,7 @@ public class CommodityCommentServiceImpl implements CommodityCommentService {
     
     @Autowired 
     private CustomerService customerService;
-    
+    private static final Log log = LogFactory.getLog(CommodityCommentServiceImpl.class);
     /**
      * 录入评价信息
      * comments 评价对象集合
@@ -36,9 +39,14 @@ public class CommodityCommentServiceImpl implements CommodityCommentService {
     public boolean insertComments(List<CommodityComment> comments) {
         Date date=new Date();
         List<String> list =new ArrayList<String>();//储存评价的商品编号
-        
         //遍历评价集合
         for (CommodityComment commodityComment : comments) {
+            //用户编码、商品编码、订单编码不能为空
+            if (!StringUtils.testNull(commodityComment.getCommentUsercode())||!StringUtils.testNull(
+                    commodityComment.getCommodityCode())||!StringUtils.testNull(commodityComment.getOrderNo())) {
+                log.info("The data is incomplete");
+                return false;
+            }
             //将当前时间作为评价时间
             commodityComment.setCommentTime(date);
             //设置显示评价
@@ -49,7 +57,11 @@ public class CommodityCommentServiceImpl implements CommodityCommentService {
         
         //通过商品编号集合查询商品集合
         List<Commodity> commodities=commodityManager.selectCommodityByCodelist(list);
-        
+        //查询到的商品集合为空或者其记录数与评价条 数不相等，则说明数据有误
+        if (commodities==null||comments.size()!=commodities.size()) {
+            log.info("No information is found on the relevant category");
+            return false;
+        }
         //将品类编码设置到评价对象中
         for (int i = 0; i < commodities.size(); i++) {
             comments.get(i).setCategoryCode(commodities.get(i).getCategory().getCategoryCode());
@@ -61,6 +73,7 @@ public class CommodityCommentServiceImpl implements CommodityCommentService {
             return true;
         } catch (Exception e) {
             //返回false新增失败
+            log.info("The new failure");
             return false;
         }
     }
@@ -140,4 +153,15 @@ public class CommodityCommentServiceImpl implements CommodityCommentService {
     public List<CommodityComment> selectCommodityCommentByOrderNo(String orderNo) {
         return commodityCommentManager.selectCommodityCommentByOrderNo(orderNo);
     }
+
+
+    /**
+	 * B2C通过商品编码集合获得对应的好评数,评价总条数
+	 * @param commodityCodes 商品编码可变数组
+	 * @return 对应的商品评价集合
+	 */
+	@Override
+	public List<CommodityComment> selectGoodCommentPercent(String... commodityCodes) {
+		return commodityCommentManager.selectGoodCommentPercent(commodityCodes);
+	}
 }

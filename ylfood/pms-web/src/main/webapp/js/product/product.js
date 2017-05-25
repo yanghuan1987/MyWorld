@@ -21,8 +21,13 @@ angular
 					$rootScope.isProduct = true;//用于详细图片BUTTON显示，表示此为产品业务
 					$rootScope.pictureCheck = true;//是否check图片
 					$rootScope.UnitDisable = true;//采购基本单位disable
+					$rootScope.showTableSearch = true;//详细检索页面
+					$rootScope.SearchType = 0;//详细检索页面
+					$scope.saleList = [{optionName:"可售",optionValue:"1"},{optionName:"不可售",optionValue:"0"}];
+					$scope.compositeList = [{optionName:"是",optionValue:"1"},{optionName:"否",optionValue:"0"}];
 					$rootScope.weightU = [];//重量单位
 					$rootScope.weightN = [];//重量单位
+					$scope.showNewButton = false;//显示新增按钮
 				 	//获取品类菜单
 					$http.get("GetCatagoryList")
 					     .success(function(data) {
@@ -77,7 +82,12 @@ angular
 					     .success(function(data) {
 					        $scope.severProductTemperatureZone = data;
 					     });
-					
+
+					//获取税率
+					$http.get("getTaxRate")
+					     .success(function(data) {
+					    	 $rootScope.severTaxRate = data;
+					     });
 					// 定义是否可售的下拉列表值
 					$scope.isSaleableValues = [ {
 						id : 1,
@@ -94,15 +104,81 @@ angular
 					$scope.loginOut = function() {
 						window.location.href = serverPath;
 				    };
-					
+				    $scope.showSearchPage = function(){
+						//离开新增确认框
+				    	if(!$scope.newEditQuit){
+				    		var con = confirm("您当前正处于新增状态，请确认是否放弃");
+					    	if(!con){
+					    		return false;
+					    	}else{
+					    		$scope.newEditQuit = true;//放弃当前编辑	
+					    		$scope.newEditCount = 0;//确认放弃，次数归0
+					    	}
+				    	}
+				    	//离开编辑要么确认
+				    	if(!$scope.oldEditQuit){
+				    		var con = confirm("您当前正处于编辑状态，请确认是否放弃");
+					    	if(!con){
+					    		return false;
+					    	}else{
+					    		$scope.oldEditQuit = true;//放弃当前编辑	
+					    	}
+				    	}
+						$rootScope.showTableSearch = true;//详细检索页面
+					 	$scope.showTable = false;//产品table不显示
+						$scope.addProduct = false;//普通产品新增页面不显示
+						$scope.showP = false;//普通产品编辑页面总体不显示
+						$scope.showCproduct = false;//组合产品新增页面不显示
+						$scope.addCProduct = false;//组合新增不显示
+					 	$scope.products = null;
+				   	 	$scope.colorones = "#99C731";//菜单背景颜色
+				   	 	$scope.colorone = "";//菜单背景颜色
+						$scope.clearDetail();
+				    }
 					//左侧二菜单显示
 					$scope.updateOne = function(updatecatone) {
+						//离开新增确认框
+				    	if(!$scope.newEditQuit){
+				    		var con = confirm("您当前正处于新增状态，请确认是否放弃");
+					    	if(!con){
+					    		return false;
+					    	}else{
+					    		$scope.newEditQuit = true;//放弃当前编辑	
+					    		$scope.newEditCount = 0;//确认放弃，次数归0
+					    	}
+				    	}
+				    	//离开编辑确认框
+				    	if(!$scope.oldEditQuit){
+				    		var con = confirm("您当前正处于编辑状态，请确认是否放弃");
+					    	if(!con){
+					    		return false;
+					    	}else{
+					    		$scope.oldEditQuit = true;//放弃当前编辑	
+					    	}
+				    	}
 				   	 	$scope.colorone = "#99C731";//菜单背景颜色
+				   	 	$scope.colorones = "";//菜单背景颜色
+						$rootScope.showTableSearch = false;//详细检索页面
+						$scope.addProduct = false;//普通产品新增页面不显示
+						$scope.showP = false;//普通产品编辑页面总体不显示
+						$scope.showCproduct = false;//组合产品新增页面不显示
+						$scope.addCProduct = false;//组合新增不显示
+						$rootScope.SearchType = 0;//详细检索页面
+					 	$scope.showTable = true;//产品table不显示
+						$scope.showNewButton = false;//显示新增按钮
+						$scope.categoryName = null;//品类名字
+						$scope.compositeFlag = updatecatone.categoryTypeFlag;//组合flg
+						$scope.categoryCode = updatecatone.categoryCode;//品类code
 				   	 	//获取选择品类子品类信息
 				   	 $scope.category = {categoryName:updatecatone.categoryName,categoryCode:updatecatone.categoryCode,id:updatecatone.id};
 						$http.post("/pms-web/pms/category/selectCategoryChildren?categoryCode="+updatecatone.categoryCode)
 							.success(function(data) {
 								updatecatone.productCategorys = data;
+
+								// 执行查询部分逻辑, 获取产品以及产品属性的信息的 初始查询
+								$scope.productCategoryProperties = null;
+								$scope.selectByPage($scope.pageNum,$scope.pageSize,updatecatone.categoryCode,null,null,null,updatecatone.categoryTypeFlag);
+								$scope.initd = 0;
 							});
 						//显示和收起菜单
 						if($scope.spMenuShow != updatecatone.id) {
@@ -114,11 +190,47 @@ angular
 					};
 					//三级菜单表示
 					$scope.updateTwo = function(cat1name, updatecattwo) {
+						//离开新增确认框
+				    	if(!$scope.newEditQuit){
+				    		var con = confirm("您当前正处于新增状态，请确认是否放弃");
+					    	if(!con){
+					    		return false;
+					    	}else{
+					    		$scope.newEditQuit = true;//放弃当前编辑	
+					    		$scope.newEditCount = 0;//确认放弃，次数归0
+					    	}
+				    	}
+				    	//离开编辑确认框
+				    	if(!$scope.oldEditQuit){
+				    		var con = confirm("您当前正处于编辑状态，请确认是否放弃");
+					    	if(!con){
+					    		return false;
+					    	}else{
+					    		$scope.oldEditQuit = true;//放弃当前编辑	
+					    	}
+				    	}
 						//获取选择品类子品类信息
+				   	 	$scope.colorones = "";//菜单背景颜色
+						$rootScope.showTableSearch = false;//详细检索页面
+					 	$scope.showTable = true;//产品table不显示
+						$scope.addProduct = false;//普通产品新增页面不显示
+						$scope.showP = false;//普通产品编辑页面总体不显示
+						$scope.showCproduct = false;//组合产品新增页面不显示
+						$scope.addCProduct = false;//组合新增不显示
+						$rootScope.SearchType = 0;//详细检索页面
+						$scope.showNewButton = false;//显示新增按钮
+						$scope.categoryName = null;//品类名字
+						$scope.compositeFlag = updatecattwo.categoryTypeFlag;//组合flg
+						$scope.categoryCode = updatecattwo.categoryCode;//品类code
 				    	$scope.category = {categoryName:updatecattwo.categoryName,categoryCode:updatecattwo.categoryCode,id:updatecattwo.id};
 						$http.post("/pms-web/pms/category/selectCategoryChildren?categoryCode="+updatecattwo.categoryCode)
 							 .success(function(data) {
 								updatecattwo.productCategorys = data;
+								
+								// 执行查询部分逻辑, 获取产品以及产品属性的信息的 初始查询
+								$scope.productCategoryProperties = null;
+								$scope.selectByPage($scope.pageNum,$scope.pageSize,updatecattwo.categoryCode,null,null,null,updatecattwo.categoryTypeFlag);
+								$scope.initd = 0;
 							});
 						//显示和收起菜单
 						if ($scope.spMenuShowT != updatecattwo.id) {
@@ -127,18 +239,35 @@ angular
 							$scope.spMenuShowT = undefined;
 						}
 					};
-
 					//依据条件查询产品列表信息
-					$scope.selectByPage = function(pageNum, pageSize, categoryCode, productCode, productProperty, saleFlag, compositeFlag) {
-						$http.post("selectByPage", {
-							pageNum : pageNum,//翻页页数
-							pageSize : pageSize,//每页件数
-							categoryCode : categoryCode,//品类code
-							productCode : productCode,//产品code
-							productProperty : productProperty,//产品属性
-							saleFlag: saleFlag,//是否可售
-							compositeFlag : compositeFlag//是否组合
-						}).success(function(data) {
+					$scope.selectByPage = function(pageNum, pageSize, categoryCode, productCode, productProperty, saleFlag, 
+							compositeFlag,productGs1Code,productName,productStatus,productTemperatureZoneCode) {
+						if($rootScope.SearchType == 1){
+							var temp = {
+									pageNum : pageNum,//翻页页数
+									pageSize : pageSize,//每页件数
+									categoryCode : categoryCode,//品类code
+									productCode : productCode,//产品code
+									productProperty : null,//产品属性
+									saleFlag: saleFlag,//是否可售
+									compositeFlag : compositeFlag,//是否组合
+									productGs1Code : productGs1Code,//GS1编码
+									productName:productName,//产品名称
+									productStatus:productStatus,//产品状态
+									productTemperatureZoneCode:productTemperatureZoneCode//产品温区
+								}
+						}else{
+							var temp = {
+									pageNum : pageNum,//翻页页数
+									pageSize : pageSize,//每页件数
+									categoryCode : categoryCode,//品类code
+									productCode : productCode,//产品code
+									productProperty : productProperty,//产品属性
+									saleFlag: saleFlag,//是否可售
+									compositeFlag : compositeFlag//是否组合
+								}
+						}
+						$http.post("selectByPage", temp).success(function(data) {
 							$scope.pagination.total = data.total;//返回结果总共条数
 							$scope.pagination.pageNum = data.pageNum;//返回结果页数
 							$scope.pagination.pageSize = data.pageSize;//返回结果每页件数
@@ -177,11 +306,15 @@ angular
 					    	}else{
 					    		$scope.oldEditQuit = true;//放弃当前编辑	
 					    	}
-				    	}						
+				    	}
 				    	$rootScope.showProductBuyUnitEmpty = false;// 包装单位错误表示
 						$scope.doubleClick = false;//二重点击还原
 						exitPop('submitInfo');
 					 	$scope.showTable = true;//产品table显示
+						$rootScope.showTableSearch = false;//详细检索页面
+						$rootScope.SearchType = 0;//详细检索页面
+				   	 	$scope.colorones = "";//菜单背景颜色
+						$scope.showNewButton = true;//显示新增按钮
 					 	//检索参数
 				    	$scope.category = {id:id, 
 	    						categoryName:name,
@@ -219,7 +352,16 @@ angular
 						onChange : function() {
 							if($scope.initd == undefined)
 								return;
-							$scope.selectByPage($scope.pagination.pageNum,$scope.pagination.pageSize,$scope.categoryCode,$scope.productCode,$scope.productProperty,$scope.saleFlag,$scope.compositeFlag);
+							if($rootScope.SearchType == 1){
+								$scope.selectByPage($scope.pagination.pageNum,$scope.pagination.pageSize,
+										null,$scope.productCodes,
+										null,$scope.saleFlags,$scope.compositeFlags,
+										$scope.productGs1Codes,$scope.productNames,$scope.productStatuss,
+										$scope.productTemperatureZoneCodes);
+							}else{
+								$scope.selectByPage($scope.pagination.pageNum,$scope.pagination.pageSize,
+										$scope.categoryCode,$scope.productCode,$scope.productProperty,$scope.saleFlag,$scope.compositeFlag);
+							}
 						}
 					};
 
@@ -228,8 +370,16 @@ angular
 
 					// 点击产品编码时触发的事件
 					$scope.searchByProductCode = function(productCode) {
-						$scope.productCode = productCode;
-						$scope.selectByPage($scope.pagination.pageNum,$scope.pagination.pageSize,$scope.categoryCode,$scope.productCode,$scope.productProperty,null,$scope.compositeFlag);
+						if(productCode == 'detail'){
+							$rootScope.SearchType = 1;//详细检索页面
+							$scope.selectByPage($scope.pageNum,$scope.pageSize,null,$scope.productCodes,null,$scope.saleFlags,
+									$scope.compositeFlags,$scope.productGs1Codes,$scope.productNames,$scope.productStatuss,$scope.productTemperatureZoneCodes);
+							$scope.initd = 0;
+						}else{
+							$rootScope.SearchType = 0;//详细检索页面
+							$scope.productCode = productCode;
+							$scope.selectByPage($scope.pagination.pageNum,$scope.pagination.pageSize,$scope.categoryCode,$scope.productCode,$scope.productProperty,null,$scope.compositeFlag);
+						}
 					};
 					// 选择产品属性时触发的事件
 					$scope.searchByProperty = function(index,propertyName, propertyValue) {
@@ -363,6 +513,11 @@ angular
 							$rootScope.showProductBuyUnitEmpty = false;
 						}
 
+						$scope.checknull = false;
+						$scope.checkNumberIf = false;
+						$scope.checkNumberOnepoint = false;
+						$scope.checkNumberFormat = false;
+						$scope.checkunitObjAdd = false;
 						$scope.showProductPackUnit=false;
 						var pop = showPopup('addProductPackUnit',true);
 						$scope.packUnitEdit = false;
@@ -383,13 +538,38 @@ angular
 					
 					// 新添加一个自定义属性及属性值
 					$scope.onAddProductPackUnitItemClick = function(unitValueAdd,unitObjAdd) {
-						
+						var checkNumber = /^\d+$/;//正整数
+						var checkNumber2 = /^\d+\.\d$/;//一位小数
+						$scope.checknull = false;
+						$scope.checkNumberIf = false;
+						$scope.checkNumberOnepoint = false;
+						$scope.checkNumberFormat = false;
+						$scope.checkunitObjAdd = false;
+						//空check
+						if($scope.unitValueFrom.unitValueAdd.$error.required){
+							$scope.checknull = true;
+							return;
+						}
+						//数字check
+						if($scope.unitValueFrom.unitValueAdd.$error.number || unitValueAdd <=0){
+							$scope.checkNumberIf = true;
+							return;
+						}
 
-						if(undefined == unitValueAdd || null == unitValueAdd || "" == unitValueAdd
-								|| undefined == unitObjAdd || null == unitObjAdd || "" == unitObjAdd
-								|| unitValueAdd <=0){
-								$scope.showProductPackUnit = true;
-								return;
+						if(null == unitValueAdd.toString().match(checkNumber2) && !$rootScope.UnitDisable){
+							$scope.checkNumberOnepoint = true;
+							return;
+						}
+						var c = unitValueAdd.toString().match(checkNumber);
+						//重量单位是小数check
+						if(null == c && $rootScope.UnitDisable){
+							$scope.checkNumberFormat = true;
+							return;
+						}
+						//单位null check
+						if(undefined == unitObjAdd || null == unitObjAdd || "" == unitObjAdd){
+							$scope.checkunitObjAdd = true;
+							return;
 						}
 
 						$scope.showProductPackUnit=false;
@@ -524,6 +704,7 @@ angular
 					    		$scope.oldEditQuit = true;//放弃当前编辑	
 					    	}
 				    	}
+						$rootScope.showTableSearch = false;//详细检索页面
 				    	$scope.showTable = false;//产品table显示
 						var product = $scope.products[index];//选中产品
 						if(newProduct != undefined)
@@ -562,11 +743,18 @@ angular
 					        url:"getProductPicture?productCode="+product.productCode
 					    }).success(function(data) {
 					    	productPictures = data;
-						
+				    	// 头部信息查询
+						$http.post("getProductProperties", {
+							      categoryCode : product.categoryCode
+							}).success(function(data) {
+								$scope.productCategoryProperties = data.productCategoryPropertys;
+							});
 						// 组合产品和标准产品的信息显示不同。
 						// 标准产品的显示
 						if ($scope.compositeFlag == 0) {
 							$scope.showP = true;
+							$scope.addCProduct = false;
+							$scope.showCproduct = false;
 							product.productPictures = productPictures;
 							product.productPackUnit = productPackUnit;
 							$scope.product = {
@@ -582,6 +770,8 @@ angular
 											productBuyUnitCode:product.productBuyUnitCode,
 											productTemperatureZoneName:product.productTemperatureZoneName,
 											productTemperatureZoneCode:product.productTemperatureZoneCode,
+											taxRateName:product.taxRateName,
+											taxRateValue:product.taxRateValue,
 											compositeFlag:product.compositeFlag,
 											productSpecificationValue:product.productSpecificationValue,
 											productSpecificationUnitFirst:product.productSpecificationUnitFirst,
@@ -595,6 +785,7 @@ angular
 						} else if ($scope.compositeFlag == 1) {
 							$scope.addCProduct = false;
 							$scope.showCproduct = true;
+							$scope.showP = false;
 							// 组合产品的显示
 							$http.post("getCompositeProduct", {
 								id : product.id
@@ -701,7 +892,16 @@ angular
 					}
 					return data;
 				}
-				
+
+				$scope.clearDetail = function(){
+					$scope.productCodes = null;
+					$scope.productGs1Codes = null;
+					$scope.productNames = null;
+					$scope.saleFlags = null;
+					$scope.productStatuss = null;
+					$scope.productTemperatureZoneCodes = null;
+					$scope.compositeFlags = null;
+				}
 				})
 		.controller(
 				'productDetailAddController',//普通产品新增Controller
@@ -777,6 +977,9 @@ angular
 						//温区
 						product.productTemperatureZoneCode = $scope.addedProduct.productTemperatureZone.optionValue;
 						product.productTemperatureZoneName = $scope.addedProduct.productTemperatureZone.optionName;
+						//税率
+						product.taxRateName = $scope.addedProduct.taxRate.optionName;
+						product.taxRateValue = $scope.addedProduct.taxRate.optionValue;
 						// 返回数据的处理---产品的属性
 						var productProperties = [];
 						for (var i = 0; i < $scope.productCategoryProperties.length; i++) {
@@ -1123,7 +1326,13 @@ angular
 								$scope.product.productSpecificationUnitSecondValue = $rootScope.specificationSecondValues[i].optionValue;
 							}
 						}
-						
+
+						//税率Value赋值
+						for(i in $rootScope.severTaxRate){
+							if($scope.product.taxRateName == $rootScope.severTaxRate[i].optionName){
+								$scope.product.taxRateValue = $rootScope.severTaxRate[i].optionValue;
+							}
+						}
 						// 返回数据的处理---产品的图片
 						//头部图片信息
 				    	var index = $rootScope.thumbHeader.length;
@@ -1534,6 +1743,12 @@ angular
 									$scope.compositeProduct.product.productSpecificationUnitSecondValue = $rootScope.specificationSecondValues[i].optionValue;
 								}
 							}
+							//税率Value赋值
+							for(i in $rootScope.severTaxRate){
+								if($scope.compositeProduct.product.taxRateName == $rootScope.severTaxRate[i].optionName){
+									$scope.compositeProduct.product.taxRateValue = $rootScope.severTaxRate[i].optionValue;
+								}
+							}
 							//去除头部图片的空位置
 							$scope.compositeProduct.product.productPictures = $rootScope.deletBlank($scope.compositeProduct.product.productPictures);				
 							$scope.compositeProduct.productItems = $scope.$parent.selectedProductItems;
@@ -1820,6 +2035,9 @@ angular
 								//温区
 								product.productTemperatureZoneCode = $scope.addedProduct.productTemperatureZone.optionValue;
 								product.productTemperatureZoneName = $scope.addedProduct.productTemperatureZone.optionName;
+								//税率
+								product.taxRateName = $scope.addedProduct.taxRate.optionName;
+								product.taxRateValue = $scope.addedProduct.taxRate.optionValue;
 								// 返回数据的处理---产品的属性
 								var productProperties = [];
 								for (var i = 0; i < $scope.productCategoryProperties.length; i++) {
