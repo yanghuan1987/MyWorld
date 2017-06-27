@@ -7,6 +7,7 @@ public interface CategorySqlIds {
 	public String SELECT_BY_COMMODITYCODE = "selectByCommodityCode";
 	public String SELECT_BY_CATEGORYCODE = "selectByCategoryCode";
 	public String SELECTCHILDREN_BY_CATEGORYCODE = "selectCategoryChildren";
+	public String SELECTNAME_BY_CATEGORYCODELIST = "selectCategoryName";
 	
 	/**
 	 * 查询指定商品总条数

@@ -41,6 +41,7 @@
 			    /pms/product/* = user
 			    /pms/commodity/* = user
 			    /pms/comment/* = user
+			    /pms/rawMaterials/* = user
 			</value>
 		</property>
 	</bean>

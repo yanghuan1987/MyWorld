@@ -1,0 +1,512 @@
+﻿@CHARSET "UTF-8";
+body
+{
+font-size:13px;
+font-family:"微软雅黑";
+background-color:#f5f5f5;
+}
+/*
+header样式
+*/
+.sp-head-logout
+{
+	color:white;
+	font-size:12px;
+}
+@media screen and (max-height:800px) {
+	.sp-menu-bg
+	{
+	background-color:white;
+	max-height:509px;
+	height:509px;
+	margin-right:3px;
+	overflow-y:scroll;
+	overflow-x:scroll;
+	}
+	.sp-content-bg
+	{
+	background-color:white;
+	max-height:509px;
+	height:509px;
+	padding:0px;
+	overflow-y:scroll;
+	}
+}
+@media screen and (min-height: 800px) {
+	.sp-menu-bg
+	{
+	background-color:white;
+	max-height:860px;
+	height:860px;
+	margin-right:3px;
+	overflow-y:scroll;
+	overflow-x:scroll;
+	}
+	.sp-content-bg
+	{
+	background-color:white;
+	max-height:860px;
+	height:860px;
+	padding:0px;
+	overflow-y:scroll;
+	}
+}
+
+.sp-panel
+{
+margin:1px 0px 0px 1px;
+padding:0px;
+}
+.sp-panel-body
+{
+padding:10px 0px 10px 0px;
+}
+.sp-row-border
+{
+padding:18px 0px 18px 0px;
+margin:0px;
+border-top:1px solid #ccc;
+border-bottom:1px solid #ccc;
+}
+.sp-p-title
+{
+padding-left:15px;
+}
+.sp-p-title span
+{
+height:40px;
+font-size:14px;
+font-family:'微软雅黑';
+margin:0px;
+padding:0px;
+}
+/*
+表单样式
+*/
+.sp-input-text
+{
+margin-left:0px;
+padding-left:0px;
+}
+.sp-input
+{
+background: -webkit-linear-gradient(#f6f6f6, #ffffff); /* Safari 5.1 - 6.0 */
+background: -o-linear-gradient(#f6f6f6, #ffffff); /* Opera 11.1 - 12.0 */
+background: -moz-linear-gradient(#f6f6f6, #ffffff); /* Firefox 3.6 - 15 */
+background: linear-gradient(#f6f6f6, #ffffff); /* 标准的语法 */
+}
+.sp-input-button
+{
+margin-top:18px;
+width:88%;
+font-size:14px;
+font-family:'微软雅黑';
+background: -webkit-linear-gradient(#ffffff,#f6f6f6); /* Safari 5.1 - 6.0 */
+background: -o-linear-gradient(#ffffff,#f6f6f6); /* Opera 11.1 - 12.0 */
+background: -moz-linear-gradient(#ffffff,#f6f6f6); /* Firefox 3.6 - 15 */
+background: linear-gradient(#ffffff,#f6f6f6); /* 标准的语法 */
+border:1px solid #e5e5e5;
+margin-top:5px;	
+}
+.sp-menu-btn
+{
+background: -webkit-linear-gradient(#ffffff,#f6f6f6); /* Safari 5.1 - 6.0 */
+background: -o-linear-gradient(#ffffff,#f6f6f6); /* Opera 11.1 - 12.0 */
+background: -moz-linear-gradient(#ffffff,#f6f6f6); /* Firefox 3.6 - 15 */
+background: linear-gradient(#ffffff,#f6f6f6); /* 标准的语法 */
+border:1px solid #e5e5e5;
+
+}
+.sp-div-none
+{
+margin:0px;
+padding:0px;
+}
+
+/*
+菜单样式
+*/
+
+ul.sp-nav-menu
+{
+font-size:14px;
+font-family:'微软雅黑';
+
+margin:0px;
+padding:0px;
+
+}
+ul.sp-nav-menu-hide
+{
+/*  display:none; */
+}
+ul.sp-nav-menu-sec
+{
+margin:0px;
+padding:0px;
+
+}
+ul.sp-nav-menu-sec li
+{
+position: relative;
+display: block;
+padding:7px 8px 7px 9px;
+margin-bottom:-1px;
+list-style-type:none;
+
+}
+ul.sp-nav-menu-sec li a
+{
+margin-left:18px;
+}
+
+ul.sp-nav-menu-third
+{
+margin:0px;
+padding:0px;
+background-color:#f6f6f6;
+-moz-border-radius: 4px;
+-webkit-border-radius: 4px;
+border-radius: 4px;
+-moz-box-shadow:20px 10px 20px #e5e5e5; /* Firefox */  
+-webkit-box-shadow:20px 10px 20px #e5e5e5; /* Safari 和 Chrome */  
+box-shadow:20px 10px 20px #e5e5e5; /* Opera 10.5+, 以及使用了IE-CSS3的IE浏览器 */ 
+   
+behavior: url(ie-css3.htc);/* 通知IE浏览器调用脚本作用于'box'类 */ 
+
+}
+ul.sp-nav-menu-third li
+{
+position: relative;
+display: block;
+padding:7px 8px 7px 9px;
+margin-bottom:-1px;
+list-style-type:none;
+}
+ul.sp-nav-menu-third li a
+{
+margin-left:45px;
+}
+
+ul.sp-nav-menu li
+{
+height:40px;
+width:100%;
+position: relative;
+display: block;
+padding: 7px 8px 7px 9px;
+  margin-bottom: -1px;
+  list-style-type:none;
+ 
+}
+
+ul.sp-nav-menu li.sp-li-line
+{
+border-bottom: 1px solid #ddd;}
+ul.sp-nav-menu a
+{
+ color:black;
+}
+
+ul.sp-nav-menu a:visited
+{
+ text-decoration: none;
+}
+ul.sp-nav-menu li:hover
+{
+background:#99c731;
+ text-decoration: none;
+}
+ul.sp-nav-menu a:hover
+{
+ text-decoration: none;
+}
+
+
+ul.sp-nav-menu li span
+{
+margin-right:10px;
+}
+/* 品类自用css */
+.pms-icon-jh{
+	display: inline-block;
+	width: 26px;
+    height: 26px;
+    vertical-align: text-top;
+    background: url(/img/pms/pms-icon.png) -230px -52px no-repeat;
+    cursor: pointer;
+}
+.icon-left-bt{
+	display: inline-block;
+    width: 82px; 
+    height: 32px;
+	color:white;
+	border:0;
+    background: url(/img/pms/pms-icon.png) -10px -10px no-repeat;
+	position: absolute;
+	margin: -5px 10px;
+}
+.pms-icon-jhh{
+	display: inline-block;
+	width: 26px;
+    height: 26px;
+    vertical-align: text-top;
+    background: url(/img/pms/pms-icon.png) -230px -94px no-repeat;
+    cursor: pointer;
+}
+form div{
+	margin-top: 3px;
+}
+/* 产品自用css */
+.sp-product-head{
+	min-height: 420px; 
+	padding-right: 0; 
+	padding-left: 0;
+}
+.sp-picture-title{
+	width: 100%; 
+}
+.sp-picture-detail{
+ 	width: 60%; 
+ 	margin-left: 15%; 
+}
+.icon-left-product{
+	display: inline-block;
+    width: 15px; 
+    height: 14px;
+    background: url(/img/pms/pms-icon.png) -68px -130px no-repeat;
+	position: absolute;
+}
+.text-left{
+	text-align: left;
+}
+.text-right{
+	text-align: right;
+	padding-right: 10px;
+}
+.sp-input-p{
+	width: 180px;
+}
+.sp-float-left{
+	float: left;
+	width: 28%;
+}
+.sp-product-tb{
+	overflow-y:scroll;
+	max-height: 200px;
+	min-height: 80px;
+	padding-left: 100px;
+	padding-right: 100px;
+	padding-top: 10px;
+}
+/* 商品自用 */
+.icon-right-commodity{
+	    float: right;
+    margin-right: -6px;
+	display: inline-block;
+    width: 35px;
+    height: 14px;
+    margin-top: 3px;
+    line-height: 14px;
+    vertical-align: text-top;
+    background-image: url(/img/pms/pms-icon.png);
+    background-position: -65px -155px;
+    background-repeat: no-repeat
+}
+.icon-left-commodity{
+	display: inline-block;
+    width: 15px; 
+    height: 14px;
+	margin-top:5px;
+    left: 5px;
+    background: url(/img/pms/pms-icon.png) -68px -130px no-repeat;
+	position: absolute;
+}
+.pms-icon-kz{
+	display: inline-block;
+	margin-top: 10px;
+	width: 14px;
+	height: 14px;
+	margin-left: -10px;
+	line-height: 14px;
+	vertical-align: text-top;
+    vertical-align: text-top;
+    background: url(/img/pms/pms-icon.png) -130px -130px no-repeat;
+	position: absolute;
+}
+.allshow{
+	display: inline-block;
+    width: 15px; 
+    height: 15px;
+	margin-top:2px;
+    right: 20px;
+    background: url(/img/pms/pms-icon.png) -10px -130px no-repeat;
+	position: absolute;
+}
+.td-right{
+	text-align: right; 
+	width: 120px;
+}
+.td-right-view{
+	text-align: right; 
+	width: 170px;
+}
+.td-nobreak{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.table-nobreak
+{
+    table-layout: fixed;
+    width: 100%;
+}
+.autobreak{
+	word-wrap: break-word;
+	word-break: break-all;
+}
+
+
+/* 商品产品公用 */
+.titlebar{
+	width: 100%;
+	float: left;
+	position: relative;
+	min-height: 1px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+.valueName{
+	text-align: right;
+	padding: 3px;
+	float: left;
+}
+.viewproper{
+	width: 50%;
+	float: left;
+	position: relative;
+	min-height: 1px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+.viewlabel{
+	float: left;
+	position: relative;
+	min-height: 1px;
+	display: inline-block;
+	max-width: 100%;
+	margin-bottom: 5px;
+	font-weight: bold;
+}
+.sp-mune-title{
+	height: 30px; 
+	background-color: #ebebeb; 
+	line-height: 30px;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-weight: initial;
+}
+* {
+  -webkit-box-sizing: border-box;
+}
+div.sp-pagination input
+{
+  width:35px;
+  height:25px;
+  margin-right:5px;
+  padding:3px;
+  font-size:12px;
+}
+.category-name-head{
+	background-color: white; 
+	color: #98C42F; 
+	font-weight: bold; 
+	height: 40px;
+}
+/* 主菜单选择页面使用 */
+.menuBody
+{
+margin:0px;
+padding:0px;
+width:100%;
+height:100%;
+background-image:url('/img/pms/bg.jpg');
+background-position: center;
+background-size:100% 100%;
+background-attachment:fixed;
+}
+@media screen and (max-height: 800px) {
+    .sp-span-intervel {
+         padding:176px 0px 0px 38px;
+    }
+	.sp-div-intervel
+   {
+     margin:78px 0px 0px 0px;
+    }
+}
+@media screen and (min-height: 800px) {
+    .sp-span-intervel {
+         padding:266px 0px 0px 68px;
+    }
+	.sp-div-intervel
+    {
+     margin:78px 0px 0px 0px;
+    }
+}
+
+
+.sp-pruduct-design
+{
+text-align:center;
+}
+.sp-pruduct-design span
+{
+font-size:60px;
+font-family:'微软雅黑';
+color:black;
+}
+.sp-text-left
+{
+padding:70px 0px 0px 0px;
+margin:0px;
+text-align:left;
+}
+.sp-pruduct-design span a
+{
+color:black;
+text-decoration:none;
+}
+.sp-pruduct-design span a:hover
+{
+text-decoration:none;
+color:white;
+}
+.sp-category-span
+{
+font-size:36px;
+font-family:'微软雅黑';
+margin:0px;
+}
+.sp-category-span a
+{
+text-decoration:none;
+color:black;
+font-family:'微软雅黑';
+}
+.sp-category-span a:hover
+{
+color:white;
+text-decoration:none;
+font-family:'微软雅黑';
+}
+.ng-cloak{display:none;}
+.disableOn{
+	background-color: #A6A6A6;
+}
+.disableOff{
+	
+}

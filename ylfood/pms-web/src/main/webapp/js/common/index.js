@@ -12,3 +12,6 @@ function onload() {
 		window.location.href = "${pageContext.request.contextPath}/";
 		},5000)
 }
+function loadSecMenu(url) {
+	window.location.href = url;
+}

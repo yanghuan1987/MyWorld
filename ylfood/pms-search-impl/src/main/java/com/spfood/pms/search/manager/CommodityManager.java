@@ -66,4 +66,11 @@ public interface CommodityManager extends BaseManager<Commodity> {
 	 * @return
 	 */
 	public List<Commodity> selectCommodityByCodelist(Parameters parameters);
+	
+    /**
+     * 根据编码集合查询商品价格集合
+     * @param codeList
+     * @return
+     */
+    public List<Commodity> selectCommodityPriceByCodelist(List<String> codeList);
 }

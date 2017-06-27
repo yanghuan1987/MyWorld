@@ -38,11 +38,8 @@ public class TaskTimer {
 	@Autowired
 	private PmsCommodityMsgTempManager pmsCommodityMsgTempManager;
 
-	@Autowired
-	private JmsTemplate pmsCommodityWMSMQ;
-
 	 @Autowired
-	 private JmsTemplate pmsCommodityPWSMQ;
+	 private JmsTemplate pmsCommodityWMSPWSMQ;
 	 
 	/**
 	 * 计时器功能,定时发送MQ消息队列
@@ -61,9 +58,8 @@ public class TaskTimer {
 				list.add(itemServiceForWms.getItemCode());
 			}
 			try {
-				// 发送
-				mailSendPWS(listItemServiceForWms);
-				mailSendWMS(listItemServiceForWms);
+				// 发送WMS与PWS消息队列
+				mailSendTopicMQ(listItemServiceForWms);
 			} catch (Exception e1) {
 				// 手动回滚
 				pmsCommodityMsgTempManager.updateRollBack(list);
@@ -74,43 +70,27 @@ public class TaskTimer {
 		}
 	}
 
+
 	/**
-	 * 发送WMS消息队列
+	 * 发送WMS与PWS消息队列(广播模式)
 	 */
-	public void mailSendWMS(final List<ItemServiceForWms> listItemServiceForWms)
+
+	public void mailSendTopicMQ(final List<ItemServiceForWms> listItemServiceForWms)
 			throws Exception {
 		//将数组转成JSON格式
 		final JSONArray jsonArray = JSONArray.fromObject(listItemServiceForWms);
-		
-		pmsCommodityWMSMQ.setSessionTransacted(true);
+		System.out.println("===========================================================");
+		System.out.println(jsonArray.toString());
+		System.out.println("===========================================================");
+		pmsCommodityWMSPWSMQ.setSessionTransacted(true);
 		// 创建消息并发送
-		pmsCommodityWMSMQ.send(new MessageCreator() {
-			@Override
-			public Message createMessage(Session session) throws JMSException {
-				return session
-						.createTextMessage(jsonArray.toString());
-			}
-		});
-		logger.info("==>finish send message to WMS");
-	}
-
-	/**
-	 * 发送PWS消息队列
-	 */
-
-	public void mailSendPWS(final List<ItemServiceForWms> listItemServiceForWms)
-			throws Exception {
-		//将数组转成JSON格式
-		final JSONArray jsonArray = JSONArray.fromObject(listItemServiceForWms);
-		pmsCommodityPWSMQ.setSessionTransacted(true);
-		// 创建消息并发送
-		pmsCommodityPWSMQ.send(new MessageCreator() {
+		pmsCommodityWMSPWSMQ.send(new MessageCreator() {
 			@Override
 			public Message createMessage(Session session)
 					throws JMSException {
 				return session.createTextMessage(jsonArray.toString());
 			}
 		});
-		logger.info("==>finish send message to PWS");
+		logger.info("==>finish send message in Topic Modal");
 	}
 }

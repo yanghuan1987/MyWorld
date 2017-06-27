@@ -14,12 +14,12 @@ import com.spfood.pms.manager.CommodityManager;
  */
 public class SalesTask {
 	
-	private static Logger logger = Logger.getLogger(TaskTimer.class);
+	private static Logger logger = Logger.getLogger(SalesTask.class);
 	@Autowired
 	private CommodityManager commodityManager;
 	
-	public void salesCount() {
+	public void salesCountUpdate() {
 		logger.info("start to update commodity table for commodity_quantity");
-		
+		commodityManager.updateCommodityQuantity();
 	}
 }

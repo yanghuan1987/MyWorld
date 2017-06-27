@@ -111,7 +111,8 @@ public class Constant {
 	public enum itemType{
 		commodity(0,"商品"),
 		product(1,"产品"),
-		category(2,"品类");
+		category(2,"品类"),
+		rawMaterials(3,"原料");
 		private int value;
 		private String name;
 		private itemType (int value,String name) {
@@ -151,5 +152,29 @@ public class Constant {
 			return name;
 		}
 	}
+	/**
+	 * 商品销售数量更新错误状态
+	 */
+	public enum errorStatus{
+		wating(0,"未处理"),
+		finish(1,"处理完");
+		private int value;
+		private String name;
+		private errorStatus (int value,String name) {
+			this.value = value;
+			this.name = name;
+		}
+		public int getValue() {
+			return value;
+		}
+		public String getName() {
+			return name;
+		}
+	}
+
+	 
+
+
+	
 
 }

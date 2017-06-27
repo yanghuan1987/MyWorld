@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spfood.pms.intf.domain.criteria.ItemServiceForFms" >
+  <resultMap id="BaseResultMap" type="com.spfood.pms.intf.domain.criteria.ItemServiceForFms" >
+
+    <result column="item_code" property="itemCode" jdbcType="VARCHAR" />
+    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
+    <result column="item_category_code" property="itemCategoryCode" jdbcType="VARCHAR" />
+    <result column="item_category_name" property="itemCategoryName" jdbcType="VARCHAR" />
+    <result column="item_specification_value" property="itemSpecificationValue" jdbcType="VARCHAR" />
+    <result column="item_specification_unit_first" property="itemSpecificationUnitFirst" jdbcType="VARCHAR" />
+    <result column="item_specification_unit_first_value" property="itemSpecificationUnitFirstValue" jdbcType="VARCHAR" />
+    <result column="item_specification_unit_second" property="itemSpecificationUnitSecond" jdbcType="VARCHAR" />
+    <result column="item_specification_unit_second_value" property="itemSpecificationUnitSecondValue" jdbcType="VARCHAR" />
+    <result column="item_buy_unit_name" property="itemBuyUnitName" jdbcType="VARCHAR" />
+    <result column="item_buy_unit_value" property="itemBuyUnitValue" jdbcType="VARCHAR" />
+    <result column="data_source" property="dataSource" jdbcType="INTEGER" />
+    <result column="item_type" property="itemType" jdbcType="INTEGER" />
+    <result column="item_temperature_zone_name" property="itemTemperatureZoneName" jdbcType="VARCHAR" />
+    <result column="item_temperature_zone_code" property="itemTemperatureZoneCode" jdbcType="VARCHAR" />
+    <result column="item_status" property="itemStatus" jdbcType="INTEGER" />
+    <result column="item_property_name" property="itemPropertyName" jdbcType="VARCHAR" />
+    <result column="item_property_value" property="itemPropertyValue" jdbcType="VARCHAR" />
+    <result column="item_tax_rate_name" property="itemTaxRateName" jdbcType="VARCHAR" />
+    <result column="item_tax_rate_value" property="itemTaxRateValue" jdbcType="VARCHAR" />
+    
+  </resultMap>
+  
+  <select id="selectByCommodityCodeForMQ" resultMap="BaseResultMap">
+		SELECT
+			a.product_code AS item_code,
+			a.product_name AS item_name,
+			a.category_code AS item_category_code,
+			b.category_name AS item_category_name,
+			a.product_status AS item_status,
+			a.product_specification_value AS item_specification_value,
+			a.product_specification_unit_first AS item_specification_unit_first,
+			a.product_specification_unit_first_value AS item_specification_unit_first_value,
+			a.product_specification_unit_second AS item_specification_unit_second,
+			a.product_specification_unit_second_value AS item_specification_unit_second_value,
+			a.product_buy_unit_name AS item_buy_unit_name,
+			a.product_buy_unit_code AS item_buy_unit_value,
+			a.product_temperature_zone_name AS item_temperature_zone_name,
+			a.product_temperature_zone_code AS item_temperature_zone_code,
+			e.product_property_name AS item_property_name,
+			e.product_property_value AS item_property_value,
+			a.tax_rate_name AS item_tax_rate_name,
+			a.tax_rate_value AS item_tax_rate_value,
+			0 AS data_source,
+			1 AS item_type
+		FROM
+			pms_product AS a
+		JOIN pms_product_category AS b ON a.category_code = b.category_code
+		JOIN pms_commodity_msg_temp AS c ON c.commdity_code = a.product_code
+		LEFT JOIN pms_product_property AS e ON a.product_code = e.product_code
+		AND e.product_property_name = '品牌'
+		WHERE
+			c.fms_send_date IS NULL
+		AND c.type = 1
+		GROUP BY
+			a.product_code
+		UNION ALL
+			SELECT
+				c.commodity_code AS item_code,
+				c.commodity_name AS item_name,
+				c.category_code AS item_category_code,
+				d.category_name AS item_category_name,
+				c.commodity_status AS item_status,
+				NULL AS item_specification_value,
+				c.commodity_weight_unit AS item_specification_unit_first,
+				NULL AS item_specification_unit_first_value,
+				NULL AS item_specification_unit_second_value,
+				NULL AS item_specification_unit_second,
+				NULL AS item_buy_unit_name,
+				NULL AS item_buy_unit_value,
+				c.product_temperature_zone_name AS item_temperature_zone_name,
+				c.product_temperature_zone_code AS item_temperature_zone_code,
+				f.commdity_property_name AS item_property_name,
+				f.commdity_property_value AS item_property_value,
+				c.tax_rate_name AS item_tax_rate_name,
+				c.tax_rate_value AS item_tax_rate_value,
+				0 AS data_source,
+				0 AS item_type
+			FROM
+				pms_commodity AS c
+			JOIN pms_product_category AS d ON c.category_code = d.category_code
+			JOIN pms_commodity_msg_temp AS a ON a.commdity_code = c.commodity_code
+			LEFT JOIN pms_commodity_property AS f ON f.commdity_code = c.commodity_code
+			AND f.commdity_property_name = '品牌'
+			WHERE
+				a.fms_send_date IS NULL
+			AND a.type = 0
+			GROUP BY
+				c.commodity_code
+			UNION ALL
+				SELECT
+					g.category_code AS item_code,
+					g.category_name AS item_name,
+					g.parent_category_code AS item_category_code,
+					g.category_comment AS item_category_name,
+					g.category_type_flag AS item_status,
+					NULL AS item_specification_value,
+					NULL AS item_specification_unit_first,
+					NULL AS item_specification_unit_first_value,
+					NULL AS item_specification_unit_second_value,
+					NULL AS item_specification_unit_second,
+					NULL AS item_buy_unit_name,
+					NULL AS item_buy_unit_value,
+					NULL AS item_temperature_zone_name,
+					NULL AS item_temperature_zone_code,
+					g.category_another_name AS item_property_name,
+					NULL AS item_property_value,
+					NULL AS item_tax_rate_name,
+					NULL AS item_tax_rate_value,
+					0 AS data_source,
+					2 AS item_type
+				FROM
+					pms_product_category AS g
+				JOIN pms_commodity_msg_temp AS h ON h.commdity_code = g.category_code
+				WHERE
+					h.fms_send_date IS NULL
+				AND h.type = 2
+				GROUP BY
+					g.category_code
+  </select>
+<!-- 
+		SELECT
+			a.product_code AS item_code,
+			a.product_name AS item_name,
+			a.category_code AS item_category_code,
+			b.category_name AS item_category_name,
+			a.product_specification_value AS item_specification_value,
+			a.product_specification_unit_first AS item_specification_unit_first,
+			a.product_specification_unit_first_value AS item_specification_unit_first_value,
+			a.product_specification_unit_second AS item_specification_unit_second,
+			a.product_specification_unit_second_value AS item_specification_unit_second_value,
+			a.product_buy_unit_name AS item_buy_unit_name,
+			a.product_buy_unit_code AS item_buy_unit_value,
+			a.product_temperature_zone_name AS item_temperature_zone_name,
+			a.product_temperature_zone_code AS item_temperature_zone_code,
+			0 AS data_source,
+			1 AS item_type
+		FROM
+			pms_product AS a
+		JOIN pms_product_category AS b ON a.category_code = b.category_code
+		JOIN pms_commodity_msg_temp AS c ON c.commdity_code = a.product_code
+			WHERE
+				c.fms_send_date IS NULL AND c.type = 1 LIMIT 20
+		UNION ALL	
+		SELECT
+				c.commodity_code AS item_code,
+				c.commodity_name AS item_name,
+				c.category_code AS item_category_code,
+				d.category_name AS item_category_name,
+				NULL AS item_specification_value,
+				c.commodity_weight_unit AS item_specification_unit_first,
+				NULL AS item_specification_unit_first_value,
+				NULL AS item_specification_unit_second_value,
+				NULL AS item_specification_unit_second,
+				NULL AS item_buy_unit_name,
+				NULL AS item_buy_unit_value,
+				c.product_temperature_zone_name AS item_temperature_zone_name,
+				c.product_temperature_zone_code AS item_temperature_zone_code,
+				0 AS data_source,
+				0 AS item_type
+			FROM
+				pms_commodity AS c
+			JOIN pms_product_category AS d ON c.category_code = d.category_code
+			JOIN pms_commodity_msg_temp AS a ON a.commdity_code = c.commodity_code
+			WHERE
+				a.fms_send_date IS NULL AND a.type = 0 LIMIT 20
+ -->
+</mapper>

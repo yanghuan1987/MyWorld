@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,8 @@ import com.spfood.kernel.dao.BaseDao;
 import com.spfood.kernel.dao.PageInfo;
 import com.spfood.kernel.dao.impl.SqlIds;
 import com.spfood.kernel.manager.impl.BaseManagerImpl;
+import com.spfood.oms.order.intf.domain.OrderCommodity;
+import com.spfood.oms.orderinfosyn.intf.OrderCommodityService;
 import com.spfood.pms.dao.CommodityDao;
 import com.spfood.pms.dao.CommodityPictureDao;
 import com.spfood.pms.dao.CommodityPropertyDao;
@@ -25,13 +29,16 @@ import com.spfood.pms.dao.ProductPropertyDao;
 import com.spfood.pms.dao.impl.CommoditySqlIds;
 import com.spfood.pms.intf.domain.Commodity;
 import com.spfood.pms.intf.domain.CommodityPicture;
+import com.spfood.pms.intf.domain.CommodityUpdateSalesError;
 import com.spfood.pms.intf.domain.PmsCommodityMsgTemp;
 import com.spfood.pms.intf.domain.Product;
 import com.spfood.pms.intf.domain.ProductCategory;
 import com.spfood.pms.intf.domain.ProductCategoryProperty;
 import com.spfood.pms.intf.domain.ProductProperty;
+import com.spfood.pms.intf.utils.Constant.errorStatus;
 import com.spfood.pms.intf.utils.Constant.itemType;
 import com.spfood.pms.manager.CommodityManager;
+import com.spfood.pms.manager.CommodityUpdateSalesErrorManager;
 @Service
 public class CommodityManagerImpl extends BaseManagerImpl<Commodity> implements CommodityManager {
 	
@@ -57,6 +64,12 @@ public class CommodityManagerImpl extends BaseManagerImpl<Commodity> implements 
 	
 	@Autowired
 	private PmsCommodityMsgTempDao pmsCommodityMsgTempDat;
+	
+	@Resource
+	private OrderCommodityService orderCommodityService;
+	
+	@Resource
+	private CommodityUpdateSalesErrorManager CommodityUpdateSalesErrorManager;
 	
 	@Override
 	protected BaseDao<Commodity> getBaseDao() {
@@ -185,6 +198,11 @@ public class CommodityManagerImpl extends BaseManagerImpl<Commodity> implements 
 	}
 
 	@Override
+	public List<Commodity> selectCommodityByProduct(List<String> productCodeList) {
+		return commodityDao.selectCommodityByProduct(productCodeList);
+	}
+	
+	@Override
 	public Commodity selectByCommodityCode(String commodityCode) {
 		return commodityDao.selectByCommodityCode(commodityCode);
 	}
@@ -276,6 +294,43 @@ public class CommodityManagerImpl extends BaseManagerImpl<Commodity> implements 
 	 * @return
 	 */
 	public Boolean updateCommodityQuantity(){
+
+		logger.info("Start updateCommodityQuantity");
+		List<OrderCommodity> orderCommodities = new ArrayList<OrderCommodity>(200);
+		CommodityUpdateSalesError commodityUpdateSalesError = new CommodityUpdateSalesError();
+		List<Commodity> listCommodities = new ArrayList<Commodity>(200);
+		try {
+			orderCommodities = orderCommodityService.getcCommodities();
+			if (orderCommodities.size() == 0) {
+				logger.info("there is not any orders on today,so don't update CommodityQuantity");
+				return true;
+			}else {
+				for (OrderCommodity orderCommodity : orderCommodities) {
+					Commodity commodity = new Commodity();
+					commodity.setCommodityCode(orderCommodity.getCode());
+					commodity.setSalesAmount(orderCommodity.getCount());
+					listCommodities.add(commodity);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("There was a exception in OMS's interface,place check table[pms_commodity_update_sales_error],update later");
+			commodityUpdateSalesError.setErrorDate(new Date());
+			commodityUpdateSalesError.setErrorStatus(errorStatus.wating.getValue());
+			commodityUpdateSalesError.setInfo("Exception is" + e);
+			CommodityUpdateSalesErrorManager.insert(commodityUpdateSalesError);
+		}
+		
+		int count = commodityDao.updateCommodityQuantity(listCommodities,orderCommodities.size());
+		if (0 == count) {
+			logger.error("Some of the Commodites was not be updated,place check table[pms_commodity_update_sales_error],update later");
+			commodityUpdateSalesError.setErrorDate(new Date());
+			commodityUpdateSalesError.setErrorStatus(errorStatus.wating.getValue());
+			commodityUpdateSalesError.setInfo("There was not all Commodity be updated,Please check the CommodityCode");
+			CommodityUpdateSalesErrorManager.insert(commodityUpdateSalesError);
+			return false;
+		}
 		return true;
 	}
+    
+    
 }

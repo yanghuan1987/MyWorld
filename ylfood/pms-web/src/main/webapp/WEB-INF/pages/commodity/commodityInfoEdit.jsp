@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <% String path = application.getInitParameter("static-file"); %>
 <!-- start container -->
-<div class="sp-menu-right" ng-show="showEdit" ng-cloak>
+<div class="sp-menu-right" ng-show="showPage == 4" style="width: 80%;" ng-cloak>
 	<form name="commodityAddForm" enctype="multipart/form-data">
 	<!-- 预览popup -->	
 	<div id='editpopUpHg' class='sp-popup sp-popup-hg'>
@@ -70,6 +70,12 @@
 										<td colspan="2" class="ng-binding text-left">{{commodity.commodityShowPlace}}</td>
 									</tr>
 									<tr style="height: 30px;">
+										<td class="td-right">保质期：</td>
+										<td colspan="2" class="ng-binding text-left">{{commodity.shelfLife}}&nbsp;{{commodity.shelfLifeName}}</td>
+										<td class="td-right">货架期：</td>
+										<td colspan="2" class="ng-binding text-left">{{commodity.saleDate}}&nbsp;{{commodity.saleDateName}}</td>
+									</tr>
+									<tr style="height: 30px;">
 										<td class="td-right">税率：</td>
 										<td colspan="2" class="ng-binding text-left">{{commodity.taxRateName}}</td>
 									</tr>
@@ -132,6 +138,8 @@
 					商品-->{{categoryName}}<input type="button"
 							class="sp-btn sp-btn-black-sm" value="预 览"
 							onclick="showPopup('editpopUpHg',true)">
+					<button type="button" ng-click="returnPage()"
+						class="sp-btn sp-btn-black-sm">返回</button>
 				</p>
 			</div>
 			<!-- 面板开始 -->
@@ -268,6 +276,39 @@
 									<option ng-repeat="x in basicWeightUnit"
 										value="{{x.optionName}}">{{x.optionName}}</option>
 								</select> -->
+								</td>
+							</tr>
+							<tr style="height: 40px;">
+								<td class="td-right">保质期：</td>
+								<td colspan="2"><input size="4" class="sp-input sp-input-lg" style="float: left;"
+									maxlength="5" type="text" ng-model="commodity.shelfLife" 
+									ng-blur="checkshelfLife(commodity.shelfLife)"/></td>
+								<td class="td-right">保质期单位：</td>
+								<td  colspan="2" style="text-align: left;">
+ 								<select class="sp-select sp-select-lg"
+									style="float: left; height: 30px;" ng-change = "shelfLifeUnitChange(addedProduct.shelfLifeUnit)"
+									ng-model="commodity.shelfLifeName">
+									<option ng-repeat="x in dateUnits"
+										value="{{x.optionName}}">{{x.optionName}}</option>
+								</select><span style="float: left;"><span style="color: red"
+								ng-show="showinfoshelfLife">保质期未输入的场合改单位不会被保存，但可正常操作！</span>
+								</span>
+								</td>
+							</tr>
+							<tr style="height: 40px;">
+								<td class="td-right">货架期：</td>
+								<td colspan="2"><input size="4" class="sp-input sp-input-lg" style="float: left;"
+									maxlength="5" type="text" ng-model="commodity.saleDate" 
+									ng-blur="checksaleDate(commodity.saleDate)"/></td>
+								<td class="td-right">货架期单位：</td>
+								<td  colspan="2" style="text-align: left;">
+ 								<select class="sp-select sp-select-lg" ng-change = "saleDateUnitChange(addedProduct.saleDateUnit)"
+									style="float: left; height: 30px;"
+									ng-model="commodity.saleDateName">
+									<option ng-repeat="x in dateUnits"
+										value="{{x.optionName}}">{{x.optionName}}</option>
+								</select><span style="color: red"
+								ng-show="showinfosaleDate">货架期未输入的场合改单位不会被保存，但可正常操作！</span>
 								</td>
 							</tr>
 							<tr style="height: 40px;">

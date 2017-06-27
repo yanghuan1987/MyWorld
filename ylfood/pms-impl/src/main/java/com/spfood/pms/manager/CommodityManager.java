@@ -68,6 +68,13 @@ public interface CommodityManager extends BaseManager<Commodity> {
 	public List<Commodity> selectCommodityByProduct(String productCode);
 	
 	/**
+	 * 根据产品获取该产品下的所有商品(仅包含商品的基本信息)
+	 * @param productList
+	 * @return
+	 */
+	public List<Commodity> selectCommodityByProduct(List<String> productCodeList);
+	
+	/**
 	 * 根据商品编码获取商品
 	 * @param commodityCode
 	 * @return
@@ -110,4 +117,5 @@ public interface CommodityManager extends BaseManager<Commodity> {
 	 * @return
 	 */
 	public Boolean updateCommodityQuantity();
+	
 }

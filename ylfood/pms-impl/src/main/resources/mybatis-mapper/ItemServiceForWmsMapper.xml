@@ -23,7 +23,27 @@
     <result column="item_property_value" property="itemPropertyValue" jdbcType="VARCHAR" />
     <result column="item_tax_rate_name" property="itemTaxRateName" jdbcType="VARCHAR" />
     <result column="item_tax_rate_value" property="itemTaxRateValue" jdbcType="VARCHAR" />
+    <result column="item_gs1_code" property="itemGs1Code" jdbcType="VARCHAR" />
+    <result column="item_show_name" property="itemShowName" jdbcType="VARCHAR" />
+    <result column="item_terminal" property="itemTerminal" jdbcType="DECIMAL" />
+    <result column="item_composite_flag" property="itemCompositeFlag" jdbcType="INTEGER" />
+    <result column="item_price" property="itemPrice" jdbcType="DECIMAL" />
+    <result column="item_sales_price" property="itemSalesPrice" jdbcType="DECIMAL" />
+    <result column="item_sales_amount" property="itemSalesAmount" jdbcType="INTEGER" />
+    <result column="item_quantity" property="itemQuantity" jdbcType="INTEGER" />
+    <result column="item_weight" property="itemWeight" jdbcType="DOUBLE" />
+    <result column="item_comment" property="itemComment" jdbcType="VARCHAR" />
+    <result column="item_product_quantity" property="itemProductQuantity" jdbcType="INTEGER" />
+    <result column="item_search_property" property="itemSearchProperty" jdbcType="VARCHAR" />
+    <result column="item_product_code" property="itemProductCode" jdbcType="VARCHAR" />
     
+    <result column="item_shelf_life" property="itemShelfLife" jdbcType="INTEGER" />
+    <result column="item_shelf_life_name" property="itemShelfLifeName" jdbcType="VARCHAR" />
+    <result column="item_shelf_life_value" property="itemShelfLifeValue" jdbcType="VARCHAR" />
+    <result column="item_sale_date" property="itemSaleDate" jdbcType="INTEGER" />
+    <result column="item_sale_date_name" property="itemSaleDateName" jdbcType="VARCHAR" />
+    <result column="item_sale_date_value" property="itemSaleDateValue" jdbcType="VARCHAR" />
+    <result column="item_raw_materials_specification" property="itemRawMaterialsSpecification" jdbcType="VARCHAR" />
   </resultMap>
 
   
@@ -42,6 +62,15 @@
 			a.product_buy_unit_code AS item_buy_unit_value,
 			a.product_temperature_zone_name AS item_temperature_zone_name,
 			a.product_temperature_zone_code AS item_temperature_zone_code,
+			
+			a.shelf_life AS item_shelf_life,
+			a.shelf_life_name AS item_shelf_life_name,
+			a.shelf_life_value AS item_shelf_life_value,
+			a.sale_date AS item_sale_date,
+			a.sale_date_name AS item_sale_date_name,
+			a.sale_date_value AS item_sale_date_value,
+			a.product_secondary_specification AS item_raw_materials_specification,
+			
 			a.tax_rate_name AS item_tax_rate_name,
 			a.tax_rate_value AS item_tax_rate_value,
 			0 AS data_source,
@@ -64,6 +93,15 @@
 				NULL AS item_buy_unit_value,
 				c.product_temperature_zone_name AS item_temperature_zone_name,
 				c.product_temperature_zone_code AS item_temperature_zone_code,
+				
+				c.shelf_life AS item_shelf_life,
+				c.shelf_life_name AS item_shelf_life_name,
+				c.shelf_life_value AS item_shelf_life_value,
+				c.sale_date AS item_sale_date,
+				c.sale_date_name AS item_sale_date_name,
+				c.sale_date_value AS item_sale_date_value,
+				NULL AS item_raw_materials_specification,
+				
 				c.tax_rate_name AS item_tax_rate_name,
 				c.tax_rate_value AS item_tax_rate_value,
 				0 AS data_source,
@@ -89,6 +127,15 @@
 			a.product_buy_unit_code AS item_buy_unit_value,
 			a.product_temperature_zone_name AS item_temperature_zone_name,
 			a.product_temperature_zone_code AS item_temperature_zone_code,
+			
+			a.shelf_life AS item_shelf_life,
+			a.shelf_life_name AS item_shelf_life_name,
+			a.shelf_life_value AS item_shelf_life_value,
+			a.sale_date AS item_sale_date,
+			a.sale_date_name AS item_sale_date_name,
+			a.sale_date_value AS item_sale_date_value,
+			a.product_secondary_specification AS item_raw_materials_specification,
+			
 			a.tax_rate_name AS item_tax_rate_name,
 			a.tax_rate_value AS item_tax_rate_value,
 			0 AS data_source,
@@ -114,6 +161,15 @@
 			NULL AS item_buy_unit_value,
 			c.product_temperature_zone_name AS item_temperature_zone_name,
 			c.product_temperature_zone_code AS item_temperature_zone_code,
+				
+			c.shelf_life AS item_shelf_life,
+			c.shelf_life_name AS item_shelf_life_name,
+			c.shelf_life_value AS item_shelf_life_value,
+			c.sale_date AS item_sale_date,
+			c.sale_date_name AS item_sale_date_name,
+			c.sale_date_value AS item_sale_date_value,
+			NULL AS item_raw_materials_specification,
+			
 			c.tax_rate_name AS item_tax_rate_name,
 			c.tax_rate_value AS item_tax_rate_value,
 			0 AS data_source,
@@ -131,6 +187,7 @@
 			a.product_name AS item_name,
 			a.category_code AS item_category_code,
 			b.category_name AS item_category_name,
+			a.product_status AS item_status,
 			a.product_specification_value AS item_specification_value,
 			a.product_specification_unit_first AS item_specification_unit_first,
 			a.product_specification_unit_first_value AS item_specification_unit_first_value,
@@ -140,6 +197,15 @@
 			a.product_buy_unit_code AS item_buy_unit_value,
 			a.product_temperature_zone_name AS item_temperature_zone_name,
 			a.product_temperature_zone_code AS item_temperature_zone_code,
+			
+			a.shelf_life AS item_shelf_life,
+			a.shelf_life_name AS item_shelf_life_name,
+			a.shelf_life_value AS item_shelf_life_value,
+			a.sale_date AS item_sale_date,
+			a.sale_date_name AS item_sale_date_name,
+			a.sale_date_value AS item_sale_date_value,
+			NULL AS item_raw_materials_specification,
+			
 			a.tax_rate_name AS item_tax_rate_name,
 			a.tax_rate_value AS item_tax_rate_value,
 			0 AS data_source,
@@ -171,6 +237,15 @@
 			NULL AS item_buy_unit_value,
 			c.product_temperature_zone_name AS item_temperature_zone_name,
 			c.product_temperature_zone_code AS item_temperature_zone_code,
+				
+			c.shelf_life AS item_shelf_life,
+			c.shelf_life_name AS item_shelf_life_name,
+			c.shelf_life_value AS item_shelf_life_value,
+			c.sale_date AS item_sale_date,
+			c.sale_date_name AS item_sale_date_name,
+			c.sale_date_value AS item_sale_date_value,
+			NULL AS item_raw_materials_specification,
+			
 			c.tax_rate_name AS item_tax_rate_name,
 			c.tax_rate_value AS item_tax_rate_value,
 			0 AS data_source,
@@ -189,101 +264,214 @@
   </select>
   
   <select id="selectByCommodityCodeForMQ" resultMap="BaseResultMap">
-		SELECT
-			a.product_code AS item_code,
-			a.product_name AS item_name,
-			a.category_code AS item_category_code,
-			b.category_name AS item_category_name,
-			a.product_status AS item_status,
-			a.product_specification_value AS item_specification_value,
-			a.product_specification_unit_first AS item_specification_unit_first,
-			a.product_specification_unit_first_value AS item_specification_unit_first_value,
-			a.product_specification_unit_second AS item_specification_unit_second,
-			a.product_specification_unit_second_value AS item_specification_unit_second_value,
-			a.product_buy_unit_name AS item_buy_unit_name,
-			a.product_buy_unit_code AS item_buy_unit_value,
-			a.product_temperature_zone_name AS item_temperature_zone_name,
-			a.product_temperature_zone_code AS item_temperature_zone_code,
-			e.product_property_name AS item_property_name,
-			e.product_property_value AS item_property_value,
-			a.tax_rate_name AS item_tax_rate_name,
-			a.tax_rate_value AS item_tax_rate_value,
-			0 AS data_source,
-			1 AS item_type
-		FROM
-			pms_product AS a
-		JOIN pms_product_category AS b ON a.category_code = b.category_code
-		JOIN pms_commodity_msg_temp AS c ON c.commdity_code = a.product_code
-		LEFT JOIN pms_product_property AS e ON a.product_code = e.product_code
-		AND e.product_property_name = '品牌'
-		WHERE
-			c.send_date IS NULL
-		AND c.type = 1
-		GROUP BY
-			a.product_code
-		UNION ALL
 			SELECT
-				c.commodity_code AS item_code,
-				c.commodity_name AS item_name,
-				c.category_code AS item_category_code,
-				d.category_name AS item_category_name,
-				c.commodity_status AS item_status,
-				NULL AS item_specification_value,
-				c.commodity_weight_unit AS item_specification_unit_first,
-				NULL AS item_specification_unit_first_value,
-				NULL AS item_specification_unit_second_value,
-				NULL AS item_specification_unit_second,
-				NULL AS item_buy_unit_name,
-				NULL AS item_buy_unit_value,
-				c.product_temperature_zone_name AS item_temperature_zone_name,
-				c.product_temperature_zone_code AS item_temperature_zone_code,
-				f.commdity_property_name AS item_property_name,
-				f.commdity_property_value AS item_property_value,
-				c.tax_rate_name AS item_tax_rate_name,
-				c.tax_rate_value AS item_tax_rate_value,
+				a.product_code AS item_code,
+				a.product_name AS item_name,
+				a.category_code AS item_category_code,
+				b.category_name AS item_category_name,
+				a.product_status AS item_status,
+				a.product_specification_value AS item_specification_value,
+				a.product_specification_unit_first AS item_specification_unit_first,
+				a.product_specification_unit_first_value AS item_specification_unit_first_value,
+				a.product_specification_unit_second AS item_specification_unit_second,
+				a.product_specification_unit_second_value AS item_specification_unit_second_value,
+				a.product_buy_unit_name AS item_buy_unit_name,
+				a.product_buy_unit_code AS item_buy_unit_value,
+				a.product_temperature_zone_name AS item_temperature_zone_name,
+				a.product_temperature_zone_code AS item_temperature_zone_code,
+				a.product_gs1_code AS item_gs1_code,
+				a.product_show_name AS item_show_name,
+				a.product_terminal AS item_terminal,
+				a.composite_flag AS item_composite_flag,
+				NULL AS item_price,
+				NULL AS item_sales_price,
+				NULL AS item_sales_amount,
+				NULL AS item_quantity,
+				NULL AS item_weight,
+				NULL AS item_comment,
+				NULL AS item_product_quantity,
+				NULL AS item_search_property,
+				NULL AS item_product_code,
+				a.shelf_life AS item_shelf_life,
+				a.shelf_life_name AS item_shelf_life_name,
+				a.shelf_life_value AS item_shelf_life_value,
+				a.sale_date AS item_sale_date,
+				a.sale_date_name AS item_sale_date_name,
+				a.sale_date_value AS item_sale_date_value,
+				NULL AS item_raw_materials_specification,
+				e.product_property_name AS item_property_name,
+				e.product_property_value AS item_property_value,
+				a.tax_rate_name AS item_tax_rate_name,
+				a.tax_rate_value AS item_tax_rate_value,
 				0 AS data_source,
-				0 AS item_type
+				1 AS item_type
 			FROM
-				pms_commodity AS c
-			JOIN pms_product_category AS d ON c.category_code = d.category_code
-			JOIN pms_commodity_msg_temp AS a ON a.commdity_code = c.commodity_code
-			LEFT JOIN pms_commodity_property AS f ON f.commdity_code = c.commodity_code
-			AND f.commdity_property_name = '品牌'
+				pms_product AS a
+			JOIN pms_product_category AS b ON a.category_code = b.category_code
+			JOIN pms_commodity_msg_temp AS c ON c.commdity_code = a.product_code
+			LEFT JOIN pms_product_property AS e ON a.product_code = e.product_code
+			AND e.product_property_name = '品牌'
 			WHERE
-				a.send_date IS NULL
-			AND a.type = 0
+				c.send_date IS NULL
+			AND c.type = 1
 			GROUP BY
-				c.commodity_code
+				a.product_code
 			UNION ALL
 				SELECT
-					g.category_code AS item_code,
-					g.category_name AS item_name,
-					g.parent_category_code AS item_category_code,
-					g.category_comment AS item_category_name,
-					g.category_type_flag AS item_status,
+					c.commodity_code AS item_code,
+					c.commodity_name AS item_name,
+					c.category_code AS item_category_code,
+					d.category_name AS item_category_name,
+					c.commodity_status AS item_status,
 					NULL AS item_specification_value,
-					NULL AS item_specification_unit_first,
+					c.commodity_weight_unit AS item_specification_unit_first,
 					NULL AS item_specification_unit_first_value,
-					NULL AS item_specification_unit_second_value,
 					NULL AS item_specification_unit_second,
+					NULL AS item_specification_unit_second_value,
 					NULL AS item_buy_unit_name,
 					NULL AS item_buy_unit_value,
-					NULL AS item_temperature_zone_name,
-					NULL AS item_temperature_zone_code,
-					g.category_another_name AS item_property_name,
-					NULL AS item_property_value,
-					NULL AS item_tax_rate_name,
-					NULL AS item_tax_rate_value,
+					c.product_temperature_zone_name AS item_temperature_zone_name,
+					c.product_temperature_zone_code AS item_temperature_zone_code,
+					c.commodity_gs1_code AS item_gs1_code,
+					NULL AS item_show_name,
+					NULL AS item_terminal,
+					NULL AS item_composite_flag,
+					c.commodity_price AS item_price,
+					c.commodity_sales_price AS item_sales_price,
+					c.sales_amount AS item_sales_amount,
+					c.commodity_quantity AS item_quantity,
+					c.commodity_weight AS item_weight,
+					c.commodity_comment AS item_comment,
+					c.commodity_product_quantity AS item_product_quantity,
+					c.search_property AS item_search_property,
+					c.product_code AS item_product_code,
+					c.shelf_life AS item_shelf_life,
+					c.shelf_life_name AS item_shelf_life_name,
+					c.shelf_life_value AS item_shelf_life_value,
+					c.sale_date AS item_sale_date,
+					c.sale_date_name AS item_sale_date_name,
+					c.sale_date_value AS item_sale_date_value,
+					NULL AS item_raw_materials_specification,
+					f.commdity_property_name AS item_property_name,
+					f.commdity_property_value AS item_property_value,
+					c.tax_rate_name AS item_tax_rate_name,
+					c.tax_rate_value AS item_tax_rate_value,
 					0 AS data_source,
-					2 AS item_type
+					0 AS item_type
 				FROM
-					pms_product_category AS g
-				JOIN pms_commodity_msg_temp AS h ON h.commdity_code = g.category_code
+					pms_commodity AS c
+				JOIN pms_product_category AS d ON c.category_code = d.category_code
+				JOIN pms_commodity_msg_temp AS a ON a.commdity_code = c.commodity_code
+				LEFT JOIN pms_commodity_property AS f ON f.commdity_code = c.commodity_code
+				AND f.commdity_property_name = '品牌'
 				WHERE
-					h.send_date IS NULL
-				AND h.type = 2
+					a.send_date IS NULL
+				AND a.type = 0
 				GROUP BY
-					g.category_code
+					c.commodity_code
+				UNION ALL
+					SELECT
+						g.category_code AS item_code,
+						g.category_name AS item_name,
+						g.parent_category_code AS item_category_code,
+						g.category_comment AS item_category_name,
+						g.category_type_flag AS item_status,
+						NULL AS item_specification_value,
+						NULL AS item_specification_unit_first,
+						NULL AS item_specification_unit_first_value,
+						NULL AS item_specification_unit_second,
+						NULL AS item_specification_unit_second_value,
+						NULL AS item_buy_unit_name,
+						NULL AS item_buy_unit_value,
+						NULL AS item_temperature_zone_name,
+						NULL AS item_temperature_zone_code,
+						NULL AS item_gs1_code,
+						NULL AS item_show_name,
+						NULL AS item_terminal,
+						NULL AS item_composite_flag,
+						NULL AS item_price,
+						NULL AS item_sales_price,
+						NULL AS item_sales_amount,
+						NULL AS item_quantity,
+						NULL AS item_weight,
+						NULL AS item_comment,
+						NULL AS item_product_quantity,
+						NULL AS item_search_property,
+						NULL AS item_product_code,
+						NULL AS item_shelf_life,
+						NULL AS item_shelf_life_name,
+						NULL AS item_shelf_life_value,
+						NULL AS item_sale_date,
+						NULL AS item_sale_date_name,
+						NULL AS item_sale_date_value,
+						NULL AS item_raw_materials_specification,
+						g.category_another_name AS item_property_name,
+						NULL AS item_property_value,
+						NULL AS item_tax_rate_name,
+						NULL AS item_tax_rate_value,
+						0 AS data_source,
+						2 AS item_type
+					FROM
+						pms_product_category AS g
+					JOIN pms_commodity_msg_temp AS h ON h.commdity_code = g.category_code
+					WHERE
+						h.send_date IS NULL
+					AND h.type = 2
+					GROUP BY
+						g.category_code
+					UNION ALL
+						SELECT
+							i.raw_materials_code AS item_code,
+							i.raw_materials_name AS item_name,
+							i.category_code AS item_category_code,
+							j.category_name AS item_category_name,
+							NULL AS item_status,
+							i.raw_materials_specification_value AS item_specification_value,
+							NULL AS item_specification_unit_first,
+							NULL AS item_specification_unit_first_value,
+							NULL AS item_specification_unit_second,
+							NULL AS item_specification_unit_second_value,
+							i.raw_materials_buy_unit_name AS item_buy_unit_name,
+							i.raw_materials_buy_unit_code AS item_buy_unit_value,
+							i.raw_materials_temperature_zone_name AS item_temperature_zone_name,
+							i.raw_materials_temperature_zone_code AS item_temperature_zone_code,
+							NULL AS item_gs1_code,
+							NULL AS item_show_name,
+							NULL AS item_terminal,
+							i.raw_materials_type AS item_composite_flag,
+							NULL AS item_price,
+							NULL AS item_sales_price,
+							NULL AS item_sales_amount,
+							NULL AS item_quantity,
+							NULL AS item_weight,
+							NULL AS item_comment,
+							NULL AS item_raw_materials_quantity,
+							NULL AS item_search_property,
+							NULL AS item_raw_materials_code,
+							NULL AS item_shelf_life,
+							NULL AS item_shelf_life_name,
+							NULL AS item_shelf_life_value,
+							NULL AS item_sale_date,
+							NULL AS item_sale_date_name,
+							NULL AS item_sale_date_value,
+							NULL AS item_raw_materials_specification,
+							l.raw_materials_property_name AS item_property_name,
+							l.raw_materials_property_value AS item_property_value,
+							NULL AS item_tax_rate_name,
+							NULL AS item_tax_rate_value,
+							0 AS data_source,
+							3 AS item_type
+						FROM
+							pms_raw_materials AS i
+						JOIN pms_product_category AS j ON i.category_code = j.category_code
+						JOIN pms_commodity_msg_temp AS k ON k.commdity_code = i.raw_materials_code
+						LEFT JOIN pms_raw_materials_property AS l ON i.raw_materials_code = l.raw_materials_code
+						AND l.raw_materials_property_name = '品牌'
+						WHERE
+							k.send_date IS NULL
+						AND k.type = 3
+						GROUP BY
+							i.raw_materials_code
   </select>
 <!-- 
 		SELECT

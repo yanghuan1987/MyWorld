@@ -228,6 +228,7 @@
   	<select id="selectListByIds" resultMap="commodity_picture" parameterType="java.util.List">
 	 select		pms_commodity.id,
 				pms_commodity.commodity_code,
+    		  	pms_commodity.category_code,
 				pms_commodity.commodity_name,
 				pms_commodity.commodity_status,
 				pms_commodity.product_code,
@@ -391,5 +392,17 @@
     		<foreach item="item" index="index" collection="listParameters" open="(" separator="," close=")">
 				#{item,jdbcType=VARCHAR}
 			</foreach>
+  </select>
+  
+  
+  <select id="selectPriceByCodelist" resultMap="BaseResultMap" parameterType="java.util.List" >
+    select pms_commodity.commodity_price,
+			  pms_commodity.commodity_sales_price
+    from pms_commodity 
+    where commodity_code  in (
+    		<foreach item="item" index="index" collection="list"  separator=",">
+				#{item}
+			</foreach>
+			 )
   </select>
 </mapper>

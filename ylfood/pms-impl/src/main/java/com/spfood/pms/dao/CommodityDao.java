@@ -35,6 +35,13 @@ public interface CommodityDao extends BaseDao<Commodity>{
 	public List<Commodity> selectCommodityByProduct(String productCode);
 	
 	/**
+	 * 根据产品获取该产品下的所有商品(仅包含商品的基本信息)
+	 * @param productList
+	 * @return
+	 */
+	public List<Commodity> selectCommodityByProduct(List<String> productCodeList);
+	
+	/**
 	 * 根据商品编码获取商品
 	 * @param commodityCode
 	 * @return
@@ -67,4 +74,12 @@ public interface CommodityDao extends BaseDao<Commodity>{
 	 * @return
 	 */
 	public List<Commodity> selectListByIdsForComment(List<Long> idList);
+	
+
+	/**
+	 * 商品销售数量更新
+	 * @param idList
+	 * @return
+	 */
+	int updateCommodityQuantity(List<Commodity> commodities,int dataCount);
 }

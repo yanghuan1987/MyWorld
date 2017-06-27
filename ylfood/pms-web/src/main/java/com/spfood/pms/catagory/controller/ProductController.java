@@ -316,10 +316,24 @@ public class ProductController {
 		return basicConfigurationService.getConfigureOptions("BasicWeightUnit");
 	}
 	
-	//获取温区
+	//获取税率
 	@RequiresPermissions("pms:product:show")
 	@RequestMapping(method = RequestMethod.GET, value = "/getTaxRate", produces = {"application/json" })
 	public @ResponseBody List<ConfigureOptionDTO> getTaxRate() throws Exception{
 		return basicConfigurationService.getConfigureOptions("tax_rate");
+	}
+	
+	//获取保质期，货架期时间单位
+	@RequiresPermissions("pms:product:show")
+	@RequestMapping(method = RequestMethod.GET, value = "/getDateUnit", produces = {"application/json" })
+	public @ResponseBody List<ConfigureOptionDTO> getDateUnit() throws Exception{
+		return basicConfigurationService.getConfigureOptions("date_unit");
+	}
+	
+	//获取辅材基本单位
+	@RequiresPermissions("pms:product:show")
+	@RequestMapping(method = RequestMethod.GET, value = "/getSecondaryProductUnit", produces = {"application/json" })
+	public @ResponseBody List<ConfigureOptionDTO> getSecondaryProductUnit() throws Exception{
+		return basicConfigurationService.getConfigureOptions("pms_secondary_product_unit");
 	}
 }

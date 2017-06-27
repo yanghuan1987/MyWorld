@@ -71,5 +71,12 @@ public class ProductCategoryDaoImpl extends BaseDaoImpl<ProductCategory> impleme
 		}
 	}
 
-
+	@Override
+	public List<ProductCategory> selectCategoryNameByCodeList(List<String> categoryCode) {
+		try {
+			return sqlSessionTemplate.selectList(getSqlName(CategorySqlIds.SELECTNAME_BY_CATEGORYCODELIST),categoryCode);
+		} catch (Exception e) {
+			throw new PersistenceException("kernel.dao.selectCategoryNameByCodeList", e,getSqlName(CategorySqlIds.SELECTNAME_BY_CATEGORYCODELIST));
+		}
+	}
 }

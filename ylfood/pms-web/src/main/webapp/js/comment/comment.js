@@ -34,6 +34,7 @@ app.controller('commentCtrl', function($scope,$rootScope,$http) {
 	$scope.commodityShow = false;//商品统计显示
 	$scope.commentShow = false;//评价详细显示
 	$scope.loading = 1;//数据读取中表示
+ 	$scope.commentBGC = "#99C731";
 	// 前台分页的数据结构-品类
 	$scope.pagination = {
 			pageNum : $scope.pageNum,//翻页页数
@@ -52,9 +53,9 @@ app.controller('commentCtrl', function($scope,$rootScope,$http) {
 					url = "/pms-web/pms/comment/selectCategoryCommentTotal?pageNum="
 					$scope.pageNum = 1;
 					if($scope.categoryForPage == null){
-						paginationInfo = {category:$scope.category};
+						paginationInfo = $scope.category;
 					}else{
-						paginationInfo = {parentCode:$scope.categoryForPage.parentCode};
+						paginationInfo = $scope.categoryForPage;
 					}
 				}else if($scope.pageFlg == 2){//商品自分页查询
 					$scope.categoryShow = false;//品类统计显示
@@ -292,7 +293,8 @@ app.controller('commentCtrl', function($scope,$rootScope,$http) {
 							packageGrade: $scope.commentListPage[i].packageGrade,
 							commodityGrade: $scope.commentListPage[i].commodityGrade,
 							showNewCommentContent:showNewCommentContentT,
-							newCommentContent:newCommentContentT
+							newCommentContent:newCommentContentT,
+							commodityCommentPictures: $scope.commentListPage[i].commodityCommentPictures
 					}
 				}
 			}
@@ -308,7 +310,16 @@ app.controller('commentCtrl', function($scope,$rootScope,$http) {
 			$scope.initd = "0";//第一次页面检索完成
 		});
 	}
-	
+	$scope.enterKeyup = function(e,pageNo){
+		var keycode = window.event?e.keyCode:e.which;
+		if(keycode == 13){
+			if(pageNo == 1){
+				$scope.searchCountD('99');
+			}else if(pageNo == 2){
+				$scope.searchCount('10');
+			}
+		}
+	}
 
 	//获取商品评论数量
 	$scope.getCountCommoditycomment = function(commodityComment) {
@@ -317,7 +328,13 @@ app.controller('commentCtrl', function($scope,$rootScope,$http) {
 			$scope.commentCount = data;//返回结果
 		});
 	}
-	
+	$scope.returnPage = function(){
+		$scope.showCategoryAndCommodityTable = true;//显示品类和商品表格
+		$scope.showCommodityCommentTable = false;//显示评论表格
+
+		//后去商品品类分页
+		$scope.selectForCommodity($scope.commodityS);
+	}
 	//点击商品详情获取商品评论数量
 	$scope.showCommentInfo = function(commodity) {
 		$scope.loading = 3;//数据读取中表示
@@ -326,7 +343,7 @@ app.controller('commentCtrl', function($scope,$rootScope,$http) {
 		$scope.pageFlg = 3;//评论分页，点击页数用
 		$scope.showCategoryAndCommodityTable = false;//显示品类和商品表格
 		$scope.showCommodityCommentTable = true;//显示评论表格
-		$scope.clearCount();
+//		$scope.clearCount();
 		$scope.categoryListPage = null;//查询商品时，品类分页为NULL
 		$scope.commodityListPage = null;//查询品类时，商品分页为NULL
 		$scope.commodityNameChoise = commodity.commodityName;
@@ -710,4 +727,11 @@ app.controller('commentCtrl', function($scope,$rootScope,$http) {
 		}
 		return text.substring(0,size);
 	}
+	$scope.showPicture = function(url){
+		$scope.chosePictureUrl = url;
+		showPopup('showPic',true);
+	}
 });
+function loadSecMenu(url) {
+	window.location.href = url;
+}

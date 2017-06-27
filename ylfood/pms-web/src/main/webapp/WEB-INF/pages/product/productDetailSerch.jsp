@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
-<div class="sp-menu-right" ng-show="showTableSearch">
+<div class="sp-menu-right" ng-show="showPage == 1" style="width: 80%;">
 	<div style="height: 20px; width: 100%; padding-left: 15px;">
 		<i class="showone"></i>
 	</div>
@@ -15,15 +15,15 @@
 					<tbody>
 						<tr style="height: 40px;">
 							<td style="width: 15%; text-align: right;">产品编码</td>
-							<td style="text-align: left; width: 15%;"><input
+							<td style="text-align: left; width: 15%;"><input ng-keyup="enterKeyup($event,1)"
 								ng-model="productCodes" class="sp-input sp-input-md "
 								type="text"></td>
 							<td style="width: 15%; text-align: right;">产品GS1编码</td>
-							<td style="text-align: left; width: 15%;"><input
+							<td style="text-align: left; width: 15%;"><input ng-keyup="enterKeyup($event,1)"
 								ng-model="productGs1Codes" class="sp-input sp-input-md "
 								type="text"></td>
 							<td style="width: 15%; text-align: right;">产品名称</td>
-							<td style="text-align: left; width: 15%;"><input
+							<td style="text-align: left; width: 15%;"><input ng-keyup="enterKeyup($event,1)"
 								ng-model="productNames" class="sp-input sp-input-md" type="text"></td>
 						</tr>
 						<tr style="height: 40px;">
@@ -55,7 +55,7 @@
 							<td style="text-align: left; width: 15%;"><select
 								class="sp-select"
 								style="float: left; height: 30px; width: 100px;"
-								ng-model=compositeFlags>
+								ng-model="compositeFlags">
 									<option ng-repeat="x in compositeList" value="{{x.optionValue}}">{{x.optionName}}</option>
 							</select></td>
 							<td style="width: 15%; text-align: right;"></td>
@@ -104,15 +104,19 @@
 								<td class="autobreak" style="height: 30px;">{{product.productGs1Code}}</td>
 								<td ng-if="product.saleFlag == 1">是</td>
 								<td ng-if="product.saleFlag == 0">否</td>
-								<td class="autobreak" style="height: 30px;">{{product.productSpecificationValue}}
+								<td ng-if="product.saleFlag == null">-</td>
+								<td ng-if="product.compositeFlag == 2">{{product.productSecondarySpecification}}</td>
+								<td ng-if="product.compositeFlag != 2" class="autobreak" style="height: 30px;" >{{product.productSpecificationValue}}
 									{{product.productSpecificationUnitFirst}} /
 									{{product.productSpecificationUnitSecond}}</td>
 								<td ng-if="product.compositeFlag == 1">是</td>
 								<td ng-if="product.compositeFlag == 0">否</td>
+								<td ng-if="product.compositeFlag == 2">辅材</td>
 								<td class="autobreak" style="height: 30px;">{{product.productTemperatureZoneName}}</td>
 								<td class="autobreak" style="height: 30px;" 
 								ng-repeat="x in productStatus"
 								ng-if="x.optionValue == product.productStatus">{{x.optionName}}</td>
+								<td ng-if="product.compositeFlag == 2">-</td>
 							</tr>
 							<tr ng-repeat="y in tempList">
 								<td style="height: 30px"></td>

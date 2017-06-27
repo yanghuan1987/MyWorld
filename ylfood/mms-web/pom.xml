@@ -1,0 +1,188 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>mms-web</artifactId>
+  <packaging>war</packaging>
+  <name>mms-web Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <build>
+	  <plugins>
+			<plugin>
+	          <groupId>org.apache.maven.plugins</groupId>
+	          <artifactId>maven-war-plugin</artifactId>
+	          <version>2.2</version>
+	          <configuration>
+	            <webResources>
+	              <resource>
+	                <filtering>true</filtering>
+	                <targetPath>WEB-INF</targetPath>
+	                <directory>src/main/webapp/WEB-INF</directory>
+	                <includes>
+	                  <include>web.xml</include>
+	                </includes>
+	              </resource>
+	            </webResources>
+	          </configuration>
+	        </plugin>
+		</plugins>
+    <finalName>mms-web</finalName>
+    	<filters> 
+	    	<filter>${project.basedir}/src/main/resources/environments/${env}.properties</filter> 
+	    </filters>
+      <resources>
+        <resource>
+            <directory>${project.basedir}/src/main/resources</directory>
+            <filtering>true</filtering>
+        </resource>
+      </resources>
+  </build>
+  <parent>
+  	<groupId>com.spfood</groupId>
+  	<artifactId>spfood-site</artifactId>
+  	<version>1.1.0.0-SNAPSHOT</version>
+  </parent>
+  <dependencies>
+  	
+  	<dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>dubbo</artifactId>
+        <version>${dubbo-version}</version>
+        <exclusions>
+            <exclusion>  
+                <groupId>org.springframework</groupId>  
+                <artifactId>spring</artifactId>  
+            </exclusion>  
+        </exclusions>
+    </dependency>
+
+    <dependency>
+        <groupId>com.netflix.curator</groupId>
+        <artifactId>curator-framework</artifactId>
+        <version>${curator-version}</version>
+    </dependency>
+
+    <dependency>
+        <groupId>com.github.sgroschupf</groupId>
+        <artifactId>zkclient</artifactId>
+        <version>${zkclient-version}</version>
+    </dependency>
+  	<dependency>
+	    <groupId>org.codehaus.jackson</groupId>
+	    <artifactId>jackson-mapper-asl</artifactId>
+	    <version>1.9.13</version>
+	</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${javax-servlet.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	<dependency>
+  		<groupId>com.spfood</groupId>
+  		<artifactId>web-common</artifactId>
+  		<version>1.1.0.0-SNAPSHOT</version>
+  	</dependency>
+
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${jstl-version}</version>
+		</dependency>
+		
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			
+			<!-- Start Spring自动处理JSON等 -->
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson-version}</version>
+			</dependency>
+			<dependency>  
+			    <groupId>net.sf.json-lib</groupId>  
+			    <artifactId>json-lib</artifactId>  
+			    <version>2.4</version>  
+			    <classifier>jdk15</classifier>  
+			</dependency>
+			
+			<!-- Aspectj -->
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjrt</artifactId>
+				<version>${aspectj-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjweaver</artifactId>
+				<version>${aspectj-version}</version>
+			</dependency>
+			
+			 <dependency>
+		        <groupId>commons-fileupload</groupId>
+		        <artifactId>commons-fileupload</artifactId>
+		        <version>1.3.1</version>
+		    </dependency>
+
+  	<dependency>
+  		<groupId>com.spfood</groupId>
+  		<artifactId>mms-intf</artifactId>
+  		<version>1.1.0.0-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.spfood</groupId>
+  		<artifactId>basicservice-intf</artifactId>
+  		<version>1.1.0.0-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.spfood</groupId>
+  		<artifactId>ImageUploadService-intf</artifactId>
+  		<version>1.1.0.0-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
+  
+  
+  <profiles>
+    <profile>
+        <id>DEV</id>
+        <properties>
+        	<env>dev</env>
+        </properties>
+    </profile>
+    <profile>
+        <id>TEST</id>
+        <properties>
+        	<env>test</env>
+        </properties>
+    </profile>
+    <profile>
+        <id>PROD</id>
+        <properties>
+        	<env>prod</env>
+        </properties>
+    </profile>
+    <profile>
+        <id>LOCAL</id>
+        <properties>
+        	<env>local</env>
+        </properties>
+    </profile>
+  </profiles>
+  
+</project>

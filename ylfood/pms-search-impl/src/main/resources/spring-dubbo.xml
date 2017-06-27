@@ -21,12 +21,14 @@
     <dubbo:service interface="com.spfood.pms.search.intf.CommoditySearchService" ref="commoditySearchService" timeout="10000"/>
     <dubbo:service interface="com.spfood.pms.search.intf.CategorySearchService" ref="categorySearchService" timeout="10000"/>
     <dubbo:service interface="com.spfood.pms.search.intf.CommodityCommentService" ref="commodityCommentService" timeout="10000"/>
+    <dubbo:service interface="com.spfood.pms.search.intf.CommodityAndCommentService" ref="CommodityAndCommentService" timeout="10000"/>
         
      
     <!-- 和本地bean一样实现服务 -->
     <bean id="commoditySearchService" class="com.spfood.pms.search.impl.CommodityServiceImpl" />
     <bean id="categorySearchService" class="com.spfood.pms.search.impl.CategoryServiceImpl" />
     <bean id="commodityCommentService" class="com.spfood.pms.search.impl.CommodityCommentServiceImpl" />
+    <bean id="CommodityAndCommentService" class="com.spfood.pms.search.impl.CommodityAndCommentServiceImpl" />
     
     <!-- 引用CRM服务 -->
     <dubbo:reference  id="customerService"  interface="com.spfood.crm.customer.service.CustomerService"  check="false"/>

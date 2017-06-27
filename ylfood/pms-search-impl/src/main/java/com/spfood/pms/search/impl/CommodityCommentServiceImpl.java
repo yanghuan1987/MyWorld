@@ -117,6 +117,7 @@ public class CommodityCommentServiceImpl implements CommodityCommentService {
         }
         // 通过用户编码集合获得所有的对象
         Map<String, Customer> customerMap = customerService.getCustomerToMap(userCodes);
+        
         // 遍历集合个商品评级对象赋值
         for (CommodityComment comment : commodityComments) {
             String usercode = comment.getCommentUsercode();

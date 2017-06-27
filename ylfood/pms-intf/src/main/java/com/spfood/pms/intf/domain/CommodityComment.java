@@ -127,6 +127,7 @@ public class CommodityComment implements DomainObject {
     private List<String> commentUsercodeList;//拥护编码List
     private String commentUserTel;//拥护电话
     
+    private List<CommodityCommentPicture> CommodityCommentPictures;
     
     /**
 	 * @return the subStringSize
@@ -659,5 +660,19 @@ public class CommodityComment implements DomainObject {
 	 */
 	public void setCommentUserTel(String commentUserTel) {
 		this.commentUserTel = commentUserTel;
+	}
+
+	/**
+	 * @return the commodityCommentPictures
+	 */
+	public List<CommodityCommentPicture> getCommodityCommentPictures() {
+		return CommodityCommentPictures;
+	}
+
+	/**
+	 * @param commodityCommentPictures the commodityCommentPictures to set
+	 */
+	public void setCommodityCommentPictures(List<CommodityCommentPicture> commodityCommentPictures) {
+		CommodityCommentPictures = commodityCommentPictures;
 	}
 }

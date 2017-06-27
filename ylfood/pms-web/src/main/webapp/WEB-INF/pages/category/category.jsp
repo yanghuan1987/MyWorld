@@ -28,10 +28,11 @@
 	<!-- main container -->
 	<div class="sp-div-none container-fluid">
 		<div class="row">
+		<jsp:include page="/WEB-INF/pages/common/menu.jsp"></jsp:include>
 			<!-- sidebar -->
 			<jsp:include page="../common/categoryMenu.jsp"></jsp:include>
 			
-			<div class="sp-menu-right">
+			<div class="sp-menu-right" style="width: 80%;">
 				<!-- 一、二级品类页面 -->
 				<jsp:include page="categoryInfoOneTwoLevel.jsp"></jsp:include>
 				<!-- 三级品类编辑 页面-->

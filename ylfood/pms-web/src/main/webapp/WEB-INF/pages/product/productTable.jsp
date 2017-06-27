@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
-<div class="sp-menu-right"
-	ng-show="showTable">
+<div class="sp-menu-right" style="width: 80%;"
+	ng-show="showPage == 2">
 	<div style="height: 20px;width: 100%;padding-left: 15px;">
 		<i class="showone"></i>
 	</div>
@@ -44,7 +44,7 @@
 									<option label="可售" value="">可售</option>
 							</select></th>
 							<th class="th-width-md">产品规格</th>
-							<th ng-repeat="property in productCategoryProperties">
+							<th ng-repeat="property in productCategoryProperties" ng-if="categoryBotton == 3">
 								<div ng-if="property.selectFlag == 1">
 									<select class="sp-select" style="width: 88%;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
 										ng-model="property.selectedValue"
@@ -71,7 +71,7 @@
 								style="height: 30px;">{{product.productSpecificationValue}}
 								{{product.productSpecificationUnitFirst}} /
 								{{product.productSpecificationUnitSecond}}</td>
-							<td ng-repeat="property in productCategoryProperties"><span
+							<td ng-repeat="property in productCategoryProperties" ng-if="categoryBotton == 3"><span
 								ng-repeat="propertyValue in product.productProperties"
 								ng-if="propertyValue.productPropertyName == property.categoryPropertyName">{{propertyValue.productPropertyValue}}</span>
 							</td>
@@ -81,7 +81,7 @@
 							<td style="height: 30px"></td>
 							<td style="height: 30px"></td>
 							<td style="height: 30px"></td>
-							<td style="height: 30px"
+							<td style="height: 30px" ng-if="categoryBotton == 3"
 								ng-repeat="property in productCategoryProperties"></td>
 						</tr>
 						<!-- 表格具体内容end -->

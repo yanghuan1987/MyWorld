@@ -108,6 +108,11 @@ public class CommodityComment implements DomainObject {
     private Long goodComment;
     
     /**
+     * 中评数
+     */
+    private Long mediumComment;
+    
+    /**
      * 评价总数 
      */
     private Long countComment;
@@ -394,6 +399,14 @@ public class CommodityComment implements DomainObject {
 
 	public void setCountComment(Long countComment) {
 		this.countComment = countComment;
+	}
+
+	public Long getMediumComment() {
+		return mediumComment;
+	}
+
+	public void setMediumComment(Long mediumComment) {
+		this.mediumComment = mediumComment;
 	}
     
     

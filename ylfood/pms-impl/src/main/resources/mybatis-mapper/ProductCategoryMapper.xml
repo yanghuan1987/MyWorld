@@ -164,7 +164,10 @@
     									category_name,
     									category_another_name,
       									parent_category_code,
-      									category_comment,  
+      									category_comment,
+      									<if test="categoryTypeFlag != null">
+      										category_type_flag,
+      									</if>
       									create_date,
       									create_user,
       									last_update_date, 
@@ -174,6 +177,9 @@
     									#{categoryAnotherName,jdbcType=VARCHAR}, 
       									#{parentCategory.categoryCode,jdbcType=VARCHAR},
       									#{categoryComment,jdbcType=VARCHAR}, 
+      									<if test="categoryTypeFlag != null">
+      										#{categoryTypeFlag,jdbcType=INTEGER},
+      									</if>
       									#{createDate,jdbcType=TIMESTAMP},
       									#{createUser,jdbcType=VARCHAR},
       									#{lastUpdateDate,jdbcType=TIMESTAMP}, 

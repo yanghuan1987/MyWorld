@@ -100,7 +100,7 @@ public class ProductCategoryManagerTest {
 	@Transactional
 	public void testSelectCategoryByCategoryCode() {
 		// 拿到数据测试
-		List<ProductCategory> productCategorys = productCategoryManager.selectCategoryByCategoryCode("04001001");
+		List<ProductCategory> productCategorys = productCategoryManager.selectCategoryByCategoryCode("0D");
 		for (ProductCategory productCategory : productCategorys) {
 			assertTrue(productCategory != null);
 		}
@@ -162,7 +162,14 @@ public class ProductCategoryManagerTest {
 	
 	@Test
 	public void testChren(){
-		List<ProductCategory> aCategories = productCategoryManager.selectCategoryChildrenByCode("04001");
-		aCategories.size();
+//		List<ProductCategory> aCategories = productCategoryManager.selectCategoryChildrenByCode("04001");
+//		aCategories.size();
+		
+		List<String> aList = new ArrayList<String>();
+		aList.add("23");
+		aList.add("10");
+		aList.add("41");
+		List<ProductCategory> aCategories1 = productCategoryManager.selectCategoryNameByCodeList(aList);
+		aCategories1.size();
 	}
 }

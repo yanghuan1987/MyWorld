@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.spfood.mms.intf.domain.ProductCategory" >
+  <resultMap id="BaseResultMap" type="com.spfood.mms.intf.domain.ProductCategory">
+
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="category_code" property="categoryCode" jdbcType="VARCHAR" />
+    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+    <result column="category_another_name" property="categoryAnotherName" jdbcType="VARCHAR"/>
+    <result column="parent_category_code" property="parentCategory.categoryCode" jdbcType="VARCHAR" />
+    <result column="category_comment" property="categoryComment" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="last_update_user" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <collection property="productCategoryPropertys" ofType="com.spfood.mms.intf.domain.ProductCategoryProperty">
+    	<id column="property_id" property="id" jdbcType="BIGINT" />
+	    <result column="category_property_name" property="categoryPropertyName" jdbcType="VARCHAR" />
+	    <result column="select_flag" property="selectFlag" jdbcType="INTEGER" />
+	    <result column="show_order" property="showOrder" jdbcType="DECIMAL" />
+	    <result column="category_property_description" property="categoryPropertyDescription" jdbcType="VARCHAR" />
+	    <collection property="productCategoryPropertyValues" ofType="com.spfood.mms.intf.domain.ProductCategoryPropertyValue">
+	    	<id column="property_value_id" property="id" jdbcType="BIGINT" />
+		    <result column="category_property_value" property="categoryPropertyValue" jdbcType="VARCHAR" />
+	    </collection>
+    </collection>
+  </resultMap>
+  
+   <resultMap type="com.spfood.mms.intf.domain.ProductCategory" id="category_one">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="category_code" property="categoryCode" jdbcType="VARCHAR" />
+	    <result column="category_type_flag" property="categoryTypeFlag" />
+	    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+	    <result column="parent_category_code" property="parentCategory.categoryCode" jdbcType="VARCHAR" />
+	    <result column="category_comment" property="categoryComment" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="selectCategoryChildren" resultMap="category_one">
+		select * from mms_product_category where parent_category_code = #{categoryCode}
+	</select>
+  
+  
+  <sql id="Base_Column_List" >
+ 
+    id, category_code, category_name, parent_category_code, category_comment, select_flag, 
+    create_date, create_user, last_update_date, last_update_user
+  </sql>
+  <sql id="Base_Where_Case" >
+
+    <where >
+      <if test="id != null" >
+         AND id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="categoryCode != null" >
+         AND category_code = #{categoryCode,jdbcType=VARCHAR}
+      </if>
+      <if test="categoryName != null" >
+         AND category_name = #{categoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="parentCategory.categoryCode != null" >
+         AND parent_category_code = #{parentCategory.categoryCode,jdbcType=VARCHAR}
+      </if>
+      <if test="categoryComment != null" >
+         AND category_comment = #{categoryComment,jdbcType=VARCHAR}
+      </if>
+      <if test="createDate != null" >
+         AND create_date = #{createDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createUser != null" >
+         AND create_user = #{createUser,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdateDate != null" >
+         AND last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdateUser != null" >
+         AND last_update_user = #{lastUpdateUser,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </sql>
+  <select id="selectCount" resultType="java.lang.Long" parameterType="com.spfood.mms.intf.domain.ProductCategory" >
+
+    select count( id)
+     from mms_product_category
+    <include refid="Base_Where_Case" />
+  </select>
+  
+  <select id="select" resultMap="category_one" parameterType="com.spfood.mms.intf.domain.ProductCategory" >
+    select 	id,category_code,category_name,parent_category_code,category_comment,category_type_flag
+     from 	mms_product_category 
+     where 	parent_category_code is null
+  </select>
+  
+  <select id="selectAll" resultMap="category_one" parameterType="com.spfood.mms.intf.domain.ProductCategory" >
+    select 		id,category_code,category_name,parent_category_code,category_comment 
+     from 		mms_product_category 
+     order by 	category_code asc
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+  
+    SELECT 	mms_product_category.*,
+			mms_product_category_property.id as property_id,
+			mms_product_category_property.category_property_name,
+			mms_product_category_property.category_property_description,
+			mms_product_category_property.select_flag,
+			mms_product_category_property_value.id as property_value_id,
+			mms_product_category_property_value.category_property_value
+	 from mms_product_category 
+	 LEFT JOIN  mms_product_category_property ON mms_product_category.category_code = mms_product_category_property.category_code
+	 LEFT JOIN  mms_product_category_property_value on mms_product_category_property.id = mms_product_category_property_value.category_property_id
+	 where 		mms_product_category.id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByCategoryCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  
+    SELECT  mms_product_category.*,
+			mms_product_category_property.id as property_id,
+			mms_product_category_property.category_property_name,
+			mms_product_category_property.select_flag,
+			mms_product_category_property_value.id as property_value_id,
+			mms_product_category_property_value.category_property_value
+	 from mms_product_category 
+	 LEFT JOIN  mms_product_category_property ON mms_product_category.category_code = mms_product_category_property.category_code
+	 LEFT JOIN  mms_product_category_property_value on mms_product_category_property.id = mms_product_category_property_value.category_property_id
+	 where 		mms_product_category.category_code = #{categoryCode,jdbcType=BIGINT} 
+	 order by 	mms_product_category_property.select_flag,mms_product_category_property.id desc
+  </select>
+  
+  <select id="selectByCategoryNameIsHave" resultType="java.lang.Boolean" parameterType="com.spfood.mms.intf.domain.ProductCategory">
+      select 	CASE when count(id)>0 then true else false end as checkResult 
+       from 	mms_product_category 
+       where 	category_name = #{categoryName,jdbcType=VARCHAR}
+       <if test="id != null" >
+          and id != #{id,jdbcType=BIGINT}
+      </if>
+  </select>
+  
+  <select id="selectByCategoryCodeIsHave" resultType="java.lang.Boolean" parameterType="com.spfood.mms.intf.domain.ProductCategory">
+      select CASE when count(id)>0 then true else false end as checkResult 
+       from  mms_product_category 
+       where category_code = #{categoryCode,jdbcType=VARCHAR}
+       <if test="id != null" >
+          and id != #{id,jdbcType=BIGINT}
+      </if>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  
+    delete from mms_product_category
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insert" parameterType="com.spfood.mms.intf.domain.ProductCategory" useGeneratedKeys="true" keyProperty="id">
+    insert into mms_product_category (  category_code,
+    									category_name,
+    									category_another_name,
+      									parent_category_code,
+      									category_comment,
+      									<if test="categoryTypeFlag != null">
+      										category_type_flag,
+      									</if>
+      									create_date,
+      									create_user,
+      									last_update_date, 
+      									last_update_user)
+    							values (#{categoryCode,jdbcType=VARCHAR},
+    									#{categoryName,jdbcType=VARCHAR},
+    									#{categoryAnotherName,jdbcType=VARCHAR}, 
+      									#{parentCategory.categoryCode,jdbcType=VARCHAR},
+      									#{categoryComment,jdbcType=VARCHAR}, 
+      									<if test="categoryTypeFlag != null">
+      										#{categoryTypeFlag,jdbcType=INTEGER},
+      									</if>
+      									#{createDate,jdbcType=TIMESTAMP},
+      									#{createUser,jdbcType=VARCHAR},
+      									#{lastUpdateDate,jdbcType=TIMESTAMP}, 
+      									#{lastUpdateUser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.spfood.mms.intf.domain.ProductCategory" >
+    
+    insert into mms_product_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="categoryCode != null" >
+        category_code,
+      </if>
+      <if test="categoryName != null" >
+        category_name,
+      </if>
+      <if test="parentCategory.categoryCode != null" >
+        parent_category_code,
+      </if>
+      <if test="categoryComment != null" >
+        category_comment,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date,
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="categoryCode != null" >
+        #{categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryName != null" >
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCategory.categoryCode != null" >
+        #{parentCategory.categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryComment != null" >
+        #{categoryComment,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.spfood.mms.intf.domain.ProductCategory" >
+  
+    update mms_product_category
+    <set >
+      <if test="categoryCode != null" >
+        category_code = #{categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryAnotherName != null">
+          category_another_name = #{categoryAnotherName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryName != null" >
+        category_name = #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCategory.categoryCode != null" >
+        parent_category_code = #{parentCategory.categoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryComment != null" >
+        category_comment = #{categoryComment,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null" >
+        last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateUser != null" >
+        last_update_user = #{lastUpdateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.spfood.mms.intf.domain.ProductCategory" >
+  
+    update mms_product_category
+    set 
+      category_name = #{categoryName,jdbcType=VARCHAR},
+      category_another_name = #{categoryAnotherName,jdbcType=VARCHAR},
+      category_comment = #{categoryComment,jdbcType=VARCHAR},
+      last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

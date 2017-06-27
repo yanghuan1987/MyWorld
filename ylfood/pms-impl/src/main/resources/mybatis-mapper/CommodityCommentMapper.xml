@@ -28,6 +28,14 @@
     <result column="express_grade" property="expressGrade" jdbcType="INTEGER" />
     <result column="package_grade" property="packageGrade" jdbcType="INTEGER" />
     <result column="commodity_grade" property="commodityGrade" jdbcType="INTEGER" />
+    
+    <collection property="CommodityCommentPictures" ofType="com.spfood.pms.intf.domain.CommodityCommentPicture">
+        <result column="id" property="id" jdbcType="BIGINT" />
+	    <result column="orderno" property="orderno" jdbcType="VARCHAR" />
+	    <result column="commoditycode" property="commoditycode" jdbcType="VARCHAR" />
+	    <result column="picture_url" property="pictureUrl" jdbcType="VARCHAR" />
+    	<result column="display_order" property="displayOrder" jdbcType="INTEGER" />
+    </collection>
   </resultMap>
   <sql id="Base_Column_List" >
     <!--
@@ -291,17 +299,19 @@
   
     <select id="selectPageInCommodityCommentDetail" resultMap="BaseResultMap" parameterType="com.spfood.pms.intf.domain.CommodityComment">
 				SELECT
-					id,
-					comment_usercode,
-					commodity_code,
-					category_code,
-					comment_content,
-					order_no,
-					comment_time,
-					express_grade,
-					package_grade,
-					commodity_grade,
-					comment_status
+					t.id,
+					t.comment_usercode,
+					t.commodity_code,
+					t.category_code,
+					t.comment_content,
+					t.order_no,
+					t.comment_time,
+					t.express_grade,
+					t.package_grade,
+					t.commodity_grade,
+					t.comment_status,
+					p.picture_url,
+					p.display_order
 				FROM
 					(
 						SELECT
@@ -345,7 +355,7 @@
 							order_no
 						ORDER BY
 							commodity_grade DESC
-					) AS t
+					) AS t LEFT JOIN pms_commodity_comment_picture AS p ON t.commodity_code = p.commoditycode AND t.order_no = p.orderno
 				WHERE
 					1 = 1
 		        <if test="idList != null" >

@@ -98,10 +98,12 @@ public class ProductCategoryManagerImpl extends BaseManagerImpl<ProductCategory>
 			ProductCategory category = productCategoryDao.selectCategoryByCategoryCode(categoryCode);
 			ProductCategory secondCategory = null;
 			ProductCategory firstCategory = null;
-			if(category.getParentCategory() != null && category.getParentCategory().getCategoryCode() != null){
+			if(null != category && category.getParentCategory() != null && category.getParentCategory().getCategoryCode() != null){
 				secondCategory = productCategoryDao.selectCategoryByCategoryCode(category.getParentCategory().getCategoryCode());
 				if(secondCategory.getParentCategory() != null && secondCategory.getParentCategory().getCategoryCode() != null)
 					firstCategory = productCategoryDao.selectCategoryByCategoryCode(secondCategory.getParentCategory().getCategoryCode());
+			}else {
+				log.info("The category with code:["+categoryCode+"] is not exist");
 			}
 			List<ProductCategory> list = new LinkedList<ProductCategory>();
 			if(firstCategory != null)
@@ -122,5 +124,27 @@ public class ProductCategoryManagerImpl extends BaseManagerImpl<ProductCategory>
 	public List<ProductCategory> selectCategoryChildrenByCode(
 			String categoryCode) {
 		return productCategoryDao.selectCategoryChildrenByCode(categoryCode);
+	}
+
+	/**
+	 * 根据编码集合查询名称
+	 * @param List<String》>
+	 * @return
+	 */
+	public List<ProductCategory> selectCategoryNameByCodeList(List<String> categoryCode){
+		List<ProductCategory> list = productCategoryDao.selectCategoryNameByCodeList(categoryCode);
+		List<ProductCategory> listresult = new ArrayList<ProductCategory>();
+		if (null != list && 0 != list.size()) {
+			for (int i = 0; i < categoryCode.size(); i++) {
+				for (int j = 0; j < list.size(); j++) {
+					if (categoryCode.get(i).equals(list.get(j).getCategoryCode())) {
+						listresult.add(list.get(j));
+						break;
+					}
+				}
+			}
+		}
+
+		return listresult;
 	}
 }

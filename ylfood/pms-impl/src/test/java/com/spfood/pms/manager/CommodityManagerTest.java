@@ -36,7 +36,7 @@ import com.spfood.pms.intf.domain.ProductPicture;
 import com.spfood.pms.intf.domain.ProductProperty;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"/local-spring-environment.xml","/spring-context.xml"})
+@ContextConfiguration({"/local-spring-environment.xml","/spring-context.xml","/spring-dubbo.xml"})
 public class CommodityManagerTest {
 
 	@Resource
@@ -57,6 +57,8 @@ public class CommodityManagerTest {
 	private CommodityManager commodityManager;
 	@Resource
 	private CommodityPictureManager commodityPictureManager;
+	
+	
 	private Long testId;
 
 	@Test
@@ -315,9 +317,10 @@ public class CommodityManagerTest {
 			}
 		}
 	}
+	@Test
 	public void selectProduct(){
 		List<Commodity> list = new ArrayList<Commodity>();
-		list = commodityManager.selectCommodityByProduct("8888");
+		list = commodityManager.selectCommodityByProduct("YLP0000000179");
 		for(Commodity c:list){
 			assertEquals("1234567890", c.getCommodityCode());
 			assertEquals("987654321U", c.getCommodityGs1Code());
@@ -415,5 +418,15 @@ public class CommodityManagerTest {
 //			PageInfo<Commodity> pageInfo2 = commodityManager.selectCommodityCommentByPage(pageInfo, commodity);
 //			pageInfo2.isSelectCount();
 //		}
+	}
+	@Test
+	public void selectByProductList() {
+		List<String> codeList = new ArrayList<String>();
+		codeList.add("YLP0000000028");
+		codeList.add("YLP0000000031");
+		codeList.add("YLP0000000032");
+		codeList.add("YLP0000000068");
+//		List<Commodity> commodities = commodityManager.selectCommodityByProduct(codeList);
+//		commodities.size();
 	}
 }

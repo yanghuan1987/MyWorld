@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <% String path = application.getInitParameter("static-file"); %>
-<div class="sp-menu-right" ng-show="show" ng-cloak>
+<div class="sp-menu-right" ng-show="showPage == 3" style="width: 80%;" ng-cloak>
 	<div class="titlebar" style="height: 20px;">
 		<i ></i>
 	</div>
@@ -14,6 +14,8 @@
 					商品-->{{categoryName}}</span>
 					<button type="button" ng-click="showCommodityInfoEduts()"
 						class="sp-btn sp-btn-gray-md" style="margin-top: -8px;">编辑</button>
+					<button type="button" ng-click="returnPage()"
+						class="sp-btn sp-btn-gray-md" style="margin-top: -8px;">返回</button>
 				</p>
 			</div>
 			<!--面板内容开始-->
@@ -73,6 +75,12 @@
 								<td colspan="2" class="ng-binding text-left">{{commodity.commodityWeight}}&nbsp;{{commodity.commodityWeightUnit}}</td>
 								<td class="td-right-view">显示端：</td>
 								<td colspan="2"class="ng-binding text-left">{{commodity.commodityShowPlace}}</td>
+							</tr>
+							<tr style="height: 30px;">
+								<td class="td-right-view">保质期：</td>
+								<td colspan="2" class="ng-binding text-left">{{commodity.shelfLife}}&nbsp;{{commodity.shelfLifeName}}</td>
+								<td class="td-right-view">货架期：</td>
+								<td colspan="2"class="ng-binding text-left">{{commodity.saleDate}}&nbsp;{{commodity.saleDateName}}</td>
 							</tr>
 							<tr style="height: 30px;">
 								<td class="td-right-view">商品评价：</td>

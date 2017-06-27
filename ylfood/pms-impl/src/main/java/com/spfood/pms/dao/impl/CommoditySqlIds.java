@@ -17,5 +17,7 @@ public interface CommoditySqlIds {
 	public String SELECT_COMMODITYCOMMENT_COUNT = "selectCommodityCommentCount";
 	public String UPDATE_COMMODITYCOMMENT_STATUS = "updateCommodityCommentStatus";
 	public String SELECT_COMMODITY_DETAIL = "selectCommodityDetail";
+	public String UPDATE_COMMODITY_QUANTITY = "updateCommodityQuantity";
+	public String SELECT_BY_PRODUCTCODE_LIST = "selectByProductCodeList";
 	
 }

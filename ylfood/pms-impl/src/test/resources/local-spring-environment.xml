@@ -55,5 +55,5 @@
      
     <!-- 使用zookeeper注册中心暴露服务地址 -->
     <!-- <dubbo:registry protocol="zookeeper" address="10.8.48.233:2181,10.8.48.233:2182,10.8.48.233:2183" register="false"/> -->
-        <dubbo:registry protocol="zookeeper" address="10.8.48.230:2181,10.8.48.230:2182,10.8.48.231:2183,10.8.51.100:2184,10.8.51.100:2185" register="false"/>
+    <dubbo:registry protocol="zookeeper" address="10.8.48.230:2181,10.8.48.230:2182,10.8.48.231:2183,10.8.51.100:2184,10.8.51.100:2185" register="false"/>
 </beans>

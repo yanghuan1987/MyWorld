@@ -24,4 +24,11 @@ public interface CategorySearchService {
 	 * @return
 	 */
 	public List<ProductCategory> selectCategoryChildrenByCode(String categoryCode);
+
+	/**
+	 * 根据编码集合查询名称
+	 * @param List<String》>
+	 * @return
+	 */
+	public List<ProductCategory> selectCategoryNameByCodeList(List<String> categoryCode);
 }

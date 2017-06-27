@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.spfood.kernel.dao.impl.BaseDaoImpl;
 import com.spfood.kernel.dao.impl.SqlIds;
@@ -46,6 +47,15 @@ public class CommodityDaoImpl extends BaseDaoImpl<Commodity> implements Commodit
 			return sqlSessionTemplate.selectList(getSqlName(CommoditySqlIds.SELECT_BY_PRODUCTCODE), productCode);
 		} catch (Exception e) {
 			throw new PersistenceException("commodity.dao.selectCommodityByProduct", e,getSqlName(CommoditySqlIds.SELECT_BY_PRODUCTCODE), productCode);
+		}
+	}
+	
+	@Override
+	public List<Commodity> selectCommodityByProduct(List<String> productCodeList) {
+		try {
+			return sqlSessionTemplate.selectList(getSqlName(CommoditySqlIds.SELECT_BY_PRODUCTCODE_LIST), productCodeList);
+		} catch (Exception e) {
+			throw new PersistenceException("commodity.dao.selectCommodityByProduct", e,getSqlName(CommoditySqlIds.SELECT_BY_PRODUCTCODE_LIST), productCodeList);
 		}
 	}
 
@@ -92,5 +102,22 @@ public class CommodityDaoImpl extends BaseDaoImpl<Commodity> implements Commodit
 		} catch (Exception e) {
 			throw new PersistenceException("kernel.dao.selectListByIds", e, null, getSqlName(CommoditySqlIds.SELECT_PAGE_IN_COMMODITY_FOR_COMMENT_DETAIL), idList);
 		}
+	}
+	
+	@Override
+	@Transactional
+	public int updateCommodityQuantity(List<Commodity> list,int dataCount) {
+		int count = 0;
+		try {
+			count = sqlSessionTemplate.update(getSqlName(CommoditySqlIds.UPDATE_COMMODITY_QUANTITY), list);
+			//更新条数不对，手动回滚
+			if (count != dataCount && 0 != count) {
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+				return 0;
+			}
+		} catch (Exception e) {
+			throw new PersistenceException("commodity.dao.updateCommodityQuantity", e, getSqlName(CommoditySqlIds.UPDATE_COMMODITY_QUANTITY), list);
+		}
+		return count;
 	}
 }

@@ -9,7 +9,7 @@
 		<ul class="sp-nav-menu autobreak">
 			<li class="sp-li-line" ng-click="showSearchPage()"Style="cursor:pointer;height:100%;background-color:{{colorones}};"><a>&nbsp;条件查询</a></li>
 		</ul>
-		<ul class="sp-nav-menu autobreak" ng-repeat="cat1 in categoryList">
+		<ul class="sp-nav-menu autobreak" ng-repeat="cat1 in categoryList"  ng-if="cat1.categoryTypeFlag != 2">
 				  <li class="sp-li-line" ng-click="updateOne(cat1)" ng-if ="category.categoryName==cat1.categoryName" Style="cursor:pointer;height:100%;background-color:{{colorone}};"><a><img src='<%=path%>/img/icon_2.png'>&nbsp;{{cat1.categoryName}}</a></li>
 				  <li class="sp-li-line" ng-click="updateOne(cat1)" ng-if ="category.categoryName!=cat1.categoryName" Style="cursor:pointer;height:100%;"><a><img src='<%=path%>/img/icon_2.png'>&nbsp;{{cat1.categoryName}}</a></li>
 				  <ul class="sp-nav-menu-sec sp-nav-menu-hide" ng-show="spMenuShow == {{cat1.id}}" ng-repeat="cat2 in cat1.productCategorys">

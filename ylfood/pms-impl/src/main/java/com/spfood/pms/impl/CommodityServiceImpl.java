@@ -38,6 +38,9 @@ public class CommodityServiceImpl implements CommodityService{
 	@Override
 	public List<ProductCategoryProperty> selectCategoryPropertyByCategoryCode(
 			String categoryCode) {
+		if (null == categoryCode || "".equals(categoryCode)) {
+			return null;
+		}
 		return commodityManager.selectCategoryPropertyByCategoryCode(categoryCode);
 	}
 
@@ -104,6 +107,11 @@ public class CommodityServiceImpl implements CommodityService{
 		return commodityManager.selectCommodityByProduct(productCode);
 	}
 
+	@Override
+	public List<Commodity> selectCommodityByProduct(List<String> productCodeList) {
+		return commodityManager.selectCommodityByProduct(productCodeList);
+	}
+	
 	@Override
 	public Commodity selectOneByCommodityCode(String commodityCode) {
 		//获取商品的基本信息，包含属性信息

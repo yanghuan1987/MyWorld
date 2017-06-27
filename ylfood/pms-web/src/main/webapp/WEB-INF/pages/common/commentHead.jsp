@@ -4,11 +4,10 @@
 <% String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort(); %>
 <!--header-->
  <div class="row sp-head">
-   <div class="sp-head-logo" style="font-size: 18px;color: #99c731;">
+   <div class="sp-head-logo">
      <span><a href="${pageContext.request.contextPath}/pms/login/main" ><img src="<%=path%>/img/pms/PMS_logo.png"/></a></span>
-     <span style="padding-left:15px;">-</span>
-     <span style="padding-left:10px;">商品评价管理</span>
    </div>
+   <div style="float: left;font-size: 30px;color: #99c731;padding-left: 8%;">PMS评价管理</div>
    <div class="sp-head-right">
     <span class="sp-head-user"><img src="<%=path%>/img/user.png"><shiro:principal property="account"/></span>
 	    <span class="sp-head-exit" >

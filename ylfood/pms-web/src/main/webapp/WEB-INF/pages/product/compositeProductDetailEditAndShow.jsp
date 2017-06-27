@@ -3,8 +3,8 @@
 <%
 	String path = application.getInitParameter("static-file");
 %>
-<div ng-cloak class="sp-menu-right sp-product-head"
-	ng-controller="compositeProductDetailController" ng-show="showCproduct">
+<div ng-cloak class="sp-menu-right sp-product-head" style="width: 80%;"
+	ng-controller="compositeProductDetailController" ng-show="showPage == 7">
 	<!-- 预览框 -->
 
 	<div id='compositeProducteditpopUpHg' class='sp-popup sp-popup-hg'>
@@ -18,7 +18,8 @@
 			</div>
 		</div>
 		<div class='sp-pop-content'>
-			<div id="content" class="sp-content" style="border: 0;overflow-y: auto;overflow-x: hidden;height: 600px;">
+			<div id="content" class="sp-content"
+				style="border: 0; overflow-y: auto; overflow-x: hidden; height: 600px;">
 				<div class="sp-page-title" style="margin-left: 0;">
 					<div style="text-align: center; width: 100%;">产品预览</div>
 				</div>
@@ -71,19 +72,26 @@
 							class="viewlabel text-left" style="width: 75%;">{{x.optionName}}</label><br>
 					</div>
 					<div class="titlebar">
-						<label class="viewlabel text-right" style="width: 25%;">采购基本单位：
-						</label> <label
-							class="viewlabel text-left" style="width: 75%;">{{compositeProduct.product.productBuyUnitName}}</label><br>
+						<label class="viewlabel text-right" style="width: 25%;">计量单位：
+						</label> <label class="viewlabel text-left" style="width: 75%;">{{compositeProduct.product.productBuyUnitName}}</label><br>
+					</div>
+					<div class="titlebar">
+						<label class="viewlabel text-right" style="width: 25%;">保质期：
+						</label> <label class="viewlabel text-left" style="width: 75%;">{{compositeProduct.product.shelfLife}}
+							{{compositeProduct.product.shelfLifeName}}</label><br>
+					</div>
+					<div class="titlebar">
+						<label class="viewlabel text-right" style="width: 25%;">货架期：
+						</label> <label class="viewlabel text-left" style="width: 75%;">{{compositeProduct.product.saleDate}}
+							{{compositeProduct.product.saleDateName}}</label><br>
 					</div>
 					<div class="titlebar">
 						<label class="viewlabel text-right" style="width: 25%;">温区：
-						</label> <label
-							class="viewlabel text-left" style="width: 75%;">{{compositeProduct.product.productTemperatureZoneName}}</label><br>
+						</label> <label class="viewlabel text-left" style="width: 75%;">{{compositeProduct.product.productTemperatureZoneName}}</label><br>
 					</div>
 					<div class="titlebar">
 						<label class="viewlabel text-right" style="width: 25%;">税率：
-						</label> <label
-							class="viewlabel text-left" style="width: 75%;">{{compositeProduct.product.taxRateName}}</label><br>
+						</label> <label class="viewlabel text-left" style="width: 75%;">{{compositeProduct.product.taxRateName}}</label><br>
 					</div>
 					<!-- 产品属性显示 -->
 					<div
@@ -93,10 +101,11 @@
 						<label class="viewlabel text-left" style="width: 75%;">{{productProperty.productPropertyValue}}</label><br>
 					</div>
 					<div class="titlebar" ng-repeat="packUnit in productPackUnit">
-						<label class="viewlabel text-right" style="width: 25%;" ng-show="$index==0">包装单位： </label> 
-						<label class="viewlabel text-right" style="width: 25%;" ng-show="$index!=0">  </label> 
-						<label 
-							class="viewlabel text-left" style="width: 75%;">{{packUnit.unitValue}}{{compositeProduct.product.productBuyUnitName}}/{{packUnit.unitName}}</label><br>
+						<label class="viewlabel text-right" style="width: 25%;"
+							ng-show="$index==0">包装单位： </label> <label
+							class="viewlabel text-right" style="width: 25%;"
+							ng-show="$index!=0"> </label> <label class="viewlabel text-left"
+							style="width: 75%;">{{packUnit.unitValue}}{{compositeProduct.product.productBuyUnitName}}/{{packUnit.unitName}}</label><br>
 					</div>
 					<!-- 产品图片显示 -->
 					<!-- 产品详细显示结束 -->
@@ -109,12 +118,12 @@
 						<br>
 						<!-- 采用angular循环的方式，对存入productPictures的图片进行展示 -->
 						<label ng-repeat="picture in thumbHeader"
-							style="width: 15%; margin-left: 1.5%; margin-top: 3%;display: inline-block;"> <img
-							ng-src="{{picture.pictureAddress}}" class="sp-picture-title" />
+							style="width: 15%; margin-left: 1.5%; margin-top: 3%; display: inline-block;">
+							<img ng-src="{{picture.pictureAddress}}" class="sp-picture-title" />
 						</label> <br>
 					</div>
 					<!-- 头部图片ed -->
-						<br>
+					<br>
 					<!-- 详情页图片st -->
 					<div class="titlebar sp-mune-title">
 						<i class="pms-icon-kz"></i> 详情页图片
@@ -135,11 +144,11 @@
 	<div ng-show="!editCProduct">
 		<!-- 顶部按钮 -->
 		<div class="titlebar" style="height: 20px;">
-			<i ></i>
+			<i></i>
 		</div>
 		<!-- 顶部按钮 end -->
 		<div class="sp-content-bg"
-			style="background-color: white; width: 98%;margin-left: 15px;overflow-x: hidden;">
+			style="background-color: white; width: 98%; margin-left: 15px; overflow-x: hidden;">
 			<!--面板开始-->
 			<div class="sp-panel panel panel-default">
 				<div class="sp-panel-body panel-body category-name-head">
@@ -147,6 +156,8 @@
 						<span>产品-->{{compositeProduct.product.productName}}</span>
 						<button type="button" ng-click="onEditClick()"
 							class="sp-btn sp-btn-gray-md" style="margin-top: -8px;">编辑</button>
+						<button type="button" ng-click="returnPage()"
+							class="sp-btn sp-btn-gray-md" style="margin-top: -8px;">返回</button>
 					</p>
 				</div>
 				<!--面板内容开始-->
@@ -210,21 +221,32 @@
 					</div>
 					<div class="titlebar">
 						<div class="valueName control-label sp-input-p"
-							style="text-align: right; padding: 3px;">采购基本单位：</div>
-						<div class="valueName"
-							style="padding: 3px;">{{compositeProduct.product.productBuyUnitName}}</div>
+							style="text-align: right; padding: 3px;">计量单位：</div>
+						<div class="valueName" style="padding: 3px;">{{compositeProduct.product.productBuyUnitName}}</div>
+					</div>
+					<div class="titlebar">
+						<div class="valueName control-label sp-input-p"
+							style="text-align: right; padding: 3px;">保质期：</div>
+						<div class="valueName" style="padding: 3px;">
+							{{compositeProduct.product.shelfLife}}
+							{{compositeProduct.product.shelfLifeName}}</div>
+					</div>
+					<div class="titlebar">
+						<div class="valueName control-label sp-input-p"
+							style="text-align: right; padding: 3px;">货架期：</div>
+						<div class="valueName" style="padding: 3px;">
+							{{compositeProduct.product.saleDate}}
+							{{compositeProduct.product.saleDateName}}</div>
 					</div>
 					<div class="titlebar">
 						<div class="valueName control-label sp-input-p"
 							style="text-align: right; padding: 3px;">温区：</div>
-						<div class="valueName"
-							style="padding: 3px;">{{compositeProduct.product.productTemperatureZoneName}}</div>
+						<div class="valueName" style="padding: 3px;">{{compositeProduct.product.productTemperatureZoneName}}</div>
 					</div>
 					<div class="titlebar">
 						<div class="valueName control-label sp-input-p"
 							style="text-align: right; padding: 3px;">温区：</div>
-						<div class="valueName"
-							style="padding: 3px;">{{compositeProduct.product.taxRateName}}</div>
+						<div class="valueName" style="padding: 3px;">{{compositeProduct.product.taxRateName}}</div>
 					</div>
 					<!-- 产品属性  start-->
 					<div class="titlebar sp-mune-title">
@@ -244,13 +266,12 @@
 						<i class="pms-icon-kz"></i> 包装单位
 					</div>
 					<div class="titlebar">
-						<div class="viewproper"
-							ng-repeat="packUnit in productPackUnit">
+						<div class="viewproper" ng-repeat="packUnit in productPackUnit">
 							<div class="control-label"
-							style="text-align: right; padding: 3px; width: 170px; float: left;">
+								style="text-align: right; padding: 3px; width: 170px; float: left;">
 								{{packUnit.unitValue}}{{compositeProduct.product.productBuyUnitName}}/{{packUnit.unitName}}</div>
 							<div style="padding: 3px; float: left; width: 58.33333333%;">
-								 </div>
+							</div>
 						</div>
 					</div>
 
@@ -265,10 +286,10 @@
 						<!-- 采用angular循环的方式，对存入productPictures的图片进行展示 -->
 						<label
 							ng-repeat="picture in compositeProduct.product.productPictures"
-							style="width: 15%; margin-left: 1.5%; margin-top: 3%;display: inline-block;"> <img
-							ng-show="picture.pictureShowPosition == 0"
-							ng-src="{{picture.pictureAddress}}" class="sp-picture-title" /></label>
-						<br>
+							style="width: 15%; margin-left: 1.5%; margin-top: 3%; display: inline-block;">
+							<img ng-show="picture.pictureShowPosition == 0"
+							ng-src="{{picture.pictureAddress}}" class="sp-picture-title" />
+						</label> <br>
 					</div>
 					<!-- 头部图片ed -->
 					<!-- 详情页图片st -->
@@ -293,11 +314,11 @@
 	<div ng-show="editCProduct">
 		<!-- 顶部按钮 -->
 		<div class="titlebar" style="height: 20px;">
-			<i ></i>
+			<i></i>
 		</div>
 		<!-- 顶部按钮 end -->
 		<div class="sp-content-bg"
-			style="background-color: white; width: 98%;margin-left: 15px;overflow-x: hidden;">
+			style="background-color: white; width: 98%; margin-left: 15px; overflow-x: hidden;">
 			<!--面板开始-->
 			<div class="sp-panel panel panel-default">
 				<div class="sp-panel-body panel-body category-name-head">
@@ -305,6 +326,8 @@
 						产品--> {{compositeProduct.product.productName}}<input type="button"
 							class="sp-btn sp-btn-black-sm" value="预 览"
 							onclick="showPopup('compositeProducteditpopUpHg',true)">
+						<button type="button" ng-click="returnPage('edit')"
+							class="sp-btn sp-btn-black-sm">返回</button>
 					</p>
 				</div>
 				<form name="compositeProductDetailEditForm"
@@ -342,7 +365,8 @@
 							<!--产品搜索面板开始-->
 							<div class="sp-panel panel panel-default">
 								<!-- 面板内容start -->
-								<div class="sp-row-border row sp-product-tb" style="overflow-x: hidden;">
+								<div class="sp-row-border row sp-product-tb"
+									style="overflow-x: hidden;">
 									<!-- 表格开始 -->
 									<table class="sp-table" style="TABLE-LAYOUT: fixed">
 										<!-- 表格头部start -->
@@ -389,27 +413,29 @@
 						<!-- 表头品类及搜索结果部分 结束-->
 						<!-- 已选择产品 -->
 						<div class="titlebar sp-mune-title" style="margin-bottom: 6px;">
-							<i class="pms-icon-kz"></i> 已选择产品
-							<span style="color: red" ng-show="!haveprodect">至少选择一个产品！</span>
+							<i class="pms-icon-kz"></i> 已选择产品 <span style="color: red"
+								ng-show="!haveprodect">至少选择一个产品！</span>
 						</div>
 						<div class="titlebar">
 							<div ng-repeat="productItem in selectedProductItems"
 								style="padding: 5px; min-height: 20px;">
 								<span>{{$index + 1}}</span> <span>{{productItem.product.productName}}&nbsp;|&nbsp;{{productItem.product.productSpecificationValue}}{{productItem.product.productSpecificationUnitFirst}}/{{productItem.product.productSpecificationUnitSecond}}</span>
-								<span ng-repeat="property in productItem.product.productProperties">&nbsp;|&nbsp;{{property.productPropertyValue}}</span>
+								<span
+									ng-repeat="property in productItem.product.productProperties">&nbsp;|&nbsp;{{property.productPropertyValue}}</span>
 								<span> <i class="pms-icon-jhh"
-							ng-click="onProductQuantityMinus($index)"> <i
-								name="productProperty[$index]"
-								ng-model="productItem.productProperty[$index]"
-								style="width: 100%; height: 100%;" class="fade"></i></i>
-							{{productItem.quantity}} <i class="pms-icon-jh"
-							ng-click="onProductQuantityAdd($index)"> <i
-								ng-model="add[$index]" style="width: 100%; height: 100%;"
-								class="fade"></i></i>
+									ng-click="onProductQuantityMinus($index)"> <i
+										name="productProperty[$index]"
+										ng-model="productItem.productProperty[$index]"
+										style="width: 100%; height: 100%;" class="fade"></i></i>
+									{{productItem.quantity}} <i class="pms-icon-jh"
+									ng-click="onProductQuantityAdd($index)"> <i
+										ng-model="add[$index]" style="width: 100%; height: 100%;"
+										class="fade"></i></i>
 								</span>
 							</div>
 						</div>
-						<input type="hidden" ng-model="compositeProduct.product.id" ng-show="false">
+						<input type="hidden" ng-model="compositeProduct.product.id"
+							ng-show="false">
 						<div class="titlebar sp-mune-title">
 							<i class="pms-icon-kz"></i> 产品基本信息
 						</div>
@@ -466,14 +492,14 @@
 										|| compositeProductDetailEditForm.productSpecificationValue.$invalid">*产品的规格值大于0且不能为空！</span>
 								<select style="float: left; height: 30px;"
 									class="sp-select sp-select-sm" ng-disabled="true"
-									ng-change = "productSpecificationUnitFirstChange(compositeProduct.product.productSpecificationUnitFirst)"
+									ng-change="productSpecificationUnitFirstChange(compositeProduct.product.productSpecificationUnitFirst)"
 									ng-model="compositeProduct.product.productSpecificationUnitFirst">
 									<option ng-repeat="x in specificationFirstValues"
 										value="{{x.optionName}}">{{x.optionName}}</option>
 								</select> <span style="float: left;">/</span> <select
 									style="float: left; height: 30px;"
 									class="sp-select sp-select-sm" ng-disabled="true"
-									ng-change = "productSpecificationUnitSecondChange(compositeProduct.product.productSpecificationUnitSecond)"
+									ng-change="productSpecificationUnitSecondChange(compositeProduct.product.productSpecificationUnitSecond)"
 									ng-model="compositeProduct.product.productSpecificationUnitSecond">
 									<option ng-repeat="x in specificationSecondValues"
 										value="{{x.optionName}}">{{x.optionName}}</option>
@@ -491,22 +517,59 @@
 							</div>
 						</div>
 
-					<div class="titlebar">
-						<span class="valueName control-label sp-input-p"
-							style="text-align: right; padding: 3px;">
-							<span style="color: red">*</span>采购基本单位：
-						</span>
-						<span>
-							<select ng-model="compositeProduct.product.productBuyUnitName" ng-disabled = "UnitDisable || true"
-								class="sp-select sp-select-md" required name="productBuyUnit"
-								style="height: 30px;" placeholder="采购基本单位">
-								<option ng-repeat="x in BasicPurchaseUnit" 
+						<div class="titlebar">
+							<span class="valueName control-label sp-input-p"
+								style="text-align: right; padding: 3px;"> <span
+								style="color: red">*</span>计量单位：
+							</span> <span> <select
+								ng-model="compositeProduct.product.productBuyUnitName"
+								ng-disabled="UnitDisable || true" class="sp-select sp-select-md"
+								required name="productBuyUnit" style="height: 30px;"
+								placeholder="计量单位">
+									<option ng-repeat="x in BasicPurchaseUnit"
 										value="{{x.optionName}}">{{x.optionName}}</option>
 							</select><span style="color: red">当产品规格第一单位为非重量单位时，该选项等于产品规格第二单位并且不可选</span>
-								 <span style="color: red"
-								ng-show="productDetailEditForm.productBuyUnit.$error.required && !productDetailEditForm.productBuyUnit.$pristine">采购基本单位不能为空！</span>
-						</span>
-					</div>
+								<span style="color: red"
+								ng-show="compositeProductDetailEditForm.productBuyUnit.$error.required && !compositeProductDetailEditForm.productBuyUnit.$pristine">计量单位不能为空！</span>
+							</span>
+						</div>
+
+						<div class="titlebar">
+							<div class="valueName control-label sp-input-p"
+								style="text-align: right; padding: 3px;">保质期：</div>
+							<div class="valueName" style="padding-left: 0px;">
+								<input type="text" name="shelfLife" class="sp-input-sm sp-input"
+									step="0.01" ng-pattern="/^\d+$/" ng-model="compositeProduct.product.shelfLife"
+									required style="float: left; width: 80px;" placeholder="保质期" />
+								<span style="color: red"
+									ng-show="compositeProductDetailEditForm.shelfLife.$error.pattern && !compositeProductDetailEditForm.shelfLife.$pristine">保质期必须为正整数！</span>
+								<select class="sp-select sp-select-sm"
+									style="float: left; height: 30px;"
+									ng-model="compositeProduct.product.shelfLifeName">
+									<option ng-repeat="x in dateUnits" value="{{x.optionName}}">{{x.optionName}}</option>
+								</select>
+							</div>
+							<div class="titlebar form-group"
+								style="color: red; margin-left: 10%; width: 89%;">注:非必填项,保质期未输入的场合改单位不会被保存，但可正常操作！</div>
+						</div>
+						<div class="titlebar">
+							<div class="valueName control-label sp-input-p"
+								style="text-align: right; padding: 3px;">货架期：</div>
+							<div class="valueName" style="padding-left: 0px;">
+								<input type="text" name="saleDate" class="sp-input-sm sp-input"
+									step="0.01" ng-pattern="/^\d+$/" ng-model="compositeProduct.product.saleDate"
+									required style="float: left; width: 80px;" placeholder="货架期" />
+								<span style="color: red"
+									ng-show="compositeProductDetailEditForm.saleDate.$error.pattern && !compositeProductDetailEditForm.saleDate.$pristine">货架期必须为正整数！</span>
+								<select class="sp-select sp-select-sm"
+									style="float: left; height: 30px;"
+									ng-model="compositeProduct.product.saleDateName">
+									<option ng-repeat="x in dateUnits" value="{{x.optionName}}">{{x.optionName}}</option>
+								</select>
+							</div>
+							<div class="titlebar form-group"
+								style="color: red; margin-left: 10%; width: 89%;">注:非必填项,货架期未输入的场合改单位不会被保存，但可正常操作！</div>
+						</div>
 
 						<div class="titlebar">
 							<div class="valueName control-label sp-input-p"
@@ -516,20 +579,19 @@
 							</div>
 						</div>
 
-					<div class="titlebar">
-						<div class="valueName control-label sp-input-p"
-							style="text-align: right; padding: 3px;">
-							<span style="color: red">*</span>税率：
-						</div>
-						<div style="float: left;">
-						<select style="float: left; height: 30px;"
+						<div class="titlebar">
+							<div class="valueName control-label sp-input-p"
+								style="text-align: right; padding: 3px;">
+								<span style="color: red">*</span>税率：
+							</div>
+							<div style="float: left;">
+								<select style="float: left; height: 30px;"
 									class="sp-select sp-select-sm"
 									ng-model="compositeProduct.product.taxRateName">
-									<option ng-repeat="x in severTaxRate"
-										value="{{x.optionName}}">{{x.optionName}}</option>
+									<option ng-repeat="x in severTaxRate" value="{{x.optionName}}">{{x.optionName}}</option>
 								</select>
+							</div>
 						</div>
-					</div>
 						<!-- 产品属性  start-->
 						<div class="titlebar sp-mune-title">
 							<i class="pms-icon-kz"></i> 产品属性
@@ -540,13 +602,13 @@
 								<div class="valueName control-label"
 									style="text-align: right; padding: 3px; width: 170px;">
 									{{categoryProperty.categoryPropertyName}}：</div>
-								<div style="width: 58.33333333%;float: left;">
+								<div style="width: 58.33333333%; float: left;">
 									<div
 										ng-repeat="productProperty in compositeProduct.product.productProperties"
 										ng-if="productProperty.customerDefineFlag != 1 
 											&& productProperty.productPropertyName == categoryProperty.categoryPropertyName">
-										<select class="propertyV1 sp-select sp-select-lg"
-												style="height: 30px;"
+										<select class="propertyV4 sp-select sp-select-lg"
+											style="height: 30px;"
 											id="{{categoryProperty.categoryPropertyName}}">
 											<option
 												ng-repeat="x in categoryProperty.productCategoryPropertyValues"
@@ -562,8 +624,8 @@
 									</div>
 									<div ng-repeat="productProperty in otherProperty"
 										ng-if="productProperty.categoryPropertyName == categoryProperty.categoryPropertyName">
-										<select class="propertyV1 sp-select sp-select-lg"
-												style="height: 30px;"
+										<select class="propertyV4 sp-select sp-select-lg"
+											style="height: 30px;"
 											id="{{categoryProperty.categoryPropertyName}}">
 											<option
 												ng-repeat="x in categoryProperty.productCategoryPropertyValues"
@@ -574,50 +636,47 @@
 								</div>
 							</div>
 						</div>
-						
-					<!-- 产品详细显示结束 -->
-					<!-- 包装单位 start -->
-					<div class="titlebar sp-mune-title"
-						style="height: 35px; margin-bottom: 10px; margin-top: 10px;">
-						<i class="pms-icon-kz"></i> 包装单位
-						<span style="color: red" ng-show="showProductBuyUnitEmpty">请先选择采购基本单位！</span>
-						<button class="sp-btn sp-btn-black-sm"
-							ng-click="onAddProductPackUnitClick(compositeProduct.product.productBuyUnitName)" 
-							class="icon-left-bt" 
-							style="height: 100%;">新&nbsp;增</button>
-					</div>
-					<!-- 包装单位展示框  start-->
-					<div style="margin-left: 120px; margin-right: 120px;">
-						<table ng-show="productPackUnit.length > 0"
-							class="sp-table"
-							style="TABLE-LAYOUT: fixed; text-align: center; margin-bottom: 10px;">
-							<tbody>
-								<tr
-									style="background-color: #EBEBEB; font-size: 12px; text-align: center;">
-									<td class="th-width-md">包装单位</td>
-									<td class="th-width-md last-td">操作</td>
-								</tr>
-								<!-- 显示新添加的自定义属性名和属性值 -->
-								<tr style="height: 30px;"
-									ng-repeat="packUnit in productPackUnit">
-									<td class="text-left" style="text-align: center;">{{packUnit.unitValue}}
-									{{compositeProduct.product.productBuyUnitName}}/{{packUnit.unitName}}</td>
-									<td  class="last-td" style="text-align: center;"><a
-										ng-click="onAddProductPackUnitClick(compositeProduct.product.productBuyUnitName,packUnit,$index)"
-										href="#"
-										style="cursor: pointer; color: #99C731; text-decoration: underline;">编辑</a>
-										<a ng-click="onRemoveProductPackUnitClick($index)"
-										href="#"
-										style="cursor: pointer; color: #99C731; text-decoration: underline;">删除</a>
-									</td>
-								</tr>
-								<!-- 显示新添加的自定义属性名和属性值  end-->
-							</tbody>
-						</table>
-					</div>
-					<!-- 包装单位展示框  end-->
-					<!-- 包装单位  end  -->
-						
+
+						<!-- 产品详细显示结束 -->
+						<!-- 包装单位 start -->
+						<div class="titlebar sp-mune-title"
+							style="height: 35px; margin-bottom: 10px; margin-top: 10px;">
+							<i class="pms-icon-kz"></i> 包装单位 <span style="color: red"
+								ng-show="showProductBuyUnitEmpty">请先选择计量单位！</span>
+							<button class="sp-btn sp-btn-black-sm"
+								ng-click="onAddProductPackUnitClick(compositeProduct.product.productBuyUnitName)"
+								class="icon-left-bt" style="height: 100%;">新&nbsp;增</button>
+						</div>
+						<!-- 包装单位展示框  start-->
+						<div style="margin-left: 120px; margin-right: 120px;">
+							<table ng-show="productPackUnit.length > 0" class="sp-table"
+								style="TABLE-LAYOUT: fixed; text-align: center; margin-bottom: 10px;">
+								<tbody>
+									<tr
+										style="background-color: #EBEBEB; font-size: 12px; text-align: center;">
+										<td class="th-width-md">包装单位</td>
+										<td class="th-width-md last-td">操作</td>
+									</tr>
+									<!-- 显示新添加的自定义属性名和属性值 -->
+									<tr style="height: 30px;"
+										ng-repeat="packUnit in productPackUnit">
+										<td class="text-left" style="text-align: center;">{{packUnit.unitValue}}
+											{{compositeProduct.product.productBuyUnitName}}/{{packUnit.unitName}}</td>
+										<td class="last-td" style="text-align: center;"><a
+											ng-click="onAddProductPackUnitClick(compositeProduct.product.productBuyUnitName,packUnit,$index)"
+											href="#"
+											style="cursor: pointer; color: #99C731; text-decoration: underline;">编辑</a>
+											<a ng-click="onRemoveProductPackUnitClick($index)" href="#"
+											style="cursor: pointer; color: #99C731; text-decoration: underline;">删除</a>
+										</td>
+									</tr>
+									<!-- 显示新添加的自定义属性名和属性值  end-->
+								</tbody>
+							</table>
+						</div>
+						<!-- 包装单位展示框  end-->
+						<!-- 包装单位  end  -->
+
 						<!-- 图片模板开始 -->
 						<jsp:include page="../common/picture.jsp"></jsp:include>
 						<!-- 图片模板结束 -->
@@ -630,6 +689,8 @@
 								 compositeProductDetailEditForm.productSpecificationValue.$error.required || !isHeaderPictureSatified ||!isDetailPictureSatified || 
 								 compositeProductDetailEditForm.productSpecificationUnitFirst.$error.required || 
 								 compositeProductDetailEditForm.productSpecificationUnitSecond.$error.required ||
+                                 compositeProductDetailEditForm.shelfLife.$error.pattern && !compositeProductDetailEditForm.shelfLife.$pristine || 
+                                 compositeProductDetailEditForm.saleDate.$error.pattern && !compositeProductDetailEditForm.saleDate.$pristine ||
                                  isProductPropertyMissed || !haveprodect ||
                                  !serverGs1Code || !Gs1Exist || doubleClick"
 								style="width: 100%;">完成</button>

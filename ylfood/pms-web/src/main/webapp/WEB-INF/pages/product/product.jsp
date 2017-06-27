@@ -26,8 +26,10 @@
 
 	<!-- main container -->
 	<div class="row">
+		<jsp:include page="/WEB-INF/pages/common/menu.jsp"></jsp:include>
 		<jsp:include page="productMenu.jsp"></jsp:include>
 		<jsp:include page="productTable.jsp"></jsp:include>
+		<jsp:include page="ProductSecondary.jsp"></jsp:include>
 		<jsp:include page="productDetailSerch.jsp"></jsp:include>
 			<!-- 自定义属性弹出编辑框  start-->
 			  <!---弹出框-普通---->
@@ -106,6 +108,8 @@
 			  </div>
 			  </form>
 			<!-- 自定义属性弹出编辑框  end-->
+			<jsp:include page="productSecondaryDetailAdd.jsp"></jsp:include>
+			<jsp:include page="productSecondaryDetailEditAndShow.jsp"></jsp:include>
 			<jsp:include page="compositeProductDetailAdd.jsp"></jsp:include>
 			<jsp:include page="compositeProductDetailEditAndShow.jsp"></jsp:include>
 			<jsp:include page="productDetailAdd.jsp"></jsp:include>

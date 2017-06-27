@@ -145,7 +145,6 @@ public class CommodityManagerImpl extends BaseManagerImpl<Commodity> implements 
             pageInfos.setResult(newlist);
         }else
             pageInfos.setResult(null);
-            
         return pageInfos;
     }
 
@@ -194,5 +193,12 @@ public class CommodityManagerImpl extends BaseManagerImpl<Commodity> implements 
     @Override
     public List<Commodity> selectCommodityByCodelist(Parameters parameters) {
         return commodityDao.selectCommodityByCodelist(parameters);
+    }
+    
+    @Override
+    public List<Commodity> selectCommodityPriceByCodelist(List<String> codeList) {
+    	if(codeList == null || codeList.size() < 1)
+    		return null;
+        return commodityDao.selectCommodityPriceByCodelist(codeList);
     }
 }

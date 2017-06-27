@@ -10,7 +10,7 @@
 			<tbody>
 				<tr>
 					<td style="width: 5%;text-align: right;">商品名称</td>
-					<td style="text-align: left;width: 5%;"><input ng-model="commodityName"
+					<td style="text-align: left;width: 5%;"><input ng-model="commodityName" ng-keyup="enterKeyup($event,2)"
 						class="sp-input sp-input-md " type="text"></td>
 					<td style="width: 5%;text-align: right;">商品分类</td>
 					<td style="text-align: left;width: 20%;"><select ng-model="category1"

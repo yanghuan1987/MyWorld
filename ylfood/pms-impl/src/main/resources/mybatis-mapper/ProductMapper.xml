@@ -15,11 +15,20 @@
 	    <result column="product_temperature_zone_code" property="productTemperatureZoneCode" jdbcType="VARCHAR" />
 	    <result column="tax_rate_name" property="taxRateName" jdbcType="VARCHAR" />
 	    <result column="tax_rate_value" property="taxRateValue" jdbcType="VARCHAR" />
+	    
+	    <result column="shelf_life" property="shelfLife" jdbcType="INTEGER" />
+	    <result column="shelf_life_name" property="shelfLifeName" jdbcType="VARCHAR" />
+	    <result column="shelf_life_value" property="shelfLifeValue" jdbcType="VARCHAR" />
+	    <result column="sale_date" property="saleDate" jdbcType="INTEGER" />
+	    <result column="sale_date_name" property="saleDateName" jdbcType="VARCHAR" />
+	    <result column="sale_date_value" property="saleDateValue" jdbcType="VARCHAR" />
+	    
 	    <result column="product_show_name" property="productShowName" jdbcType="VARCHAR" />
 	    <result column="product_terminal" property="productTerminal" jdbcType="DECIMAL" />
 	    <result column="product_status" property="productStatus" jdbcType="INTEGER" />
 	    <result column="sale_flag" property="saleFlag" jdbcType="INTEGER" />
 	    <result column="composite_flag" property="compositeFlag" jdbcType="INTEGER" />
+	    <result column="product_secondary_specification" property="productSecondarySpecification" jdbcType="VARCHAR" />
 	    <result column="product_specification_value" property="productSpecificationValue" jdbcType="FLOAT" />
 	    <result column="product_specification_unit_first" property="productSpecificationUnitFirst" jdbcType="VARCHAR" />
 	    <result column="product_specification_unit_second" property="productSpecificationUnitSecond" jdbcType="VARCHAR" />
@@ -69,7 +78,7 @@
 			MyBatis Generator, do not modify. -->
     id, product_code, category_code, product_gs1_code, product_name, product_show_name,product_buy_unit_name,
     product_buy_unit_code, 
-    product_terminal, product_status, sale_flag, composite_flag, product_specification_value, 
+    product_terminal, product_status, sale_flag, composite_flag, product_secondary_specification,product_specification_value, 
     product_specification_unit_first, product_specification_unit_second, 
     product_specification_unit_first_value,product_specification_unit_second_value
     create_date, 
@@ -154,6 +163,9 @@
       </if>
       <if test="compositeFlag != null" >
          AND composite_flag = #{compositeFlag,jdbcType=INTEGER}
+      </if>
+      <if test="productSecondarySpecification != null" >
+         AND product_secondary_specification = #{productSecondarySpecification,jdbcType=VARCHAR}
       </if>
       <if test="productSpecificationValue != null" >
          AND product_specification_value = #{productSpecificationValue,jdbcType=FLOAT}
@@ -404,6 +416,7 @@
 			product_status,
 			sale_flag,
 			composite_flag,
+			product_secondary_specification,
 			product_specification_value,
 			product_specification_unit_first,
 			product_specification_unit_second,
@@ -415,6 +428,12 @@
 			product_temperature_zone_name,
 			tax_rate_name,
 			tax_rate_value,
+			shelf_life,
+			shelf_life_name,
+			shelf_life_value,
+			sale_date,
+			sale_date_name,
+			sale_date_value,
 			create_date,
 			create_user,
 			last_update_date,
@@ -425,12 +444,16 @@
 				#{productCode,jdbcType=VARCHAR}, #{categoryCode,jdbcType=VARCHAR}, 
 				#{productGs1Code,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productShowName,jdbcType=VARCHAR}, 
 				#{productTerminal,jdbcType=DECIMAL}, #{productStatus,jdbcType=INTEGER}, #{saleFlag,jdbcType=INTEGER}, 
-				#{compositeFlag,jdbcType=INTEGER}, #{productSpecificationValue,jdbcType=FLOAT}, 
+				#{compositeFlag,jdbcType=INTEGER}, #{productSecondarySpecification,jdbcType=VARCHAR}, 
+				#{productSpecificationValue,jdbcType=FLOAT}, 
 				#{productSpecificationUnitFirst,jdbcType=VARCHAR}, #{productSpecificationUnitSecond,jdbcType=VARCHAR},
 				#{productSpecificationUnitFirstValue,jdbcType=VARCHAR}, #{productSpecificationUnitSecondValue,jdbcType=VARCHAR},
 				#{productBuyUnitCode,jdbcType=VARCHAR},  #{productBuyUnitName,jdbcType=VARCHAR},
 				#{productTemperatureZoneCode,jdbcType=VARCHAR},  #{productTemperatureZoneName,jdbcType=VARCHAR}, 
 				#{taxRateName,jdbcType=VARCHAR},  #{taxRateValue,jdbcType=VARCHAR}, 
+				#{shelfLife,jdbcType=INTEGER},  #{shelfLifeName,jdbcType=VARCHAR}, 
+				#{shelfLifeValue,jdbcType=VARCHAR},  #{saleDate,jdbcType=INTEGER}, 
+				#{saleDateName,jdbcType=VARCHAR},  #{saleDateValue,jdbcType=VARCHAR}, 
 				#{createDate,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, #{lastUpdateDate,jdbcType=TIMESTAMP}, 
 				#{lastUpdateUser,jdbcType=VARCHAR})
 	</insert>
@@ -550,6 +573,24 @@
       <if test="taxRateValue != null" >
         tax_rate_value = #{taxRateValue,jdbcType=VARCHAR},
       </if>
+      <if test="shelfLife != null" >
+        shelf_life = #{shelfLife,jdbcType=INTEGER},
+      </if>
+      <if test="shelfLifeName != null" >
+        shelf_life_name = #{shelfLifeName,jdbcType=VARCHAR},
+      </if>
+      <if test="shelfLifeValue != null" >
+        shelf_life_value = #{shelfLifeValue,jdbcType=VARCHAR},
+      </if>
+      <if test="saleDate != null" >
+        sale_date = #{saleDate,jdbcType=INTEGER},
+      </if>
+      <if test="saleDateName != null" >
+        sale_date_name = #{saleDateName,jdbcType=VARCHAR},
+      </if>
+      <if test="saleDateValue != null" >
+        sale_date_value = #{saleDateValue,jdbcType=VARCHAR},
+      </if>
       <if test="productShowName != null" >
         product_show_name = #{productShowName,jdbcType=VARCHAR},
       </if>
@@ -564,6 +605,9 @@
       </if>
       <if test="compositeFlag != null" >
         composite_flag = #{compositeFlag,jdbcType=INTEGER},
+      </if>
+      <if test="productSecondarySpecification != null" >
+        product_secondary_specification = #{productSecondarySpecification,jdbcType=VARCHAR},
       </if>
       <if test="productSpecificationValue != null" >
         product_specification_value = #{productSpecificationValue,jdbcType=FLOAT},

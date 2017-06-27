@@ -17,6 +17,7 @@
     <result column="comment_status" property="commentStatus" jdbcType="INTEGER" />
     <result column="comment_type_code" property="commentTypeCode" jdbcType="INTEGER" />
     <result column="good_comment" property="goodComment" />
+    <result column="medium_comment" property="mediumComment" />
     <result column="count_comment" property="countComment" />
   </resultMap>
   <sql id="Base_Column_List" >
@@ -127,7 +128,7 @@
       from pms_commodity_comment where order_no = #{orderNo,jdbcType=VARCHAR} and comment_type_code=3
   </select>
   
-  <!-- 通过商品编码可变数组查询好评数,总评价数 -->
+  <!-- 通过商品编码可变数组查询好评数,总评价数
   <select id="selectGoodCommentPercent" resultMap="BaseResultMap">
 	SELECT pcc.commodityCode commodity_code,pcc.goodComment good_comment,IFNULL(counts.countComment,0) count_comment FROM (
 	  SELECT DISTINCT m.commodity_code commodityCode,IFNULL(good.goodComment,0) goodComment 
@@ -139,6 +140,32 @@
 	 WHERE comment_type_code = 3 AND comment_status = 1 GROUP BY commodity_code) AS counts 
 	 ON pcc.commodityCode=counts.commodity_code 
 	 WHERE pcc.commodityCode IN
+	 <foreach collection="array" index="index" item="code" open="(" close=")" separator=",">
+	 	#{code}
+	 </foreach>
+  </select> -->
+  
+  
+  <!-- 通过商品编码可变数组查询好评数,中评数,总评价数 -->
+  <select id="selectGoodCommentPercent" resultMap="BaseResultMap">
+	SELECT pcc.commodityCode commodity_code, pcc.goodComment good_comment, pcc.mediumComment medium_comment, 
+	  IFNULL(counts.countComment, 0) count_comment FROM
+	  (SELECT g.commodityCode commodityCode,IFNULL(g.goodComment, 0) goodComment, IFNULL(me.mediumComment, 0) mediumComment FROM
+			(SELECT DISTINCT m.commodity_code commodityCode, IFNULL(good.goodComment, 0) goodComment FROM pms_commodity_comment m
+			  LEFT JOIN (SELECT commodity_code, COUNT(1) goodComment FROM pms_commodity_comment
+				  WHERE comment_type_code = 3 AND comment_status = 1 AND comment_grade IN (4, 5)
+				  GROUP BY commodity_code) AS good ON m.commodity_code = good.commodity_code) AS g
+	
+	LEFT JOIN 
+	  (SELECT DISTINCT t.commodity_code commodityCode, IFNULL(mediu.mediumComment, 0) mediumComment FROM pms_commodity_comment t
+			LEFT JOIN (SELECT commodity_code, COUNT(1) mediumComment FROM pms_commodity_comment
+				WHERE comment_type_code = 3 AND comment_status = 1 AND comment_grade IN (2, 3)
+				GROUP BY commodity_code) AS mediu ON t.commodity_code = mediu.commodity_code) AS me ON g.commodityCode = me.commodityCode) AS pcc
+	
+	LEFT JOIN (SELECT commodity_code, COUNT(1) countComment FROM pms_commodity_comment
+		WHERE comment_type_code = 3 AND comment_status = 1
+		GROUP BY commodity_code) AS counts ON pcc.commodityCode = counts.commodity_code
+	WHERE pcc.commodityCode IN
 	 <foreach collection="array" index="index" item="code" open="(" close=")" separator=",">
 	 	#{code}
 	 </foreach>

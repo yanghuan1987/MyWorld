@@ -64,4 +64,14 @@ public class CommodityDaoImpl extends BaseDaoImpl<Commodity> implements Commodit
 			throw new PersistenceException("kernel.dao.selectCommodityByCodelist", e, null, getSqlName(CommoditySqlIds.SELECT_BY_CODELIST_AND_STATUS), parameters);
 		}
 	}
+	
+	@Override
+	public List<Commodity> selectCommodityPriceByCodelist(List<String> codeList) {
+		try {
+			if(codeList == null || codeList.size() < 1)return null;
+			return sqlSessionTemplate.selectList(getSqlName(CommoditySqlIds.SELECT_PRICE_BY_CODELIST), codeList);
+		} catch (Exception e) {
+			throw new PersistenceException("kernel.dao.selectCommodityPriceByCodelist", e, null, getSqlName(CommoditySqlIds.SELECT_PRICE_BY_CODELIST), codeList);
+		}
+	}
 }

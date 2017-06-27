@@ -31,7 +31,7 @@ import com.spfood.pms.intf.domain.ProductProperty;
 import com.spfood.pms.intf.domain.ProductSearchCriteria;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({ "/spring-context.xml","/local-spring-environment.xml"})
+@ContextConfiguration({ "/spring-context.xml","/local-spring-environment.xml","/spring-dubbo.xml"})
 public class ProductManagerTest {
 
 	@Autowired
@@ -740,8 +740,8 @@ public class ProductManagerTest {
 		searchCriteria.setPageNum(1);
 		searchCriteria.setPageSize(50);
 		searchCriteria.setCategoryCode(cateString);
-//		searchCriteria.setProductName("a");
-//		searchCriteria.setProductCode("1");
+		searchCriteria.setProductName("a");
+		searchCriteria.setProductCode("1");
 		PageInfo<Product> pageInfo2 = productManager.selectListByPageForWMS(searchCriteria);
 		pageInfo2.isSelectCount();
 	}

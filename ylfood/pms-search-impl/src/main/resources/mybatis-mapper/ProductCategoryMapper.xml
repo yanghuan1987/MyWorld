@@ -39,6 +39,13 @@
 		select * from pms_product_category where parent_category_code = #{categoryCode}
 	</select>
   
+  	<select id="selectCategoryName" resultMap="category_one"  parameterType="java.util.List">
+		select * from pms_product_category where category_code in
+	<foreach item="item" index="index" collection="list" open="("
+		separator="," close=")">
+		#{item}
+	</foreach> 
+	</select>
   
   <sql id="Base_Column_List" >
  

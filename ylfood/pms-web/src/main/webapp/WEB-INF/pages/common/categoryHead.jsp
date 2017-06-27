@@ -10,15 +10,14 @@
 %>
 <!--header-->
 <div class="sp-head">
-	<div class="sp-head-logo" style="font-size: 18px; color: #99c731;">
+	<div class="sp-head-logo">
 		<span> 
 			<a href="${pageContext.request.contextPath}/pms/login/main"> 
 			<img src="<%=path%>/img/pms/PMS_logo.png" />
 			</a>
 		</span> 
-		<span style="padding-left: 15px;">-</span> 
-		<span style="padding-left: 10px;">品类设计</span>
 	</div>
+   <div style="float: left;font-size: 30px;color: #99c731;padding-left: 8%;">PMS品类设计</div>
 	<div class="sp-head-right">
 		<span class="sp-head-user"><img src="<%=path%>/img/user.png">
 		<shiro:principal property="account" /></span> <span class="sp-head-exit">

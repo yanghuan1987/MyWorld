@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spfood.pms.intf.domain.criteria.ItemServiceForWms;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({"/local-spring-environment.xml","/spring-context.xml"})
+@ContextConfiguration({"/local-spring-environment.xml","/spring-context.xml","/spring-dubbo.xml"})
 public class ItemServiceForWmsTest {
 
 	@Resource
@@ -34,9 +34,9 @@ public class ItemServiceForWmsTest {
 		listC.add("YLC0000000122");
 		listC.add("YLC0000000124");
 		listC.add("YLC0000000027");
-		listP.add("YLP0000000181");
-		listP.add("YLP0000000194");
-		listP.add("YLP0000000195");
+		listP.add("YLP0000000206");
+		listP.add("YLP0000000207");
+		listP.add("YLP0000000208");
 		List<ItemServiceForWms> dForWms = itemServiceForWmsManager.SelectByCommodityCodeList(listC);
 		List<ItemServiceForWms> eForWms = itemServiceForWmsManager.SelectByProductCodeList(listP);
 		List<ItemServiceForWms> mq = itemServiceForWmsManager.sendDate();

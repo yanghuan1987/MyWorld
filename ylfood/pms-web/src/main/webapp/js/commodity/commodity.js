@@ -5,6 +5,20 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 	$scope.loginOut = function() {
 		window.location.href = serverPath;
 	};
+	
+
+	/*
+	 * showpage显示页面(页面均为互斥) 
+	 * 0---全不显示
+	 * 1---检索页面 
+	 * 2---商品table
+	 * 3---展示页面
+	 * 4---新增 ,编辑 页面 
+	 * 
+	 */
+	$rootScope.showPage = 0;//显示页面
+	$rootScope.SourcePage = 0;//跳转前页面
+	
 	$rootScope.isProduct = false;//用于详细图片BUTTON显示，表示此为不是产品业务
  	$scope.colorone = "";//菜单背景颜色
  	$scope.colorones = "";//菜单背景颜色
@@ -17,9 +31,10 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 	$scope.total = 1;//总共条数
 	$scope.pageSize = 15;//每页件数
 	$rootScope.pictureCheck = true;//是否check图片
-	$scope.showSearch = true;//显示详细检索页面
+	$rootScope.showPage = 1;//显示页面
 	$scope.commodityStatusList = [{Name:"上架",Value:"3"},{Name:"下架",Value:"4"}];
 	$scope.showNewButton = false;//显示新增按钮
+ 	$scope.commodityBGC = "#99C731";
 	// 前台分页的数据结构
 	$scope.pagination = {
 			pageNum : $scope.pageNum,//翻页页数
@@ -89,6 +104,11 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 	     .success(function(data) {
 	    	 $rootScope.severTaxRate = data;
 	     });
+	//获取时间单位
+	$http.get("/pms-web/pms/product/getDateUnit")
+	     .success(function(data) {
+	    	 $rootScope.dateUnits = data;
+	     });
 	$scope.showSearchPage = function(){
 		//离开新增页面提示
 		if(!$scope.newEditQuit){
@@ -109,14 +129,49 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 				$scope.oldEditQuit = true;//放弃当前编辑	
 			}
 		}
-		$scope.showSearch = true;//显示详细检索页面
-		$scope.show = false;//不显示展示页面
-		$scope.showEdit = false;//不显示编辑页面
+		$rootScope.showPage = 1;//显示页面
 		$scope.commodityList = null;
 		$scope.clearDetail();
 	 	$scope.colorone = "";//菜单背景颜色
    	 	$scope.colorones = "#99C731";//菜单背景颜色
 		
+	}
+	$scope.enterKeyup = function(e,pageNo){
+		var keycode = window.event?e.keyCode:e.which;
+		if(keycode == 13){
+			if(pageNo == 1){
+				$scope.searchCommotyByCode('detail');
+			}
+		}
+	}
+	$scope.returnPage = function(parm){
+		//离开新增页面提示
+		if(!$scope.newEditQuit){
+			var con = confirm("您当前正处于新增状态，请确认是否放弃");
+			if(!con){
+				return false;
+			}else{
+				$scope.newEditQuit = true;//放弃当前编辑	
+				$scope.newEditCount = 0;//确认放弃，次数归0
+			}
+		}
+		//离开编辑页面提示
+		if(!$scope.oldEditQuit){
+			var con = confirm("您当前正处于编辑状态，请确认是否放弃");
+			if(!con){
+				return false;
+			}else{
+				$scope.oldEditQuit = true;//放弃当前编辑	
+			}
+		}
+		if(!$scope.flg && $rootScope.showPage == 4){
+			var returnPage = angular.copy($rootScope.SourcePageEdit);
+			//编辑按钮
+			$scope.showCommodityInfo($scope.ChoseCommodity);
+		}else{
+			var returnPage = angular.copy($rootScope.SourcePage);
+		}
+		$rootScope.showPage = returnPage;//显示页面
 	}
 	//点击一级菜单
 	$scope.updateOne = function(updatecatone) {
@@ -139,7 +194,7 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 				$scope.oldEditQuit = true;//放弃当前编辑	
 			}
 		}
-		$scope.showSearch = false;//显示详细检索页面
+		$rootScope.showPage = 2;
 		$scope.commodityList = null;
 		$scope.type = null;
 		$scope.showNewButton = false;//显示新增按钮
@@ -197,7 +252,7 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 				$scope.oldEditQuit = true;//放弃当前编辑	
 			}
 		}
-		$scope.showSearch = false;//显示详细检索页面
+		$rootScope.showPage = 2;
 		$scope.commodityList = null;
 		$scope.type = null;
 	 	$scope.colorones = "";//菜单背景颜色
@@ -254,14 +309,12 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 				$scope.oldEditQuit = true;//放弃当前编辑	
 			}
 		}
-		$scope.showSearch = false;//显示详细检索页面
 		$scope.commodityList = null;
 		$scope.type = null;
 	 	$scope.colorones = "";//菜单背景颜色
 		$scope.categoryName = name;//品类名字
 		//获取品类属性
-		$scope.show = false;//不显示展示页面
-		$scope.showEdit = false;//不显示编辑页面
+		$rootScope.showPage = 2;//显示页面
 		$scope.categoryName = name;//获取选择品类名
 		var categoryCode = ccode;//品类code，检索用
 		$scope.tccode = ccode;//品类code，修改上下架后在检索用
@@ -295,7 +348,8 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 
 	//根据编码搜索商品信息，模糊匹配
 	$scope.searchCommotyByCode = function(type){
-		if (type != undefined){
+		if (type != undefined){	
+			$rootScope.SourcePage = 1;//跳转前页面
 			$scope.type = type;
 			$scope.categoryName = "商品检索";
 			var commodity = {commodityCode:$scope.commodityCodes,commodityGs1Code:$scope.commodityGs1Codes
@@ -491,15 +545,17 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 				$scope.oldEditQuit = true;//放弃当前编辑	
 			}
 		}
-		$scope.showSearch = false;//显示详细检索页面
+		$scope.ChoseCommodity = commodity;
 		//获取商品对应的产品信息
 		var response = $http.post("/pms-web/pms/product/getAllProductsByCriteria",{productCode : commodity.product.productCode},{headers:{'Accept':'application/json'}});
 		response.success(function(data, status, headers, config) {
 			$scope.productList = data;
 		});
 		//显示右侧详情div内容
-		$scope.showEdit = false;//不显示编辑
-		$scope.show = true;//显示状态
+		$rootScope.showPage = 3;//显示状态
+		if($rootScope.SourcePage != 1){
+			$rootScope.SourcePage = 2;//跳转前页面
+		}
 		//清空图片数组
 		$rootScope.thumbHeader = [];//页面头部图片集合
 		$rootScope.thumbDetail = [];//页面详细图片集合
@@ -518,6 +574,7 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		//获取商品详情内容
 		$scope.commodity ={commodityName:commodity.commodityName,commodityCode:commodity.commodityCode,
 				commodityCity:commodity.commodityCity,commodityGs1Code:commodity.commodityGs1Code,
+				category:commodity.category,
 				product:commodity.product,commodityPrice:commodity.commodityPrice,
 				commoditySalesPrice:commodity.commoditySalesPrice,salesAmount:commodity.salesAmount,
 				defaultFlag:commodity.defaultFlag,commodityQuantity:commodity.commodityQuantity,
@@ -525,7 +582,10 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 				commodityWeight:commodity.commodityWeight,commodityWeightUnit:commodity.commodityWeightUnit,
 				commodityShowPlace:commodity.commodityShowPlace,commodityComment:commodity.commodityComment,
 				commodityPropertys:commodity.commodityPropertys,commodityPictures:commodity.commodityPictures,
-				id:commodity.id,taxRateName:commodity.taxRateName,taxRateValue:commodity.taxRateValue
+				id:commodity.id,taxRateName:commodity.taxRateName,taxRateValue:commodity.taxRateValue,
+				shelfLife:commodity.shelfLife,shelfLifeName:commodity.shelfLifeName,
+				shelfLifeValue:commodity.shelfLifeValue,saleDate:commodity.saleDate,
+				saleDateName:commodity.saleDateName,saleDateValue:commodity.saleDateValue
 		}; 
 		var divisionflg = false;//有无该省flg
 		var nowcitys = $scope.commodity.commodityCity;//已保存的城市
@@ -617,7 +677,6 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		if($scope.newEditQuit){
 			$scope.newEditQuit = false;//是否放弃当前编辑FLG
 		}
-		$scope.showSearch = false;//显示详细检索页面
 		document.commodityAddForm.oneinput.value='';//上传详细图片文件名清除
 		//新建页面城市显示flg
 		$scope.citylistDB = [];//页面显示城市清空
@@ -625,10 +684,12 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		$scope.showcity = false;//不表示旧数据城市
 		$scope.chonseProductOne = null;
 		//显示右侧商品编辑div内容
-		$scope.show = false;//展示页面不表示
-		$scope.showEdit = true;//新增页面表示
+		$rootScope.SourcePage = 2;//跳转前页面
+		$rootScope.showPage = 4;//新增页面表示
 		$scope.commodity = {};//清空商品
 		$scope.flg=true;//新增表示内容，却别于编辑FLG
+		$scope.showinfoshelfLife = false;//保质期提示信息
+		$scope.showinfosaleDate = false;//货架期提示信息
 		//返回所有的符合条件的产品
 		var response = $http.post("/pms-web/pms/product/getAllProductsByCriteria",{categoryCode : $scope.category.categoryCode,saleFlag:1},{headers:{'Accept':'application/json'}});
 		response.success(function(data, status, headers, config) {
@@ -718,6 +779,8 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		$rootScope.formHeader = [];//头部图片判断是否修改集合
 		$rootScope.formDetail = [];//判断详细图片是否修改集合
 
+		$scope.showinfoshelfLife = false;//保质期提示信息
+		$scope.showinfosaleDate = false;//货架期提示信息
 		//循环省
 		for(j=0;j<$scope.divisionNode.length;j++){
 			//添加changeFlag
@@ -782,13 +845,18 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		//头图验证通过
 		$rootScope.isHeaderPictureSatified = true;
 		//显示右侧商品编辑div内容
-		$scope.show = false;
-		$scope.showEdit = true;
+		$rootScope.showPage = 4;
+		$rootScope.SourcePageEdit = 3;//跳转前页面
 		//编辑按钮
 		$scope.flg=false;
 		//编辑时，计数器显示flg
 		$scope.countzero = true;
-		var response = $http.post("/pms-web/pms/product/getAllProductsByCriteria",{categoryCode : $scope.category.categoryCode},{headers:{'Accept':'application/json'}});
+		if(undefined != $scope.commodity.category){
+			var categoryCode = $scope.commodity.category.categoryCode;
+		}else{
+			var categoryCode = $scope.category.categoryCode;
+		}
+		var response = $http.post("/pms-web/pms/product/getAllProductsByCriteria",{categoryCode : categoryCode},{headers:{'Accept':'application/json'}});
 		response.success(function(data, status, headers, config) {
 			$scope.productList = data;
 		});
@@ -805,10 +873,43 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 			$scope.basicCustomerType = data;
 		});
 	};
+
+	$scope.showinfoshelfLife = false;
+	//保质期check
+	$scope.checkshelfLife = function(parm){
+		if("" == parm){
+			$scope.commodity.shelfLifeName = null;
+		}else{
+			$scope.showinfoshelfLife = false;
+		}
+	}
+	$scope.shelfLifeUnitChange = function(parm){
+		if(null == $scope.commodity.shelfLife || ""== $scope.commodity.shelfLife){
+			$scope.showinfoshelfLife = true;
+		}
+	}
+	$scope.showinfosaleDate = false;
+	//保质期check
+	$scope.checksaleDate = function(parm){
+		if("" == parm){
+			$scope.commodity.saleDateName = null;
+		}else{
+			$scope.showinfosaleDate = false;
+		}
+	}
+	$scope.saleDateUnitChange = function(parm){
+		if(null == $scope.commodity.saleDate || ""== $scope.commodity.saleDate){
+			$scope.showinfosaleDate = true;
+		}
+	}
 	//选择产品
 	$scope.chooseProduct = function(product){
 		
 		$scope.chonseProductOne = product;
+		$scope.commodity.shelfLife = $scope.chonseProductOne.shelfLife;
+		$scope.commodity.shelfLifeName = $scope.chonseProductOne.shelfLifeName;
+		$scope.commodity.saleDate = $scope.chonseProductOne.saleDate;
+		$scope.commodity.saleDateName = $scope.chonseProductOne.saleDateName;
 		//为选择tr加上背景色
 		var trs = document.getElementById('table1').getElementsByTagName('tr');
 		for( var i=0; i<trs.length; i++ ){
@@ -842,6 +943,8 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 			//给当前商品赋予产品对象
 			$scope.commodity.product = product;
 			$scope.commodity.commodityProductQuantity = 1;
+			
+			
 			//当前商品份数初期话
 			//将选中的产品对应的图片进行展示
 			//获取品类列表
@@ -1057,6 +1160,52 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 			showPopup('showInfo',true);
 			return;
 		}
+		//保质期数字check
+		if(undefined != $scope.commodity.shelfLife && null != $scope.commodity.shelfLife &&
+				"" != $scope.commodity.shelfLife){
+			var checkNumber = /^\d+$/;//正整数
+			if(null == $scope.commodity.shelfLife.toString().match(checkNumber)){
+				$scope.message = "保质期必须为正整数!";
+				//模态框隐藏确认按钮
+				$scope.stateSure = false;
+				showPopup('showInfo',true);
+				return;
+			}
+		}
+		//请选择保质期
+		if(undefined != $scope.commodity.shelfLife && null != $scope.commodity.shelfLife &&
+				"" != $scope.commodity.shelfLife){
+			if($scope.commodity.shelfLifeName == null || $scope.commodity.shelfLifeName.length==0){
+				$scope.message = "保质期有值时单位不能为空！";
+				//模态框隐藏确认按钮
+				$scope.stateSure = false;
+				showPopup('showInfo',true);
+				return;
+			}
+		}
+		//货架期数字check
+		if(undefined != $scope.commodity.saleDate && null != $scope.commodity.saleDate &&
+				"" != $scope.commodity.saleDate){
+			var checkNumber = /^\d+$/;//正整数
+			if(null == $scope.commodity.saleDate.toString().match(checkNumber)){
+				$scope.message = "货架期必须为正整数!";
+				//模态框隐藏确认按钮
+				$scope.stateSure = false;
+				showPopup('showInfo',true);
+				return;
+			}
+		}
+		//请选择货架期
+		if(undefined != $scope.commodity.saleDate && null != $scope.commodity.saleDate &&
+				"" != $scope.commodity.saleDate){
+			if($scope.commodity.saleDateName == null || $scope.commodity.saleDateName.length==0){
+				$scope.message = "货架期有值时单位不能为空！";
+				//模态框隐藏确认按钮
+				$scope.stateSure = false;
+				showPopup('showInfo',true);
+				return;
+			}
+		}
 		//可送城市不能为空
 		if($scope.selected.length == 0){
 			$scope.message = "可送达地区不能为空";
@@ -1211,7 +1360,18 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 				}
 			index ++;
 		}
-
+		//保质期Value赋值
+		for(i in $rootScope.dateUnits){
+			if($scope.commodity.shelfLifeName == $rootScope.dateUnits[i].optionName){
+				$scope.commodity.shelfLifeValue = $rootScope.dateUnits[i].optionValue;
+			}
+		}
+		//货架期Value赋值
+		for(i in $rootScope.dateUnits){
+			if($scope.commodity.saleDateName == $rootScope.dateUnits[i].optionName){
+				$scope.commodity.saleDateValue = $rootScope.dateUnits[i].optionValue;
+			}
+		}
 		//税率Value赋值
 		for(i in $rootScope.severTaxRate){
 			if($scope.commodity.taxRateName == $rootScope.severTaxRate[i].optionName){
@@ -1366,6 +1526,52 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 			showPopup('showInfo',true);
 			return;
 		}
+		//保质期数字check
+		if(undefined != $scope.commodity.shelfLife && null != $scope.commodity.shelfLife &&
+				"" != $scope.commodity.shelfLife){
+			var checkNumber = /^\d+$/;//正整数
+			if(null == $scope.commodity.shelfLife.toString().match(checkNumber)){
+				$scope.message = "保质期必须为正整数!";
+				//模态框隐藏确认按钮
+				$scope.stateSure = false;
+				showPopup('showInfo',true);
+				return;
+			}
+		}
+		//请选择保质期
+		if(undefined != $scope.commodity.shelfLife && null != $scope.commodity.shelfLife &&
+				"" != $scope.commodity.shelfLife){
+			if($scope.commodity.shelfLifeName == null || $scope.commodity.shelfLifeName.length==0){
+				$scope.message = "保质期有值时单位不能为空！";
+				//模态框隐藏确认按钮
+				$scope.stateSure = false;
+				showPopup('showInfo',true);
+				return;
+			}
+		}
+		//货架期数字check
+		if(undefined != $scope.commodity.saleDate && null != $scope.commodity.saleDate &&
+				"" != $scope.commodity.saleDate){
+			var checkNumber = /^\d+$/;//正整数
+			if(null == $scope.commodity.saleDate.toString().match(checkNumber)){
+				$scope.message = "货架期必须为正整数!";
+				//模态框隐藏确认按钮
+				$scope.stateSure = false;
+				showPopup('showInfo',true);
+				return;
+			}
+		}
+		//请选择货架期
+		if(undefined != $scope.commodity.saleDate && null != $scope.commodity.saleDate &&
+				"" != $scope.commodity.saleDate){
+			if($scope.commodity.saleDateName == null || $scope.commodity.saleDateName.length==0){
+				$scope.message = "货架期有值时单位不能为空！";
+				//模态框隐藏确认按钮
+				$scope.stateSure = false;
+				showPopup('showInfo',true);
+				return;
+			}
+		}
 		//请选择税率
 		if($scope.commodity.taxRateName == null || $scope.commodity.taxRateName.length==0){
 			$scope.message = "请选择税率";
@@ -1507,6 +1713,18 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 			index ++;
 		}
 
+		//保质期Value赋值
+		for(i in $rootScope.dateUnits){
+			if($scope.commodity.shelfLifeName == $rootScope.dateUnits[i].optionName){
+				$scope.commodity.shelfLifeValue = $rootScope.dateUnits[i].optionValue;
+			}
+		}
+		//货架期Value赋值
+		for(i in $rootScope.dateUnits){
+			if($scope.commodity.saleDateName == $rootScope.dateUnits[i].optionName){
+				$scope.commodity.saleDateValue = $rootScope.dateUnits[i].optionValue;
+			}
+		}
 		//税率Value赋值
 		for(i in $rootScope.severTaxRate){
 			if($scope.commodity.taxRateName == $rootScope.severTaxRate[i].optionName){
@@ -1563,3 +1781,6 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		$scope.commodityStatuss = null;
 	}
 });
+function loadSecMenu(url) {
+	window.location.href = url;
+}

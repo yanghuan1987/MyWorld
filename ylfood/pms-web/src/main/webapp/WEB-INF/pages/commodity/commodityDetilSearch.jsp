@@ -4,8 +4,8 @@
 %>
 <!-- start container -->
 <div class="sp-menu-right tab-content"
-	style="height: 90%; padding-left: 0px; padding-right: 0px;"
-	ng-show="showSearch">
+	style="height: 90%; padding-left: 0px; padding-right: 0px;width: 80%;"
+	ng-show="showPage == 1">
 	<div class="titlebar" style="height: 20px;">
 		<i></i>
 	</div>
@@ -17,15 +17,15 @@
 				<tbody>
 					<tr style="height: 40px;">
 						<td style="width: 15%; text-align: right;">商品编码</td>
-						<td style="text-align: left; width: 15%;"><input
+						<td style="text-align: left; width: 15%;"><input ng-keyup="enterKeyup($event,1)"
 							ng-model="commodityCodes" class="sp-input sp-input-md "
 							type="text"></td>
 						<td style="width: 15%; text-align: right;">商品GS1编码</td>
-						<td style="text-align: left; width: 15%;"><input
+						<td style="text-align: left; width: 15%;"><input ng-keyup="enterKeyup($event,1)"
 							ng-model="commodityGs1Codes" class="sp-input sp-input-md "
 							type="text"></td>
 						<td style="width: 15%; text-align: right;">商品名称</td>
-						<td style="text-align: left; width: 15%;"><input
+						<td style="text-align: left; width: 15%;"><input ng-keyup="enterKeyup($event,1)"
 							ng-model="commodityNames" class="sp-input sp-input-md"
 							type="text"></td>
 					</tr>

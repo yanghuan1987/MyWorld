@@ -123,6 +123,9 @@ public class CommodityServiceImpl implements CommoditySearchService{
 	@Override
 	public List<ProductCategoryProperty> selectCategoryPropertyByCategoryCode(
 			String categoryCode) {
+		if (null == categoryCode || "".equals(categoryCode)) {
+			return null;
+		}
 		return commodityManager.selectCategoryPropertyByCategoryCode(categoryCode);
 	}
 
@@ -203,5 +206,9 @@ public class CommodityServiceImpl implements CommoditySearchService{
 		parameters.setIntegerParameters(commodityStatus);
 		
 		return commodityManager.selectCommodityByCodelist(parameters);
+	}
+	@Override
+	public List<Commodity> selectCommodityPriceByCodelist(List<String> codeList) {
+		return commodityManager.selectCommodityPriceByCodelist(codeList);
 	}
 }

@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -20,7 +21,9 @@ import com.spfood.pms.search.intf.domain.Commodity;
 import com.spfood.pms.search.intf.domain.Product;
 import com.spfood.pms.search.intf.domain.ProductCategory;
 import com.spfood.pms.search.intf.domain.ProductCategoryProperty;
+import com.spfood.pms.search.intf.domain.criteria.CommodityAndComment;
 import com.spfood.pms.search.intf.utils.Constant;
+import com.spfood.pms.search.manager.CommodityAndCommentManager;
 import com.spfood.pms.search.manager.CommodityManager;
 import com.spfood.pms.search.manager.ProductCategoryManager;
 import com.spfood.pms.search.manager.ProductCategoryPropertyManager;
@@ -36,6 +39,8 @@ public class CommodityManagerTest {
 	private ProductCategoryManager productCategoryManager;
 	@Resource
     private ProductCategoryPropertyManager productCategoryPropertyManager;
+	@Autowired
+	private CommodityAndCommentManager CommodityAndCommentManager;
 	
 	
 	public ProductCategory createProductCategory() {
@@ -151,6 +156,44 @@ public class CommodityManagerTest {
     @Transactional
 	public void selectCategoryPropertyByCategoryCode() {
 	    List<ProductCategoryProperty> productCategory=commodityManager.selectCategoryPropertyByCategoryCode("11001001");
+	    List<String> list = new ArrayList<String>();
+	    list.add("YLC0000000025");
+	    list.add("YLC0000000026");
+	    list.add("YLC0000000027");
+	    List<Commodity> com = commodityManager.selectCommodityPriceByCodelist(list);
 	    assertTrue(productCategory.size()>0);
+    }
+	
+	/**
+     * 根据编码集合查询商品集合
+     * @param codeList
+     * @return
+     */
+	@Test
+	@Rollback
+    @Transactional
+	public void selectCommodityByCodelistAnd() {
+	    List<String> list=new ArrayList<String>();
+	    list.add("YLC0000000025");
+	    list.add("YLC0000000026");
+	    List<CommodityAndComment> commodities=CommodityAndCommentManager.selectCommodityByCodelist(list);
+	    assertEquals(2,commodities.size());
+    }
+	
+	@Test
+    @Rollback
+    @Transactional
+	public void selectCommodityListByPageAnd() {
+		CommodityAndComment commodity = new CommodityAndComment();
+		commodity.setCommodityStatus(3);
+		commodity.setCommodityShowPlace("C端");
+		ProductCategory category = new ProductCategory();
+		category.setCategoryCode("04001001");
+		commodity.setCategory(category);
+	    PageInfo<CommodityAndComment> cInfo=new PageInfo<CommodityAndComment>(1, 3);
+	    List<String> keyWordsList = new ArrayList<String>();
+	    keyWordsList.add("肉");
+	    PageInfo<CommodityAndComment> cInfo2 = CommodityAndCommentManager.selectCommodityListByPage(cInfo, keyWordsList, null, Constant.OrderByCondition.priceToAsc, Constant.CommodityState.onShift, Constant.CommodityShowPlace.toC);
+	    PageInfo<CommodityAndComment> cInfo3 = CommodityAndCommentManager.selectCommodityListByPageForApp(cInfo, commodity);
     }
 }

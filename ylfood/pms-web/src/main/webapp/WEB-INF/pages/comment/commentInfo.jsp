@@ -9,7 +9,7 @@
 			style="width: 100%; word-break: break-all; word-wrap: break-word;">
 			<tbody>
 				<tr>
-					<td style="text-align: right;">商品名称</td>
+					<td style="text-align: right;">商品名称:</td>
 					<td style="text-align: left;">{{commodityNameChoise}}</td>
 					<td></td>
 					<td style="text-align: left;"></td>
@@ -20,7 +20,7 @@
 				</tr>
 				<tr>
 					<td style="text-align: right;">手机号码</td>
-					<td style="text-align: left;"><input ng-model="commentUserTelD"
+					<td style="text-align: left;"><input ng-model="commentUserTelD" ng-keyup="enterKeyup($event,1)"
 						class="sp-input sp-input-md " type="text"></td>
 					<td style="text-align: right;">评价时间</td>
 					<td style="text-align: left;"><input id="createStartTimeD"
@@ -35,7 +35,7 @@
 					<td style="text-align: left;"><!-- <input ng-model="commentOrderNoD"
 						class="sp-input sp-input-md " type="text"> --></td>
 					<td style="text-align: right;">评价关键字</td>
-					<td style="text-align: left;"><input ng-model="commentKeyWordD"
+					<td style="text-align: left;"><input ng-model="commentKeyWordD" ng-keyup="enterKeyup($event,1)"
 						class="sp-input sp-input-md " type="text"></td>
 				</tr>
 				<tr>
@@ -56,6 +56,8 @@
 				ng-click="searchCountD('99')">查询</button>
 			<button type="button" class="sp-btn sp-btn-gray-md "
 				ng-click="clearCountD()">重置</button>
+			<button type="button" class="sp-btn sp-btn-gray-md "
+				ng-click="returnPage()">返回</button>
 		</div>
 	</div>
 	<!--按钮工具栏结束-->
@@ -104,6 +106,7 @@
 			<th class="th-width-sm">评价时间</th>
 			<th class="th-width-sm">评价人</th>
 			<th class="th-width-sm">具体评价</th>
+			<th class="th-width-sm">图片</th>
 			<th class="th-width-sm">操作</th>
 		</tr>
 		<tr ng-if="loading == 3"><td colspan="10" style="font-size: large;">读取中，请稍后....</td></tr>
@@ -150,6 +153,13 @@
 				title="点击查看详情">[收起]</a>
 			</td>
 			<td style="height: 30px" class="autobreak">
+			<label ng-repeat="item in x.commodityCommentPictures" style="width: 100%;">
+				<a href='javascript:void(0);'>
+				<img ng-src="{{item.pictureUrl}}" style="width: 40%;float: left;height: 150%;" ng-click="showPicture(item.pictureUrl)" />
+				</a>
+			</label>
+			</td>
+			<td style="height: 30px" class="autobreak">
 				<input class="sp-btn sp-btn-black-sm" value="屏蔽" type="button" 
 				ng-if="x.commentStatus == 1" ng-click="editSta(x,0)" >
 				
@@ -160,6 +170,7 @@
 			</td>
 		</tr>
 		<tr ng-repeat="y in tempList">
+			<td style="height: 30px"></td>
 			<td style="height: 30px"></td>
 			<td style="height: 30px"></td>
 			<td style="height: 30px"></td>

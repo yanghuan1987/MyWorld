@@ -3,9 +3,9 @@
 <%
 	String path = application.getInitParameter("static-file");
 %>
-<div ng-cloak class="sp-menu-right sp-product-head"
+<div ng-cloak class="sp-menu-right sp-product-head" style="width: 80%;"
 	ng-controller="compositeProductDetailAddController"
-	ng-show="addCProduct">
+	ng-show="showPage == 6">
 
 	<div id='compositenewpopUpHg' class='sp-popup sp-popup-hg'>
 		<div class='sp-pop-header'>
@@ -62,8 +62,18 @@
 						</label> <label class="viewlabel text-left" style="width: 75%;">{{addedProduct.productStatus.optionName}}</label><br>
 					</div>
 					<div class="titlebar">
-						<label class="viewlabel text-right" style="width: 25%;">采购基本单位：
+						<label class="viewlabel text-right" style="width: 25%;">计量单位：
 						</label> <label class="viewlabel text-left" style="width: 75%;">{{addedProduct.productBuyUnit.optionName}}</label><br>
+					</div>
+					<div class="titlebar">
+						<label class="viewlabel text-right" style="width: 25%;">产品规格：
+						</label> <label class="viewlabel text-left" style="width: 75%;">{{addedProduct.shelfLife}}
+							{{addedProduct.shelfLifeUnit.optionName}}</label><br>
+					</div>
+					<div class="titlebar">
+						<label class="viewlabel text-right" style="width: 25%;">产品规格：
+						</label> <label class="viewlabel text-left" style="width: 75%;">{{addedProduct.saleDate}}
+							{{addedProduct.saleDateUnit.optionName}}</label><br>
 					</div>
 					<div class="titlebar">
 						<label class="viewlabel text-right" style="width: 25%;">温区：
@@ -137,6 +147,8 @@
 				<p class="sp-p-title">
 					新增--> <input type="button" class="sp-btn sp-btn-black-sm"
 						value="预 览" onclick="showPopup('compositenewpopUpHg',true)">
+						<button type="button" ng-click="returnPage('add')"
+							class="sp-btn sp-btn-black-sm">返回</button>
 				</p>
 			</div>
 			<form name="compositeProductDetailAddForm"
@@ -331,20 +343,72 @@
 					<div class="titlebar">
 						<span class="valueName control-label sp-input-p"
 							style="text-align: right; padding: 3px;">
-							<span style="color: red">*</span>采购基本单位：
+							<span style="color: red">*</span>计量单位：
 						</span>
 						<span style="float: left;">
 							<select ng-model="addedProduct.productBuyUnit" 
 								class="sp-select sp-select-md" required name="productBuyUnit"
 								style="height: 30px;"  ng-disabled = "UnitDisable"
 								ng-options="x.optionName for x in BasicPurchaseUnit"
-								style="width: 100px;" placeholder="采购基本单位">
+								style="width: 100px;" placeholder="计量单位">
 							</select><span style="color: red">当产品规格第一单位为非重量单位时，该选项等于产品规格第二单位并且不可选</span>
 							 <span style="color: red"
-								ng-show="compositeProductDetailAddForm.productBuyUnit.$error.required && !compositeProductDetailAddForm.productBuyUnit.$pristine">采购基本单位不能为空！</span>
+								ng-show="compositeProductDetailAddForm.productBuyUnit.$error.required && !compositeProductDetailAddForm.productBuyUnit.$pristine">计量单位不能为空！</span>
 						</span>
 						<div class="titlebar form-group" style="width:89%;color: red;margin-left:10%">注:作用于采购管理系统，用于计量不可分割的最小基本采购单元。请注意谨慎填写，一般情况下对于工业制品就是规格的后面一个单位(最小销售单位)；对与非工业产品一般情况下是以重量单位(电商平台大部分非工业品是无法以重量单位进行售卖的，产品标准化的一种体现，故与最小销售单位不能保持一致)进行采购，如斤、公斤等单位，在我公司平台中常应用于果蔬类和肉类。</div>
 					</div>
+					
+					
+
+					<div class="titlebar form-group">
+						<div class="valueName control-label sp-input-p"
+							style="text-align: right; padding: 3px;">
+							保质期：
+						</div>
+						<div style="float: left;">
+							<input type="text" class="sp-input-sm sp-input"
+								name="shelfLife" step="1"
+								ng-model="addedProduct.shelfLife" ng-blur="checkshelfLife(addedProduct.shelfLife)"
+								style="float: left; width: 80px;" placeholder="保质期" />
+								<span style="color: red"
+								ng-show="checkShelfLifeFromat">保质期必须为正整数！</span>
+							<select ng-model="addedProduct.shelfLifeUnit"
+								class="sp-select sp-select-sm" 
+								style="float: left; height: 30px;" required
+								name="shelfLifeUnit" ng-change = "shelfLifeUnitChange(addedProduct.shelfLifeUnit)"
+								ng-options="x.optionName for x in dateUnits"
+								style="width: 100px;" placeholder="时间单位">
+							</select><span style="float: left;"><span style="color: red"
+								ng-show="ShelfLifeUnitIsCheck && compositeProductDetailAddForm.shelfLifeUnit.$pristine">保质期有值时单位不能为空！</span>
+								</span>
+						</div>
+						<div class="titlebar form-group" style="color: red;margin-left:10%;width:89%;">注:非必填项,保质期未输入的场合改单位不会被保存，但可正常操作！</div>
+					</div>
+
+					<div class="titlebar form-group">
+						<div class="valueName control-label sp-input-p"
+							style="text-align: right; padding: 3px;">
+							货架期：
+						</div>
+						<div style="float: left;">
+							<input type="text" class="sp-input-sm sp-input"
+								name="saleDate" step="1"
+								ng-model="addedProduct.saleDate" ng-blur="checksaleDate(addedProduct.saleDate)"
+								style="float: left; width: 80px;" placeholder="货架期" />
+								<span style="color: red"
+								ng-show="checkSaleDateFromat">货架期必须为正整数！</span>
+							<select ng-model="addedProduct.saleDateUnit"
+								class="sp-select sp-select-sm"
+								style="float: left; height: 30px;" required
+								name="saleDateUnit" ng-change = "saleDateUnitChange(addedProduct.saleDateUnit)"
+								ng-options="x.optionName for x in dateUnits"
+								style="width: 100px;" placeholder="时间单位">
+							</select><span style="float: left;"><span style="color: red"
+								ng-show="SaleDateUnitIsCheck && compositeProductDetailAddForm.saleDateUnit.$pristine">货架期有值时单位不能为空！</span>
+						</div>
+						<div class="titlebar form-group" style="color: red;margin-left:10%;width:89%;">注:非必填项,货架期未输入的场合改单位不会被保存，但可正常操作！</div>
+					</div>
+					
 					
 					<div class="titlebar">
 						<div class="valueName control-label sp-input-p"
@@ -411,7 +475,7 @@
 					<div class="titlebar sp-mune-title"
 						style="height: 35px; margin-bottom: 10px; margin-top: 10px;">
 						<i class="pms-icon-kz"></i> 包装单位
-						<span style="color: red" ng-show="showProductBuyUnitEmpty">请先选择采购基本单位！</span>
+						<span style="color: red" ng-show="showProductBuyUnitEmpty">请先选择计量单位！</span>
 						<button class="sp-btn sp-btn-black-sm"
 							ng-click="onAddProductPackUnitClick(addedProduct.productBuyUnit)" 
 							class="icon-left-bt" 
@@ -467,6 +531,8 @@
 								 compositeProductDetailAddForm.productSpecificationUnitFirst.$error.required || compositeProductDetailAddForm.productSpecificationValue.$error.number ||
 								 compositeProductDetailAddForm.productSpecificationUnitSecond.$error.required || compositeProductDetailAddForm.productSpecificationValue.$error.pattern ||
                                  isProductPropertyMissed || !haveprodect || compositeProductDetailAddForm.productStatus.$error.required ||
+                                 ShelfLifeUnitIsCheck && compositeProductDetailAddForm.shelfLifeUnit.$pristine || checkShelfLifeFromat ||
+                                 SaleDateUnitIsCheck && compositeProductDetailAddForm.saleDateUnit.$pristine || checkSaleDateFromat ||
                                  !serverGs1Code || !Gs1Exist || doubleClick"
 							style="width: 100%;">完成</button>
 					</div>

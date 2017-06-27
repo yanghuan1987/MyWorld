@@ -169,17 +169,19 @@ public class CommodityCommentManagerTest {
 	}
     
     /**
-     * 测试通过商品编码可变数组获得好评,中评,差评各自对应的数量还有总数
+     * 测试通过商品编码可变数组获得好评,中评,各自对应的数量还有总数
      */
     @Test
 	public void testSelectGoodCommentPercent() throws Exception {
-    	String[] commStrings = {"YLC0000000122"};
+    	String[] commStrings = {"YLC0000000112", "YLC0000000025"};
     	List<CommodityComment> list = commodityCommentManager.selectGoodCommentPercent(commStrings);
     	log.info(list);
     	for (CommodityComment commodityComment : list) {
-    		log.info("goodComment---->" + commodityComment.getCommodityCode());
+    		log.info("commodityCode---->" + commodityComment.getCommodityCode());
     		log.info("goodComment---->" + commodityComment.getGoodComment());
+    		log.info("mediumComment---->" + commodityComment.getMediumComment());
     		log.info("countComment---->" + commodityComment.getCountComment());
+    		log.info("countComment---->" + commodityComment.getCategoryCode());
 		}
 	}
     

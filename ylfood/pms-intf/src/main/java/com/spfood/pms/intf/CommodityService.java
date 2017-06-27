@@ -47,6 +47,13 @@ public interface CommodityService {
 	public List<Commodity> selectCommodityByProduct(String productCode);
 	
 	/**
+	 * 根据产品获取该产品下的所有商品(仅包含商品的基本信息)
+	 * @param productList
+	 * @return
+	 */
+	public List<Commodity> selectCommodityByProduct(List<String> productCodeList);
+	
+	/**
 	 * 单个商品上架
 	 * @param id
 	 * @return
