@@ -24,7 +24,6 @@
     <dubbo:service interface="com.spfood.pms.intf.ItemServiceForWmsService" ref="ItemServiceForWmsService" timeout="60000"/>
     <dubbo:service interface="com.spfood.pms.intf.CommodityCommentService" ref="CommodityCommentService" timeout="60000"/>
     <dubbo:service interface="com.spfood.pms.intf.CommodityCommentTypeService" ref="CommodityCommentTypeService" timeout="60000"/>
-    <dubbo:service interface="com.spfood.pms.intf.RawMaterialsService" ref="RawMaterialsService" timeout="60000"/>
     
         
      
@@ -35,7 +34,6 @@
     <bean id="ItemServiceForWmsService" class="com.spfood.pms.impl.ItemServiceForWmsServiceImpl" />
     <bean id="CommodityCommentService" class="com.spfood.pms.impl.CommodityCommentServiceImpl" />
     <bean id="CommodityCommentTypeService" class="com.spfood.pms.impl.CommodityCommentTypeServiceImpl" />
-    <bean id="RawMaterialsService" class="com.spfood.pms.impl.RawMaterialsServiceImpl" />
         <!-- 引用CRM服务 -->
     <dubbo:reference  id="customerService"  interface="com.spfood.crm.customer.service.CustomerService"  check="false"/>
     <!-- OMS商品销售数量服务 -->

@@ -155,7 +155,7 @@
 			<td style="height: 30px" class="autobreak">
 			<label ng-repeat="item in x.commodityCommentPictures" style="width: 100%;">
 				<a href='javascript:void(0);'>
-				<img ng-src="{{item.pictureUrl}}" style="width: 40%;float: left;height: 150%;" ng-click="showPicture(item.pictureUrl)" />
+				<img ng-src="{{item.pictureUrl}}" ng-if = "null != item.pictureUrl" style="width: 40%;float: left;height: 150%;" ng-click="showPicture(item.pictureUrl)" />
 				</a>
 			</label>
 			</td>

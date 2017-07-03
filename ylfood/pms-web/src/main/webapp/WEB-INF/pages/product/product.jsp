@@ -22,15 +22,17 @@
 </head>
 <body ng-app="productApp" style="overflow: hidden;" ng-controller="productController" ng-cloak class="ng-cloak">
 <input type="text" id="server" value="<%=path%>" style="display: none;"/>
-	<jsp:include page="../common/productHead.jsp"></jsp:include>
 
 	<!-- main container -->
 	<div class="row">
-		<jsp:include page="/WEB-INF/pages/common/menu.jsp"></jsp:include>
 		<jsp:include page="productMenu.jsp"></jsp:include>
 		<jsp:include page="productTable.jsp"></jsp:include>
-		<jsp:include page="ProductSecondary.jsp"></jsp:include>
 		<jsp:include page="productDetailSerch.jsp"></jsp:include>
+		<!-- 自定义属性弹出编辑框  end-->
+		<jsp:include page="compositeProductDetailAdd.jsp"></jsp:include>
+		<jsp:include page="compositeProductDetailEditAndShow.jsp"></jsp:include>
+		<jsp:include page="productDetailAdd.jsp"></jsp:include>
+		<jsp:include page="productDetailEditAndShow.jsp"></jsp:include>
 			<!-- 自定义属性弹出编辑框  start-->
 			  <!---弹出框-普通---->
 			  <div id='addNewPropertypopUp'class='sp-popup sp-popup-normal'>
@@ -107,13 +109,6 @@
 				</div>
 			  </div>
 			  </form>
-			<!-- 自定义属性弹出编辑框  end-->
-			<jsp:include page="productSecondaryDetailAdd.jsp"></jsp:include>
-			<jsp:include page="productSecondaryDetailEditAndShow.jsp"></jsp:include>
-			<jsp:include page="compositeProductDetailAdd.jsp"></jsp:include>
-			<jsp:include page="compositeProductDetailEditAndShow.jsp"></jsp:include>
-			<jsp:include page="productDetailAdd.jsp"></jsp:include>
-			<jsp:include page="productDetailEditAndShow.jsp"></jsp:include>
 	</div>
 	<jsp:include page="../common/bottom.jsp"></jsp:include>
 	<!-- 防止重复提交专用-->

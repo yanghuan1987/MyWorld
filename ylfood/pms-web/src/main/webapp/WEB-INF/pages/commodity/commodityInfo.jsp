@@ -1,12 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <% String path = application.getInitParameter("static-file"); %>
-<div class="sp-menu-right" ng-show="showPage == 3" style="width: 80%;" ng-cloak>
-	<div class="titlebar" style="height: 20px;">
-		<i ></i>
-	</div>
+<div class="sp-menu-right" ng-show="showPage == 3" style="width: 80%;border-left: 5px solid #ebebeb;" ng-cloak>
+	<jsp:include page="../common/productHead.jsp"></jsp:include>
 	<div class="sp-content-bg"
-			style="background-color: white; width: 98%; 
-			margin-left: 15px;overflow-x: hidden;">
+			style="background-color: white;overflow-x: hidden;">
 		<!--面板开始-->
 		<div class="sp-panel panel panel-default">
 			<div class="sp-panel-body panel-body category-name-head">
@@ -79,12 +76,10 @@
 							<tr style="height: 30px;">
 								<td class="td-right-view">保质期：</td>
 								<td colspan="2" class="ng-binding text-left">{{commodity.shelfLife}}&nbsp;{{commodity.shelfLifeName}}</td>
-								<td class="td-right-view">货架期：</td>
-								<td colspan="2"class="ng-binding text-left">{{commodity.saleDate}}&nbsp;{{commodity.saleDateName}}</td>
-							</tr>
-							<tr style="height: 30px;">
 								<td class="td-right-view">商品评价：</td>
 								<td colspan="2" class="ng-binding text-left">好评:{{commodityCommentGood}}&nbsp;&nbsp;&nbsp;&nbsp;差评:{{commodityCommentBad}}</td>
+							</tr>
+							<tr style="height: 30px;">
 								<td class="td-right-view">税率：</td>
 								<td colspan="2"class="ng-binding text-left">{{commodity.taxRateName}}</td>
 							</tr>

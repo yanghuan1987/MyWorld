@@ -26,23 +26,16 @@
 <body ng-app="commodityApp" ng-controller="commodityCtrl" ng-cloak style="overflow: hidden;" class="ng-cloak">
 <input type="text" id="server" value="<%=path%>" style="display: none;"/>
 	<div style="height: 100%; position: absolute; width: 100%;">
-		<jsp:include page="../common/commodityHead.jsp"></jsp:include>
-
 		<!-- main container -->
 			<div class="row">
-		<jsp:include page="/WEB-INF/pages/common/menu.jsp"></jsp:include>
 				<jsp:include page="commodityMenu.jsp"></jsp:include>
 				<jsp:include page="commodityDetilSearch.jsp"></jsp:include>
 				
 				<!-- commodity list start -->
 				<div class="sp-menu-right tab-content"
-					style="height: 90%; padding-left: 0px; padding-right: 0px;width: 80%;" ng-show="showPage == 2">
-					
-					<div class="titlebar" style="height: 20px;">
-						<i ></i>
-					</div>
-					
-				<div class="titlebar" ng-show="category.categoryCode != null">
+					style="height: 90%; padding-left: 0px; padding-right: 0px;width: 80%;border-left: 5px solid #ebebeb;" ng-show="showPage == 2">
+				<jsp:include page="../common/commodityHead.jsp"></jsp:include>
+				<div class="titlebar" ng-show="category.categoryCode != null" style="padding-left: 0px;">
 					<div class="sp-content-bg" style="background-color: white; width: 101%;">
 						<!--面板开始-->
 						<div class="sp-panel panel panel-default">

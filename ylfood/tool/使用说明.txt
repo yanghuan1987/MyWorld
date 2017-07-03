@@ -1,0 +1,9 @@
+1、导入tool工程到eclipse
+2、配置config.properties
+3、配置data模块东西配置
+4、配置mybatis生成xml配置
+5、执行tool.CodeGenerator的main方法
+6、生成的文件在config中配置的result.dir目录中
+7、copy生成的文件到你需要的地方
+8、可以休息下了， 轻松搞定基础代码
+

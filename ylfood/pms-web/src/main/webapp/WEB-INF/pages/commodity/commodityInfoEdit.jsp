@@ -1,7 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <% String path = application.getInitParameter("static-file"); %>
 <!-- start container -->
-<div class="sp-menu-right" ng-show="showPage == 4" style="width: 80%;" ng-cloak>
+<div class="sp-menu-right" ng-show="showPage == 4" style="width: 80%;border-left: 5px solid #ebebeb;" ng-cloak>
+	<jsp:include page="../common/productHead.jsp"></jsp:include>
 	<form name="commodityAddForm" enctype="multipart/form-data">
 	<!-- 预览popup -->	
 	<div id='editpopUpHg' class='sp-popup sp-popup-hg'>
@@ -72,10 +73,6 @@
 									<tr style="height: 30px;">
 										<td class="td-right">保质期：</td>
 										<td colspan="2" class="ng-binding text-left">{{commodity.shelfLife}}&nbsp;{{commodity.shelfLifeName}}</td>
-										<td class="td-right">货架期：</td>
-										<td colspan="2" class="ng-binding text-left">{{commodity.saleDate}}&nbsp;{{commodity.saleDateName}}</td>
-									</tr>
-									<tr style="height: 30px;">
 										<td class="td-right">税率：</td>
 										<td colspan="2" class="ng-binding text-left">{{commodity.taxRateName}}</td>
 									</tr>
@@ -125,13 +122,9 @@
 			</div>
 		</div>
 	</div>
-
-	<div class="titlebar" style="height: 20px;">
-		<i ></i>
-	</div>
+	
 	<div class="sp-content-bg"
-			style="background-color: white; width: 98%; 
-			margin-left: 15px;overflow-x: hidden;">
+			style="background-color: white;padding-left: 0px;overflow-x: hidden;">
 		<div class="sp-panel panel panel-default">
 			<div class="sp-panel-body panel-body category-name-head">
 				<p class="sp-p-title">
@@ -291,28 +284,12 @@
 									<option ng-repeat="x in dateUnits"
 										value="{{x.optionName}}">{{x.optionName}}</option>
 								</select><span style="float: left;"><span style="color: red"
-								ng-show="showinfoshelfLife">保质期未输入的场合改单位不会被保存，但可正常操作！</span>
+								ng-show="showinfoshelfLife">只选择保质期单位不填写保质期时，将不会被保存！</span>
 								</span>
 								</td>
 							</tr>
 							<tr style="height: 40px;">
-								<td class="td-right">货架期：</td>
-								<td colspan="2"><input size="4" class="sp-input sp-input-lg" style="float: left;"
-									maxlength="5" type="text" ng-model="commodity.saleDate" 
-									ng-blur="checksaleDate(commodity.saleDate)"/></td>
-								<td class="td-right">货架期单位：</td>
-								<td  colspan="2" style="text-align: left;">
- 								<select class="sp-select sp-select-lg" ng-change = "saleDateUnitChange(addedProduct.saleDateUnit)"
-									style="float: left; height: 30px;"
-									ng-model="commodity.saleDateName">
-									<option ng-repeat="x in dateUnits"
-										value="{{x.optionName}}">{{x.optionName}}</option>
-								</select><span style="color: red"
-								ng-show="showinfosaleDate">货架期未输入的场合改单位不会被保存，但可正常操作！</span>
-								</td>
-							</tr>
-							<tr style="height: 40px;">
-								<td class="td-right">税率：</td>
+								<td class="td-right"><span style="color: red">*</span>税率：</td>
 								<td colspan="2" class="ng-binding text-left">
 									<select ng-model="commodity.taxRateName"
 										class="sp-select sp-select-md" required name="taxRate"

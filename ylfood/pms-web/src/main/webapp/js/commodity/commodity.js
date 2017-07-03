@@ -195,6 +195,7 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 			}
 		}
 		$rootScope.showPage = 2;
+		$rootScope.SourcePage = 2;//跳转前页面
 		$scope.commodityList = null;
 		$scope.type = null;
 		$scope.showNewButton = false;//显示新增按钮
@@ -253,6 +254,7 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 			}
 		}
 		$rootScope.showPage = 2;
+		$rootScope.SourcePage = 2;//跳转前页面
 		$scope.commodityList = null;
 		$scope.type = null;
 	 	$scope.colorones = "";//菜单背景颜色
@@ -315,6 +317,7 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		$scope.categoryName = name;//品类名字
 		//获取品类属性
 		$rootScope.showPage = 2;//显示页面
+		$rootScope.SourcePage = 2;//跳转前页面
 		$scope.categoryName = name;//获取选择品类名
 		var categoryCode = ccode;//品类code，检索用
 		$scope.tccode = ccode;//品类code，修改上下架后在检索用
@@ -584,8 +587,7 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 				commodityPropertys:commodity.commodityPropertys,commodityPictures:commodity.commodityPictures,
 				id:commodity.id,taxRateName:commodity.taxRateName,taxRateValue:commodity.taxRateValue,
 				shelfLife:commodity.shelfLife,shelfLifeName:commodity.shelfLifeName,
-				shelfLifeValue:commodity.shelfLifeValue,saleDate:commodity.saleDate,
-				saleDateName:commodity.saleDateName,saleDateValue:commodity.saleDateValue
+				shelfLifeValue:commodity.shelfLifeValue
 		}; 
 		var divisionflg = false;//有无该省flg
 		var nowcitys = $scope.commodity.commodityCity;//已保存的城市
@@ -689,7 +691,6 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		$scope.commodity = {};//清空商品
 		$scope.flg=true;//新增表示内容，却别于编辑FLG
 		$scope.showinfoshelfLife = false;//保质期提示信息
-		$scope.showinfosaleDate = false;//货架期提示信息
 		//返回所有的符合条件的产品
 		var response = $http.post("/pms-web/pms/product/getAllProductsByCriteria",{categoryCode : $scope.category.categoryCode,saleFlag:1},{headers:{'Accept':'application/json'}});
 		response.success(function(data, status, headers, config) {
@@ -780,7 +781,6 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		$rootScope.formDetail = [];//判断详细图片是否修改集合
 
 		$scope.showinfoshelfLife = false;//保质期提示信息
-		$scope.showinfosaleDate = false;//货架期提示信息
 		//循环省
 		for(j=0;j<$scope.divisionNode.length;j++){
 			//添加changeFlag
@@ -888,28 +888,12 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 			$scope.showinfoshelfLife = true;
 		}
 	}
-	$scope.showinfosaleDate = false;
-	//保质期check
-	$scope.checksaleDate = function(parm){
-		if("" == parm){
-			$scope.commodity.saleDateName = null;
-		}else{
-			$scope.showinfosaleDate = false;
-		}
-	}
-	$scope.saleDateUnitChange = function(parm){
-		if(null == $scope.commodity.saleDate || ""== $scope.commodity.saleDate){
-			$scope.showinfosaleDate = true;
-		}
-	}
 	//选择产品
 	$scope.chooseProduct = function(product){
 		
 		$scope.chonseProductOne = product;
 		$scope.commodity.shelfLife = $scope.chonseProductOne.shelfLife;
 		$scope.commodity.shelfLifeName = $scope.chonseProductOne.shelfLifeName;
-		$scope.commodity.saleDate = $scope.chonseProductOne.saleDate;
-		$scope.commodity.saleDateName = $scope.chonseProductOne.saleDateName;
 		//为选择tr加上背景色
 		var trs = document.getElementById('table1').getElementsByTagName('tr');
 		for( var i=0; i<trs.length; i++ ){
@@ -1164,7 +1148,8 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		if(undefined != $scope.commodity.shelfLife && null != $scope.commodity.shelfLife &&
 				"" != $scope.commodity.shelfLife){
 			var checkNumber = /^\d+$/;//正整数
-			if(null == $scope.commodity.shelfLife.toString().match(checkNumber)){
+			if(null == $scope.commodity.shelfLife.toString().match(checkNumber) || 
+					$scope.commodity.shelfLife == 0){
 				$scope.message = "保质期必须为正整数!";
 				//模态框隐藏确认按钮
 				$scope.stateSure = false;
@@ -1177,29 +1162,6 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 				"" != $scope.commodity.shelfLife){
 			if($scope.commodity.shelfLifeName == null || $scope.commodity.shelfLifeName.length==0){
 				$scope.message = "保质期有值时单位不能为空！";
-				//模态框隐藏确认按钮
-				$scope.stateSure = false;
-				showPopup('showInfo',true);
-				return;
-			}
-		}
-		//货架期数字check
-		if(undefined != $scope.commodity.saleDate && null != $scope.commodity.saleDate &&
-				"" != $scope.commodity.saleDate){
-			var checkNumber = /^\d+$/;//正整数
-			if(null == $scope.commodity.saleDate.toString().match(checkNumber)){
-				$scope.message = "货架期必须为正整数!";
-				//模态框隐藏确认按钮
-				$scope.stateSure = false;
-				showPopup('showInfo',true);
-				return;
-			}
-		}
-		//请选择货架期
-		if(undefined != $scope.commodity.saleDate && null != $scope.commodity.saleDate &&
-				"" != $scope.commodity.saleDate){
-			if($scope.commodity.saleDateName == null || $scope.commodity.saleDateName.length==0){
-				$scope.message = "货架期有值时单位不能为空！";
 				//模态框隐藏确认按钮
 				$scope.stateSure = false;
 				showPopup('showInfo',true);
@@ -1366,12 +1328,6 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 				$scope.commodity.shelfLifeValue = $rootScope.dateUnits[i].optionValue;
 			}
 		}
-		//货架期Value赋值
-		for(i in $rootScope.dateUnits){
-			if($scope.commodity.saleDateName == $rootScope.dateUnits[i].optionName){
-				$scope.commodity.saleDateValue = $rootScope.dateUnits[i].optionValue;
-			}
-		}
 		//税率Value赋值
 		for(i in $rootScope.severTaxRate){
 			if($scope.commodity.taxRateName == $rootScope.severTaxRate[i].optionName){
@@ -1530,7 +1486,8 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		if(undefined != $scope.commodity.shelfLife && null != $scope.commodity.shelfLife &&
 				"" != $scope.commodity.shelfLife){
 			var checkNumber = /^\d+$/;//正整数
-			if(null == $scope.commodity.shelfLife.toString().match(checkNumber)){
+			if(null == $scope.commodity.shelfLife.toString().match(checkNumber) || 
+					$scope.commodity.shelfLife == 0){
 				$scope.message = "保质期必须为正整数!";
 				//模态框隐藏确认按钮
 				$scope.stateSure = false;
@@ -1543,29 +1500,6 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 				"" != $scope.commodity.shelfLife){
 			if($scope.commodity.shelfLifeName == null || $scope.commodity.shelfLifeName.length==0){
 				$scope.message = "保质期有值时单位不能为空！";
-				//模态框隐藏确认按钮
-				$scope.stateSure = false;
-				showPopup('showInfo',true);
-				return;
-			}
-		}
-		//货架期数字check
-		if(undefined != $scope.commodity.saleDate && null != $scope.commodity.saleDate &&
-				"" != $scope.commodity.saleDate){
-			var checkNumber = /^\d+$/;//正整数
-			if(null == $scope.commodity.saleDate.toString().match(checkNumber)){
-				$scope.message = "货架期必须为正整数!";
-				//模态框隐藏确认按钮
-				$scope.stateSure = false;
-				showPopup('showInfo',true);
-				return;
-			}
-		}
-		//请选择货架期
-		if(undefined != $scope.commodity.saleDate && null != $scope.commodity.saleDate &&
-				"" != $scope.commodity.saleDate){
-			if($scope.commodity.saleDateName == null || $scope.commodity.saleDateName.length==0){
-				$scope.message = "货架期有值时单位不能为空！";
 				//模态框隐藏确认按钮
 				$scope.stateSure = false;
 				showPopup('showInfo',true);
@@ -1717,12 +1651,6 @@ app.controller('commodityCtrl', function($scope,$rootScope,$http) {
 		for(i in $rootScope.dateUnits){
 			if($scope.commodity.shelfLifeName == $rootScope.dateUnits[i].optionName){
 				$scope.commodity.shelfLifeValue = $rootScope.dateUnits[i].optionValue;
-			}
-		}
-		//货架期Value赋值
-		for(i in $rootScope.dateUnits){
-			if($scope.commodity.saleDateName == $rootScope.dateUnits[i].optionName){
-				$scope.commodity.saleDateValue = $rootScope.dateUnits[i].optionValue;
 			}
 		}
 		//税率Value赋值

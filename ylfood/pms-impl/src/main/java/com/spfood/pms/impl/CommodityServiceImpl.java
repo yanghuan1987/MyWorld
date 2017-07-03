@@ -109,6 +109,9 @@ public class CommodityServiceImpl implements CommodityService{
 
 	@Override
 	public List<Commodity> selectCommodityByProduct(List<String> productCodeList) {
+		if (productCodeList.size() == 0) {
+			return null;
+		}
 		return commodityManager.selectCommodityByProduct(productCodeList);
 	}
 	
@@ -148,6 +151,9 @@ public class CommodityServiceImpl implements CommodityService{
 	
 	@Override
 	public List<Commodity> selectListByCommodityCodeList(List<String> CommodityCodeList) {
+		if (CommodityCodeList.size() == 0) {
+			return null;
+		}
 		//获取商品的基本信息，包含属性信息
 		List<Commodity> commodityList = commodityManager.selectListByCommodityCodeList(CommodityCodeList);
 		return commodityList;

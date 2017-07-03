@@ -23,16 +23,14 @@
 </head>
 <body ng-app="categoryApp" ng-controller="categoryCtrl" ng-cloak style="overflow: hidden;" class="ng-cloak">
 <input type="text" id="server" value="<%=path%>" style="display: none;"/>
-	<jsp:include page="../common/categoryHead.jsp"></jsp:include>
-
 	<!-- main container -->
 	<div class="sp-div-none container-fluid">
 		<div class="row">
-		<jsp:include page="/WEB-INF/pages/common/menu.jsp"></jsp:include>
 			<!-- sidebar -->
 			<jsp:include page="../common/categoryMenu.jsp"></jsp:include>
 			
-			<div class="sp-menu-right" style="width: 80%;">
+			<div class="sp-menu-right" style="width: 80%;border-left: 5px solid #ebebeb;">
+				<jsp:include page="../common/categoryHead.jsp"></jsp:include>
 				<!-- 一、二级品类页面 -->
 				<jsp:include page="categoryInfoOneTwoLevel.jsp"></jsp:include>
 				<!-- 三级品类编辑 页面-->

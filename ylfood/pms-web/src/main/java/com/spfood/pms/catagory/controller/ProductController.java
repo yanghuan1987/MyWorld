@@ -329,11 +329,4 @@ public class ProductController {
 	public @ResponseBody List<ConfigureOptionDTO> getDateUnit() throws Exception{
 		return basicConfigurationService.getConfigureOptions("date_unit");
 	}
-	
-	//获取辅材基本单位
-	@RequiresPermissions("pms:product:show")
-	@RequestMapping(method = RequestMethod.GET, value = "/getSecondaryProductUnit", produces = {"application/json" })
-	public @ResponseBody List<ConfigureOptionDTO> getSecondaryProductUnit() throws Exception{
-		return basicConfigurationService.getConfigureOptions("pms_secondary_product_unit");
-	}
 }

@@ -164,7 +164,7 @@ ul.sp-nav-menu-third
 {
 margin:0px;
 padding:0px;
-background-color:#f6f6f6;
+background-color:#fff;
 -moz-border-radius: 4px;
 -webkit-border-radius: 4px;
 border-radius: 4px;
@@ -505,7 +505,7 @@ font-family:'微软雅黑';
 }
 .ng-cloak{display:none;}
 .disableOn{
-	background-color: #A6A6A6;
+	background-color: #A6A6A6 !important;
 }
 .disableOff{
 	

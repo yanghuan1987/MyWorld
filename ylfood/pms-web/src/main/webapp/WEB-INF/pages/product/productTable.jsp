@@ -1,11 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
-<div class="sp-menu-right" style="width: 80%;"
+<div class="sp-menu-right" style="border-left: 5px solid #ebebeb;width: 80%;"
 	ng-show="showPage == 2">
-	<div style="height: 20px;width: 100%;padding-left: 15px;">
-		<i class="showone"></i>
-	</div>
-	<div style="width: 100%;padding-left: 15px;" id="productTable">
+	<jsp:include page="../common/productHead.jsp"></jsp:include>
+	<div style="width: 100%;" id="productTable">
 
 		<div class="sp-content-bg">
 			<!--面板开始-->

@@ -28,6 +28,7 @@ import com.spfood.pms.dao.ProductDao;
 import com.spfood.pms.dao.ProductPropertyDao;
 import com.spfood.pms.dao.impl.CommoditySqlIds;
 import com.spfood.pms.intf.domain.Commodity;
+import com.spfood.pms.intf.domain.CommodityComment;
 import com.spfood.pms.intf.domain.CommodityPicture;
 import com.spfood.pms.intf.domain.CommodityUpdateSalesError;
 import com.spfood.pms.intf.domain.PmsCommodityMsgTemp;
@@ -267,7 +268,14 @@ public class CommodityManagerImpl extends BaseManagerImpl<Commodity> implements 
             for(Commodity commodity2 : pageInfos.getResult()){
                 idList.add(commodity2.getId());
             }
-            List<Commodity> clist = commodityDao.selectListByIdsForComment(idList);
+            if (null != commodity.getCommodityCommentDomain()) {
+            	commodity.getCommodityCommentDomain().setIdList(idList);
+			}else {
+				CommodityComment comment = new CommodityComment();
+				comment.setIdList(idList);
+				commodity.setCommodityCommentDomain(comment);
+			}
+            List<Commodity> clist = commodityDao.selectListByIdsForComment(commodity);
             //得到结果按查询ID排序
             List<Commodity> result = new ArrayList<Commodity>(15);
             for (int i = 0; i < idList.size(); i++) {

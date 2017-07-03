@@ -2,11 +2,10 @@
 <%
 	String path = application.getInitParameter("static-file");
 %>
-<div style="padding-left: 15px;width: 100%;" id="threeCategory"
+<div style="width: 100%;" id="threeCategory"
 	ng-controller="categoryThreeInfo" ng-show="showLevelThree">
-	<div class="sp-content-bg" style="width: 99%;">
+	<div class="sp-content-bg">
 		<div class="sp-panel">
-			<div style="padding: 10px 15px;border-bottom: 1px solid transparent;background-color: #f5f5f5;border-color: #ddd;"></div>
 			<div class="sp-panel-body">
 				<p class="sp-p-title">
 					<span>当前页面:{{categoryCname}}</span>

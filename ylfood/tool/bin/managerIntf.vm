@@ -1,0 +1,18 @@
+/**
+ * $!{managerFileDescInterface}
+ */
+package ${managerPackageInterface};
+
+import com.spfood.kernel.manager.BaseManager;
+import ${domainPackage}.${domainName};
+
+/**
+ * ${domainName} $!{managerClassDescInterface}
+ *
+ * @author $!{authorName}
+ * @createTime $!{createTime}
+ *
+ */
+public interface ${domainName}Manager extends BaseManager<${domainName}> {
+
+}

@@ -111,8 +111,7 @@ public class Constant {
 	public enum itemType{
 		commodity(0,"商品"),
 		product(1,"产品"),
-		category(2,"品类"),
-		rawMaterials(3,"原料");
+		category(2,"品类");
 		private int value;
 		private String name;
 		private itemType (int value,String name) {

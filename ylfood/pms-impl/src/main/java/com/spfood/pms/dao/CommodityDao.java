@@ -73,7 +73,7 @@ public interface CommodityDao extends BaseDao<Commodity>{
 	 * @param idList
 	 * @return
 	 */
-	public List<Commodity> selectListByIdsForComment(List<Long> idList);
+	public List<Commodity> selectListByIdsForComment(Commodity commodity);
 	
 
 	/**

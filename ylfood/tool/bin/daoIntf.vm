@@ -1,0 +1,19 @@
+/**
+ * $!{fileDescInterface}
+ */
+package ${packageInterface};
+
+import com.spfood.kernel.dao.BaseDao;
+import ${domainPackage}.${domainName};
+
+/**
+ *
+ * ${domainName} $!{classDescInterface}
+ *
+ * @author $!{authorName}
+ * @createTime $!{createTime}
+ *
+ */
+public interface ${domainName}Dao extends BaseDao<${domainName}>{
+
+}

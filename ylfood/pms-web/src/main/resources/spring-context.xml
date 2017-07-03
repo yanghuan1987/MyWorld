@@ -67,7 +67,6 @@
     <dubbo:reference id ="productService" interface="com.spfood.pms.intf.ProductService" ${localservice.url} check="false"  timeout="10000"></dubbo:reference>
     <dubbo:reference id ="CommodityCommentService" interface="com.spfood.pms.intf.CommodityCommentService" ${localservice.url} check="false"  timeout="10000"></dubbo:reference>
     <dubbo:reference id ="CommodityCommentTypeService" interface="com.spfood.pms.intf.CommodityCommentTypeService" ${localservice.url} check="false"  timeout="10000"></dubbo:reference>
-    <dubbo:reference id ="RawMaterialsService" interface="com.spfood.pms.intf.RawMaterialsService" ${localservice.url} check="false"  timeout="10000"></dubbo:reference>
     <dubbo:reference id ="employeeUiasService" interface="com.spfood.employeeuias.intf.EmployeeUiasService" check="true" timeout="2000"></dubbo:reference>
     
 

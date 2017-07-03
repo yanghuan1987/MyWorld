@@ -1,11 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
-<div class="sp-menu-right" ng-show="showPage == 1" style="width: 80%;">
-	<div style="height: 20px; width: 100%; padding-left: 15px;">
-		<i class="showone"></i>
-	</div>
-	<div style="width: 100%; padding-left: 15px;" id="productTable">
-
+<div class="sp-menu-right" ng-show="showPage == 1" style="border-left: 5px solid #ebebeb;width: 80%;">
+	<jsp:include page="../common/productHead.jsp"></jsp:include>
+	<div style="width: 100%;" id="productTable">
 		<div class="sp-content-bg">
 			<!--面板开始-->
 			<div class="sp-panel">
@@ -105,18 +102,15 @@
 								<td ng-if="product.saleFlag == 1">是</td>
 								<td ng-if="product.saleFlag == 0">否</td>
 								<td ng-if="product.saleFlag == null">-</td>
-								<td ng-if="product.compositeFlag == 2">{{product.productSecondarySpecification}}</td>
-								<td ng-if="product.compositeFlag != 2" class="autobreak" style="height: 30px;" >{{product.productSpecificationValue}}
+								<td class="autobreak" style="height: 30px;" >{{product.productSpecificationValue}}
 									{{product.productSpecificationUnitFirst}} /
 									{{product.productSpecificationUnitSecond}}</td>
 								<td ng-if="product.compositeFlag == 1">是</td>
 								<td ng-if="product.compositeFlag == 0">否</td>
-								<td ng-if="product.compositeFlag == 2">辅材</td>
 								<td class="autobreak" style="height: 30px;">{{product.productTemperatureZoneName}}</td>
 								<td class="autobreak" style="height: 30px;" 
 								ng-repeat="x in productStatus"
 								ng-if="x.optionValue == product.productStatus">{{x.optionName}}</td>
-								<td ng-if="product.compositeFlag == 2">-</td>
 							</tr>
 							<tr ng-repeat="y in tempList">
 								<td style="height: 30px"></td>

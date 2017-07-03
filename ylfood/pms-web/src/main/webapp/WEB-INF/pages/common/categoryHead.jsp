@@ -9,17 +9,10 @@
 			+ request.getServerName() + ":" + request.getServerPort();
 %>
 <!--header-->
-<div class="sp-head">
-	<div class="sp-head-logo">
-		<span> 
-			<a href="${pageContext.request.contextPath}/pms/login/main"> 
-			<img src="<%=path%>/img/pms/PMS_logo.png" />
-			</a>
-		</span> 
-	</div>
-   <div style="float: left;font-size: 30px;color: #99c731;padding-left: 8%;">PMS品类设计</div>
-	<div class="sp-head-right">
-		<span class="sp-head-user"><img src="<%=path%>/img/user.png">
+<div style="width: 100%;height: 50px;">
+   <div style="float: left;font-size: 30px;color: #99c731;padding-left: 8%;"></div>
+	<div class="sp-head-right" style="margin-top: 10px;">
+		<span style="height: 50px;vertical-align: middle;padding-right: 20px;">
 		<shiro:principal property="account" /></span> <span class="sp-head-exit">
 			<a href="<%=basePath%>/uias-web/login/loginOut" class="sp-head-logout">
 				<img src="<%=path%>/img/exit.png">安全退出

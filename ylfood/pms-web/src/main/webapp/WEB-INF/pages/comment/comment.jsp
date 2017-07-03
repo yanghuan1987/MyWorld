@@ -29,22 +29,16 @@
 	style="overflow: hidden;" class="ng-cloak">
 	<input type="text" id="server" value="<%=path%>" style="display: none;" />
 	<div style="height: 100%; position: absolute; width: 100%;">
-		<jsp:include page="../common/commentHead.jsp"></jsp:include>
 
 		<!-- main container -->
 		<div class="row">
-			<jsp:include page="/WEB-INF/pages/common/menu.jsp"></jsp:include>
 			<jsp:include page="commentMenu.jsp"></jsp:include>
-
 			<!-- comment list start -->
 			<div class="sp-menu-right tab-content"
-				style="height: 90%; padding-left: 0px; padding-right: 0px; width: 80%;">
-
-				<div class="titlebar" style="height: 20px;">
-					<i></i>
-				</div>
+				style="height: 90%; padding-left: 0px; padding-right: 0px; border-left: 5px solid #ebebeb;width: 80%;">
+			<jsp:include page="../common/commentHead.jsp"></jsp:include>
 				<!-- 表格 -->
-				<div class="titlebar"">
+				<div class="titlebar" style="padding-left: 0px;">
 					<div class="sp-content-bg"
 						style="background-color: white; width: 101%;">
 						<!--面板开始-->

@@ -127,7 +127,7 @@ public class ItemServiceForWms implements DomainObject {
     /**
      * 保质期
      */
-    private String itemShelfLife;
+    private Integer itemShelfLife;
     
     /**
      * 保质期单位名称
@@ -139,26 +139,6 @@ public class ItemServiceForWms implements DomainObject {
      * 保质期单位值
      */
     private String itemShelfLifeValue;
-    
-    /**
-     * 货架期
-     */
-    private String itemSaleDate;
-
-    
-    /**
-     * 货架期单位名称
-     */
-    private String itemSaleDateName;
-    
-    /**
-     * 货架期单位值
-     */
-    private String itemSaleDateValue;
-    /**
-     * 辅材规格
-     */
-	 private String itemRawMaterialsSpecification;
     
     /**
 	 * @return the itemGs1Code
@@ -627,14 +607,14 @@ public class ItemServiceForWms implements DomainObject {
 	/**
 	 * @return the itemShelfLife
 	 */
-	public String getItemShelfLife() {
+	public Integer getItemShelfLife() {
 		return itemShelfLife;
 	}
 
 	/**
 	 * @param itemShelfLife the itemShelfLife to set
 	 */
-	public void setItemShelfLife(String itemShelfLife) {
+	public void setItemShelfLife(Integer itemShelfLife) {
 		this.itemShelfLife = itemShelfLife;
 	}
 
@@ -664,62 +644,5 @@ public class ItemServiceForWms implements DomainObject {
 	 */
 	public void setItemShelfLifeValue(String itemShelfLifeValue) {
 		this.itemShelfLifeValue = itemShelfLifeValue;
-	}
-
-	/**
-	 * @return the itemSaleDate
-	 */
-	public String getItemSaleDate() {
-		return itemSaleDate;
-	}
-
-	/**
-	 * @param itemSaleDate the itemSaleDate to set
-	 */
-	public void setItemSaleDate(String itemSaleDate) {
-		this.itemSaleDate = itemSaleDate;
-	}
-
-	/**
-	 * @return the itemSaleDateName
-	 */
-	public String getItemSaleDateName() {
-		return itemSaleDateName;
-	}
-
-	/**
-	 * @param itemSaleDateName the itemSaleDateName to set
-	 */
-	public void setItemSaleDateName(String itemSaleDateName) {
-		this.itemSaleDateName = itemSaleDateName;
-	}
-
-	/**
-	 * @return the itemSaleDateValue
-	 */
-	public String getItemSaleDateValue() {
-		return itemSaleDateValue;
-	}
-
-	/**
-	 * @param itemSaleDateValue the itemSaleDateValue to set
-	 */
-	public void setItemSaleDateValue(String itemSaleDateValue) {
-		this.itemSaleDateValue = itemSaleDateValue;
-	}
-
-	/**
-	 * @return the itemRawMaterialsSpecification
-	 */
-	public String getItemRawMaterialsSpecification() {
-		return itemRawMaterialsSpecification;
-	}
-
-	/**
-	 * @param itemRawMaterialsSpecification the itemRawMaterialsSpecification to set
-	 */
-	public void setItemRawMaterialsSpecification(
-			String itemRawMaterialsSpecification) {
-		this.itemRawMaterialsSpecification = itemRawMaterialsSpecification;
 	}
 }

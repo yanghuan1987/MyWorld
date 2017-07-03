@@ -1,0 +1,33 @@
+/**
+ * $!{managerFileDescImpl}
+ */
+package ${managerPackageImpl};
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.spfood.kernel.dao.BaseDao;
+import ${packageInterface}.${domainName}Dao;
+import ${domainPackage}.${domainName};
+import com.spfood.kernel.manager.impl.BaseManagerImpl;
+import ${managerPackageInterface}.${domainName}Manager;
+
+/**
+ * ${domainName} $!{managerClassDescImpl}
+ *
+ * @author $!{authorName}
+ * @createTime $!{createTime}
+ *
+ */
+@Service
+public class ${domainName}ManagerImpl extends BaseManagerImpl<${domainName}> implements ${domainName}Manager {
+
+	@Autowired
+	private ${domainName}Dao dao;
+	
+	@Override
+	protected BaseDao<${domainName}> getBaseDao() {
+		return dao;
+	}
+
+}

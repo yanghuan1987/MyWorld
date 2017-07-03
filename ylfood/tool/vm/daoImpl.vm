@@ -1,0 +1,23 @@
+/**
+ * $!{fileDescImpl}
+ */
+package ${packageImpl};
+
+import org.springframework.stereotype.Repository;
+
+import com.spfood.kernel.dao.impl.BaseDaoImpl;
+import ${packageInterface}.${domainName}Dao;
+import ${domainPackage}.${domainName};
+
+/**
+ *
+ * ${domainName} $!{classDescImpl}
+ *
+ * @author $!{authorName}
+ * @createTime $!{createTime}
+ *
+ */
+@Repository
+public class ${domainName}DaoImpl extends BaseDaoImpl<${domainName}> implements ${domainName}Dao {
+
+}

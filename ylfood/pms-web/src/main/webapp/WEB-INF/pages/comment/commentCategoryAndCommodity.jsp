@@ -173,9 +173,11 @@
 			<td style="height: 30px" class="autobreak">{{x.commodityCommentDomain.commodityGoodCount}}</td>
 			<td style="height: 30px" class="autobreak">{{x.commodityCommentDomain.commodityBadCount}}</td>
 			<td style="height: 30px" class="autobreak">
-				<input ng-if="x.commodityCommentDomain.expressGoodCount+x.commodityCommentDomain.expressBadCount+
-				x.commodityCommentDomain.packageGoodCount+x.commodityCommentDomain.packageBadCount+
-				x.commodityCommentDomain.commodityGoodCount+x.commodityCommentDomain.commodityBadCount != 0"
+				<input ng-if="x.commodityCommentDomain.expressGoodCount+x.commodityCommentDomain.expressBadCount +
+				x.commodityCommentDomain.packageGoodCount + x.commodityCommentDomain.packageBadCount +
+				x.commodityCommentDomain.commodityGoodCount + x.commodityCommentDomain.commodityBadCount +
+				x.commodityCommentDomain.expressMidCount + x.commodityCommentDomain.packageMidCount +
+				x.commodityCommentDomain.commodityMidCount != 0"
 				class="sp-btn sp-btn-gray-sm" value="详细" type="button" ng-click="showCommentInfo(x)">
 			</td>
 		</tr>

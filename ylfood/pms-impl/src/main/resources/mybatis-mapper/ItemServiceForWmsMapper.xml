@@ -40,10 +40,6 @@
     <result column="item_shelf_life" property="itemShelfLife" jdbcType="INTEGER" />
     <result column="item_shelf_life_name" property="itemShelfLifeName" jdbcType="VARCHAR" />
     <result column="item_shelf_life_value" property="itemShelfLifeValue" jdbcType="VARCHAR" />
-    <result column="item_sale_date" property="itemSaleDate" jdbcType="INTEGER" />
-    <result column="item_sale_date_name" property="itemSaleDateName" jdbcType="VARCHAR" />
-    <result column="item_sale_date_value" property="itemSaleDateValue" jdbcType="VARCHAR" />
-    <result column="item_raw_materials_specification" property="itemRawMaterialsSpecification" jdbcType="VARCHAR" />
   </resultMap>
 
   
@@ -66,10 +62,6 @@
 			a.shelf_life AS item_shelf_life,
 			a.shelf_life_name AS item_shelf_life_name,
 			a.shelf_life_value AS item_shelf_life_value,
-			a.sale_date AS item_sale_date,
-			a.sale_date_name AS item_sale_date_name,
-			a.sale_date_value AS item_sale_date_value,
-			a.product_secondary_specification AS item_raw_materials_specification,
 			
 			a.tax_rate_name AS item_tax_rate_name,
 			a.tax_rate_value AS item_tax_rate_value,
@@ -97,10 +89,6 @@
 				c.shelf_life AS item_shelf_life,
 				c.shelf_life_name AS item_shelf_life_name,
 				c.shelf_life_value AS item_shelf_life_value,
-				c.sale_date AS item_sale_date,
-				c.sale_date_name AS item_sale_date_name,
-				c.sale_date_value AS item_sale_date_value,
-				NULL AS item_raw_materials_specification,
 				
 				c.tax_rate_name AS item_tax_rate_name,
 				c.tax_rate_value AS item_tax_rate_value,
@@ -131,10 +119,6 @@
 			a.shelf_life AS item_shelf_life,
 			a.shelf_life_name AS item_shelf_life_name,
 			a.shelf_life_value AS item_shelf_life_value,
-			a.sale_date AS item_sale_date,
-			a.sale_date_name AS item_sale_date_name,
-			a.sale_date_value AS item_sale_date_value,
-			a.product_secondary_specification AS item_raw_materials_specification,
 			
 			a.tax_rate_name AS item_tax_rate_name,
 			a.tax_rate_value AS item_tax_rate_value,
@@ -165,10 +149,6 @@
 			c.shelf_life AS item_shelf_life,
 			c.shelf_life_name AS item_shelf_life_name,
 			c.shelf_life_value AS item_shelf_life_value,
-			c.sale_date AS item_sale_date,
-			c.sale_date_name AS item_sale_date_name,
-			c.sale_date_value AS item_sale_date_value,
-			NULL AS item_raw_materials_specification,
 			
 			c.tax_rate_name AS item_tax_rate_name,
 			c.tax_rate_value AS item_tax_rate_value,
@@ -201,10 +181,6 @@
 			a.shelf_life AS item_shelf_life,
 			a.shelf_life_name AS item_shelf_life_name,
 			a.shelf_life_value AS item_shelf_life_value,
-			a.sale_date AS item_sale_date,
-			a.sale_date_name AS item_sale_date_name,
-			a.sale_date_value AS item_sale_date_value,
-			NULL AS item_raw_materials_specification,
 			
 			a.tax_rate_name AS item_tax_rate_name,
 			a.tax_rate_value AS item_tax_rate_value,
@@ -241,10 +217,6 @@
 			c.shelf_life AS item_shelf_life,
 			c.shelf_life_name AS item_shelf_life_name,
 			c.shelf_life_value AS item_shelf_life_value,
-			c.sale_date AS item_sale_date,
-			c.sale_date_name AS item_sale_date_name,
-			c.sale_date_value AS item_sale_date_value,
-			NULL AS item_raw_materials_specification,
 			
 			c.tax_rate_name AS item_tax_rate_name,
 			c.tax_rate_value AS item_tax_rate_value,
@@ -295,10 +267,6 @@
 				a.shelf_life AS item_shelf_life,
 				a.shelf_life_name AS item_shelf_life_name,
 				a.shelf_life_value AS item_shelf_life_value,
-				a.sale_date AS item_sale_date,
-				a.sale_date_name AS item_sale_date_name,
-				a.sale_date_value AS item_sale_date_value,
-				NULL AS item_raw_materials_specification,
 				e.product_property_name AS item_property_name,
 				e.product_property_value AS item_property_value,
 				a.tax_rate_name AS item_tax_rate_name,
@@ -348,10 +316,6 @@
 					c.shelf_life AS item_shelf_life,
 					c.shelf_life_name AS item_shelf_life_name,
 					c.shelf_life_value AS item_shelf_life_value,
-					c.sale_date AS item_sale_date,
-					c.sale_date_name AS item_sale_date_name,
-					c.sale_date_value AS item_sale_date_value,
-					NULL AS item_raw_materials_specification,
 					f.commdity_property_name AS item_property_name,
 					f.commdity_property_value AS item_property_value,
 					c.tax_rate_name AS item_tax_rate_name,
@@ -401,10 +365,6 @@
 						NULL AS item_shelf_life,
 						NULL AS item_shelf_life_name,
 						NULL AS item_shelf_life_value,
-						NULL AS item_sale_date,
-						NULL AS item_sale_date_name,
-						NULL AS item_sale_date_value,
-						NULL AS item_raw_materials_specification,
 						g.category_another_name AS item_property_name,
 						NULL AS item_property_value,
 						NULL AS item_tax_rate_name,
@@ -419,59 +379,6 @@
 					AND h.type = 2
 					GROUP BY
 						g.category_code
-					UNION ALL
-						SELECT
-							i.raw_materials_code AS item_code,
-							i.raw_materials_name AS item_name,
-							i.category_code AS item_category_code,
-							j.category_name AS item_category_name,
-							NULL AS item_status,
-							i.raw_materials_specification_value AS item_specification_value,
-							NULL AS item_specification_unit_first,
-							NULL AS item_specification_unit_first_value,
-							NULL AS item_specification_unit_second,
-							NULL AS item_specification_unit_second_value,
-							i.raw_materials_buy_unit_name AS item_buy_unit_name,
-							i.raw_materials_buy_unit_code AS item_buy_unit_value,
-							i.raw_materials_temperature_zone_name AS item_temperature_zone_name,
-							i.raw_materials_temperature_zone_code AS item_temperature_zone_code,
-							NULL AS item_gs1_code,
-							NULL AS item_show_name,
-							NULL AS item_terminal,
-							i.raw_materials_type AS item_composite_flag,
-							NULL AS item_price,
-							NULL AS item_sales_price,
-							NULL AS item_sales_amount,
-							NULL AS item_quantity,
-							NULL AS item_weight,
-							NULL AS item_comment,
-							NULL AS item_raw_materials_quantity,
-							NULL AS item_search_property,
-							NULL AS item_raw_materials_code,
-							NULL AS item_shelf_life,
-							NULL AS item_shelf_life_name,
-							NULL AS item_shelf_life_value,
-							NULL AS item_sale_date,
-							NULL AS item_sale_date_name,
-							NULL AS item_sale_date_value,
-							NULL AS item_raw_materials_specification,
-							l.raw_materials_property_name AS item_property_name,
-							l.raw_materials_property_value AS item_property_value,
-							NULL AS item_tax_rate_name,
-							NULL AS item_tax_rate_value,
-							0 AS data_source,
-							3 AS item_type
-						FROM
-							pms_raw_materials AS i
-						JOIN pms_product_category AS j ON i.category_code = j.category_code
-						JOIN pms_commodity_msg_temp AS k ON k.commdity_code = i.raw_materials_code
-						LEFT JOIN pms_raw_materials_property AS l ON i.raw_materials_code = l.raw_materials_code
-						AND l.raw_materials_property_name = '品牌'
-						WHERE
-							k.send_date IS NULL
-						AND k.type = 3
-						GROUP BY
-							i.raw_materials_code
   </select>
 <!-- 
 		SELECT

@@ -3,9 +3,9 @@
 <%
 	String path = application.getInitParameter("static-file");
 %>
-<div ng-cloak class="sp-menu-right sp-product-head" style="width: 80%;"
+<div ng-cloak class="sp-menu-right sp-product-head" style="border-left: 5px solid #ebebeb;width: 80%;"
 	ng-controller="productDetailController" ng-show="showPage == 5">
-
+	<jsp:include page="../common/productHead.jsp"></jsp:include>
 	<div id='editpopUpHg' class='sp-popup sp-popup-hg'>
 		<div class='sp-pop-header'>
 			<div id="pop-logo" class="sp-pop-logo">
@@ -54,18 +54,13 @@
 							{{x.optionName}}</label><br>
 					</div>
 					<div class="titlebar">
-						<label class="viewlabel text-right" style="width: 25%;">计量单位：
+						<label class="viewlabel text-right" style="width: 25%;">采购基本单位：
 						</label> <label class="viewlabel text-left" style="width: 75%;">{{product.productBuyUnitName}}</label><br>
 					</div>
 					<div class="titlebar">
 						<label class="viewlabel text-right" style="width: 25%;">保质期：
 						</label> <label class="viewlabel text-left" style="width: 75%;">{{product.shelfLife}}
 							{{product.shelfLifeName}}</label><br>
-					</div>
-					<div class="titlebar">
-						<label class="viewlabel text-right" style="width: 25%;">货架期：
-						</label> <label class="viewlabel text-left" style="width: 75%;">{{product.saleDate}}
-							{{product.saleDateName}}</label><br>
 					</div>
 					<div class="titlebar">
 						<label class="viewlabel text-right" style="width: 25%;">温区：
@@ -123,13 +118,8 @@
 
 	<!-- 产品详情信息显示 -->
 	<div ng-show="!editProduct">
-		<!-- 顶部按钮 -->
-		<div class="titlebar" style="height: 20px;">
-			<i></i>
-		</div>
-		<!-- 顶部按钮 end -->
 		<div class="sp-content-bg"
-			style="background-color: white; width: 98%; margin-left: 15px; overflow-x: hidden;">
+			style="background-color: white; width: 100%; overflow-x: hidden;">
 
 			<!--面板开始-->
 			<div class="sp-panel panel panel-default">
@@ -190,7 +180,7 @@
 					</div>
 					<div class="titlebar">
 						<div class="valueName control-label sp-input-p"
-							style="text-align: right; padding: 3px;">计量单位：</div>
+							style="text-align: right; padding: 3px;">采购基本单位：</div>
 						<div class="valueName" style="padding-left: 0px;">
 							{{product.productBuyUnitName}}</div>
 					</div>
@@ -199,12 +189,6 @@
 							style="text-align: right; padding: 3px;">保质期：</div>
 						<div class="valueName" style="padding-left: 0px;">
 							{{product.shelfLife}} {{product.shelfLifeName}}</div>
-					</div>
-					<div class="titlebar">
-						<div class="valueName control-label sp-input-p"
-							style="text-align: right; padding: 3px;">货架期：</div>
-						<div class="valueName" style="padding-left: 0px;">
-							{{product.saleDate}} {{product.saleDateName}}</div>
 					</div>
 					<div class="titlebar">
 						<div class="valueName control-label sp-input-p"
@@ -283,13 +267,8 @@
 
 	<!-- 产品编辑页 -->
 	<div ng-show="editProduct">
-		<!-- 顶部按钮 -->
-		<div class="titlebar" style="height: 20px;">
-			<i></i>
-		</div>
-		<!-- 顶部按钮 end -->
 		<div class="sp-content-bg"
-			style="background-color: white; width: 98%; margin-left: 15px; overflow-x: hidden;">
+			style="background-color: white; width: 100%;overflow-x: hidden;">
 
 			<!--面板开始-->
 			<div class="sp-panel panel panel-default">
@@ -395,16 +374,16 @@
 						<div class="titlebar">
 							<span class="valueName control-label sp-input-p"
 								style="text-align: right; padding: 3px;"> <span
-								style="color: red">*</span>计量单位：
+								style="color: red">*</span>采购基本单位：
 							</span> <span> <select ng-model="product.productBuyUnitName"
 								ng-disabled="UnitDisable || true" class="sp-select sp-select-md"
 								required name="productBuyUnit" style="height: 30px;"
-								placeholder="计量单位">
+								placeholder="采购基本单位">
 									<option ng-repeat="x in BasicPurchaseUnit"
 										value="{{x.optionName}}">{{x.optionName}}</option>
 							</select><span style="color: red">当产品规格第一单位为非重量单位时，该选项等于产品规格第二单位并且不可选</span>
 								<span style="color: red"
-								ng-show="productDetailEditForm.productBuyUnit.$error.required && !productDetailEditForm.productBuyUnit.$pristine">计量单位不能为空！</span>
+								ng-show="productDetailEditForm.productBuyUnit.$error.required && !productDetailEditForm.productBuyUnit.$pristine">采购基本单位不能为空！</span>
 							</span>
 						</div>
 
@@ -426,25 +405,6 @@
 							<div class="titlebar form-group"
 								style="color: red; margin-left: 10%; width: 89%;">注:非必填项,保质期未输入的场合改单位不会被保存，但可正常操作！</div>
 						</div>
-						<div class="titlebar">
-							<div class="valueName control-label sp-input-p"
-								style="text-align: right; padding: 3px;">货架期：</div>
-							<div class="valueName" style="padding-left: 0px;">
-								<input type="text" name="saleDate" class="sp-input-sm sp-input"
-									step="0.01" ng-pattern="/^\d+$/" ng-model="product.saleDate"
-									required style="float: left; width: 80px;" placeholder="货架期" />
-								<span style="color: red"
-									ng-show="productDetailEditForm.saleDate.$error.pattern && !productDetailEditForm.saleDate.$pristine">货架期必须为正整数！</span>
-								<select class="sp-select sp-select-sm"
-									style="float: left; height: 30px;"
-									ng-model="product.saleDateName">
-									<option ng-repeat="x in dateUnits" value="{{x.optionName}}">{{x.optionName}}</option>
-								</select>
-							</div>
-							<div class="titlebar form-group"
-								style="color: red; margin-left: 10%; width: 89%;">注:非必填项,货架期未输入的场合改单位不会被保存，但可正常操作！</div>
-						</div>
-
 
 						<div class="titlebar">
 							<div class="valueName control-label sp-input-p"
@@ -559,7 +519,7 @@
 						<div class="titlebar sp-mune-title"
 							style="height: 35px; margin-bottom: 10px; margin-top: 10px;">
 							<i class="pms-icon-kz"></i> 包装单位 <span style="color: red"
-								ng-show="showProductBuyUnitEmpty">请先选择计量单位！</span>
+								ng-show="showProductBuyUnitEmpty">请先选择采购基本单位！</span>
 							<button class="sp-btn sp-btn-black-sm"
 								ng-click="onAddProductPackUnitClick(product.productBuyUnitName)"
 								class="icon-left-bt" style="height: 100%;">新&nbsp;增</button>
@@ -610,7 +570,6 @@
 								 productDetailEditForm.productSpecificationUnitSecond.$error.required ||
                                  isProductPropertyMissed  || product.productSpecificationValue <= 0||
                                  productDetailEditForm.shelfLife.$error.pattern && !productDetailEditForm.shelfLife.$pristine || 
-                                 productDetailEditForm.saleDate.$error.pattern && !productDetailEditForm.saleDate.$pristine ||
                                  !serverGs1Code || !Gs1Exist || doubleClick"
 								style="width: 100%;">完成</button>
 						</div>
@@ -621,10 +580,4 @@
 			<!-- 面板结束 -->
 		</div>
 	</div>
-
-
-
 </div>
-
-
-

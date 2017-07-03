@@ -9,13 +9,10 @@ angular
 					 * 0---全不显示
 					 * 1---检索页面 
 					 * 2---产品table
-					 * 3---辅材产品table 
 					 * 4---普通产品新增 
 					 * 5---普通产品编辑 
 					 * 6---拼装产品新增 
 					 * 7---拼装产品编辑
-					 * 8---辅材新增 
-					 * 9---辅材编辑
 					 * 
 					 */
 					$rootScope.showPage = 0;//显示页面
@@ -67,10 +64,6 @@ angular
 					// 获取所有的包装单位列表，例如瓶、袋、箱、框等等。
 					$http.get("getBasicPackageUnit").success(function(data) {
 						$rootScope.specificationSecondValues = data;
-					});
-					// 获取辅材基本单位
-					$http.get("getSecondaryProductUnit").success(function(data) {
-						$rootScope.SecondaryProductUnit = data;
 					});
 					// 获取所有的基本单位。
 					$http
@@ -201,11 +194,7 @@ angular
 						$scope.categoryCode = updatecatone.categoryCode;// 品类code
 						$scope.compositeFlag = updatecatone.categoryTypeFlag;// 组合flg
 						// 不是辅材
-						if (updatecatone.categoryTypeFlag != 2) {
-							$rootScope.showPage = 2;// 产品table显示
-						} else {
-							$rootScope.showPage = 3;// 辅材table
-						}
+						$rootScope.showPage = 2;// 产品table显示
 						$scope.showNewButton = false;// 显示新增按钮
 						$scope.categoryName = null;// 品类名字
 						// 获取选择品类子品类信息
@@ -261,12 +250,7 @@ angular
 						$rootScope.choseCategory = updatecattwo;
 						// 获取选择品类子品类信息
 						$scope.colorones = "";// 菜单背景颜色
-						// 不是辅材
-						if (updatecattwo.categoryTypeFlag != 2) {
-							$rootScope.showPage = 2;// 产品table显示
-						} else {
-							$rootScope.showPage = 3;// 辅材table
-						}
+						$rootScope.showPage = 2;// 产品table显示
 						$rootScope.categoryBotton = 2;// 详细检索页面
 						$rootScope.SourcePage = 0;//跳转前页面
 						$rootScope.SearchType = 0;// 详细检索页面
@@ -381,12 +365,7 @@ angular
 						$scope.doubleClick = false;// 二重点击还原
 						exitPop('submitInfo');
 						$rootScope.SourcePage = 0;//跳转前页面
-						// 不是辅材
-						if (cat3.categoryTypeFlag != 2) {
-							$rootScope.showPage = 2;// 产品table显示
-						} else {
-							$rootScope.showPage = 3;// 辅材table
-						}
+						$rootScope.showPage = 2;// 产品table显示
 						$rootScope.SearchType = 0;// 详细检索页面
 						$scope.colorones = "";// 菜单背景颜色
 						$scope.showNewButton = true;// 显示新增按钮
@@ -698,7 +677,8 @@ angular
 					$scope.checkshelfLife = function(parm) {
 						var checkNumber = /^\d+$/;// 正整数
 						if (undefined != parm && "" != parm) {
-							if (null == parm.toString().match(checkNumber)) {
+							if (null == parm.toString().match(checkNumber) ||
+									parm == 0) {
 								$scope.checkShelfLifeFromat = true;
 								$scope.ShelfLifeUnitIsCheck = false;
 							} else {
@@ -713,30 +693,6 @@ angular
 					$scope.shelfLifeUnitChange = function(parm) {
 						if (undefined != parm && "" != parm) {
 							$scope.ShelfLifeUnitIsCheck = false;
-						}
-					}
-
-					$scope.SaleDateUnitIsCheck = false;
-					$scope.checkSaleDateFromat = false;
-					// 保质期check
-					$scope.checksaleDate = function(parm) {
-						var checkNumber = /^\d+$/;// 正整数
-						if (undefined != parm && "" != parm) {
-							if (null == parm.toString().match(checkNumber)) {
-								$scope.checkSaleDateFromat = true;
-								$scope.SaleDateUnitIsCheck = false;
-							} else {
-								$scope.SaleDateUnitIsCheck = true;
-								$scope.checkSaleDateFromat = false;
-							}
-						} else {
-							$scope.SaleDateUnitIsCheck = false;
-						}
-					}
-					// 保质期单位check
-					$scope.saleDateUnitChange = function(parm) {
-						if (undefined != parm && "" != parm) {
-							$scope.SaleDateUnitIsCheck = false;
 						}
 					}
 					// 新添加一个自定义属性及属性值
@@ -836,16 +792,13 @@ angular
 						}
 						$rootScope.resutAllProduct();
 						$rootScope.resutAllProductC();
-						$rootScope.resutAllProductS();
 						// 清空图片信息
 						$scope.serverGs1Code = true;// 产品GS1编码验证用FLG
 						$scope.Gs1Exist = true;// 产品GS1存在FLG
 						document.compositeProductDetailAddForm.oneinput.value = '';// 详细图片name初始化
 						document.productDetailAddForm.oneinput.value = '';// 详细图片name初始化
-						document.productSecondaryDetailAddForm.oneinput.value = '';// 详细图片name初始化
 						document.getElementById("compositeProductDetailAddForm").reset();//清空组合from
 						document.getElementById("productDetailAddForm").reset();//清空普通from
-						document.getElementById("productSecondaryDetailAddForm").reset();//清空辅材from
 						
 						
 						$rootScope.formHeader = [];// 头部图片判断是否修改集合
@@ -864,8 +817,6 @@ angular
 						$rootScope.UnitDisable = true;// 采购基本单位disable
 						$scope.ShelfLifeUnitIsCheck = false;// 保质期初始化
 						$scope.checkShelfLifeFromat = false;// 保质期单位初始化
-						$scope.SaleDateUnitIsCheck = false;// 货架期初始化
-						$scope.checkSaleDateFromat = false;// 货架期单位初始化
 
 						// 初始化所有的一级标准品类的数据
 						$http.get("getAllFirstLevelCategories", {
@@ -908,11 +859,6 @@ angular
 							$scope.compositeProduct = {};
 							$rootScope.showPage = 6;
 							$rootScope.SourcePage = 2;//跳转前页面
-						} else if ($scope.compositeFlag == 2) {// 辅材
-							// 清空辅材信息
-							$scope.product = {};
-							$rootScope.showPage = 8;
-							$rootScope.SourcePage = 3;//跳转前页面
 						}
 					};
 
@@ -1019,9 +965,6 @@ angular
 													shelfLife : product.shelfLife,
 													shelfLifeName : product.shelfLifeName,
 													shelfLifeValue : product.shelfLifeValue,
-													saleDate : product.saleDate,
-													saleDateName : product.saleDateName,
-													saleDateValue : product.saleDateValue,
 													compositeFlag : product.compositeFlag,
 													productSpecificationValue : product.productSpecificationValue,
 													productSpecificationUnitFirst : product.productSpecificationUnitFirst,
@@ -1057,30 +1000,6 @@ angular
 																	$scope.compositeProduct.product.productPictures = productPictures;
 																	$scope.compositeProduct.product.productPackUnit = productPackUnit;
 																});
-											}else if(product.compositeFlag == 2){
-												$rootScope.showPage = 9;
-												if($rootScope.SourcePage != 1){
-													$rootScope.SourcePage = 3;//跳转前页面
-												}
-												product.productPictures = productPictures;
-												product.productPackUnit = productPackUnit;
-												$scope.product = {
-													id : product.id,
-													productName : product.productName,
-													productCode : product.productCode,
-													categoryCode : product.categoryCode,
-													productBuyUnitName : product.productBuyUnitName,
-													productBuyUnitCode : product.productBuyUnitCode,
-													compositeFlag : product.compositeFlag,
-													productTemperatureZoneName : product.productTemperatureZoneName,
-													productTemperatureZoneCode : product.productTemperatureZoneCode,
-													productSecondarySpecification : product.productSecondarySpecification,
-													productPictures : product.productPictures,
-													productPackUnit : product.productPackUnit,
-													productProperties : product.productProperties
-												};
-
-											
 											}
 											// 更新图片信息,用于显示
 											for (var i = 0; i < productPictures.length; i++) {
@@ -1306,13 +1225,6 @@ angular
 							product.shelfLife = $scope.addedProduct.shelfLife;
 							product.shelfLifeName = $scope.addedProduct.shelfLifeUnit.optionName;
 							product.shelfLifeValue = $scope.addedProduct.shelfLifeUnit.optionValue;
-						}
-						// 货架期
-						if (undefined != $scope.addedProduct.saleDate
-								&& "" != $scope.addedProduct.saleDate) {
-							product.saleDate = $scope.addedProduct.saleDate;
-							product.saleDateName = $scope.addedProduct.saleDateUnit.optionName;
-							product.saleDateValue = $scope.addedProduct.saleDateUnit.optionValue;
 						}
 
 						// 返回数据的处理---产品的属性
@@ -1757,16 +1669,6 @@ angular
 							for (i in $rootScope.dateUnits) {
 								if ($scope.product.shelfLifeName == $rootScope.dateUnits[i].optionName) {
 									$scope.product.shelfLifeValue = $rootScope.dateUnits[i].optionValue;
-								}
-							}
-						}
-						// 货架期
-						if (undefined != $scope.product.saleDate
-								&& "" != $scope.product.saleDate) {
-							// 时间Value赋值
-							for (i in $rootScope.dateUnits) {
-								if ($scope.product.saleDateName == $rootScope.dateUnits[i].optionName) {
-									$scope.product.saleDateValue = $rootScope.dateUnits[i].optionValue;
 								}
 							}
 						}
@@ -2292,16 +2194,6 @@ angular
 								}
 							}
 						}
-						// 货架期
-						if (undefined != $scope.compositeProduct.product.saleDate
-								&& "" != $scope.compositeProduct.product.saleDate) {
-							// 时间Value赋值
-							for (i in $rootScope.dateUnits) {
-								if ($scope.compositeProduct.product.saleDateName == $rootScope.dateUnits[i].optionName) {
-									$scope.compositeProduct.product.saleDateValue = $rootScope.dateUnits[i].optionValue;
-								}
-							}
-						}
 						// 去除头部图片的空位置
 						$scope.compositeProduct.product.productPictures = $rootScope
 								.deletBlank($scope.compositeProduct.product.productPictures);
@@ -2664,13 +2556,6 @@ angular
 							product.shelfLifeName = $scope.addedProduct.shelfLifeUnit.optionName;
 							product.shelfLifeValue = $scope.addedProduct.shelfLifeUnit.optionValue;
 						}
-						// 货架期
-						if (undefined != $scope.addedProduct.saleDate
-								&& "" != $scope.addedProduct.saleDate) {
-							product.saleDate = $scope.addedProduct.saleDate;
-							product.saleDateName = $scope.addedProduct.saleDateUnit.optionName;
-							product.saleDateValue = $scope.addedProduct.saleDateUnit.optionValue;
-						}
 						// 返回数据的处理---产品的属性
 						var productProperties = [];
 						for (var i = 0; i < $scope.productCategoryProperties.length; i++) {
@@ -2912,555 +2797,6 @@ angular
 									$scope.cImageUp($scope.pic);// 图片服务器上传成功后提交数据
 							});
 						}
-					};
-				})
-		.controller(
-				'productSecondaryDetailAddController',// 普通产品新增Controller
-				function($scope, $rootScope, $http) {
-
-					$rootScope.resutAllProductS = function(){
-						$scope.addedProduct = {};
-						$scope.productSecondaryDetailAddForm.$setPristine();
-						$scope.productSecondaryDetailAddForm.$setUntouched();
-					    $scope.productSecondaryDetailAddForm.$setValidity();
-					}
-					$scope.addedProduct = {};
-
-					// 监听
-					$scope.$watch('addProduct', function(newValue, oldValue) {
-						if (newValue === oldValue) {
-							return;
-						} // AKA first run
-						$scope.addedProduct = {};
-					});
-
-					// 判断产品的属性是否都填写
-					$scope.isProductPropertyMissed = true;
-					$scope.onPropertyValueChange = function(addedProduct) {
-						var propertyLength = 0;
-						// 判断图片是否上传完成
-						for ( var p in addedProduct) {
-							propertyLength++;
-						}
-						// 大于1件时
-						if (propertyLength < $scope.productCategoryProperties.length) {
-							$scope.isProductPropertyMissed = true;
-						} else {
-							$scope.isProductPropertyMissed = false;
-						}
-					};
-					// 图片上传
-					$scope.productImageDetail = function(data) {
-						var product = {};
-						// 返回数据的处理---基础数据
-						product.productName = $scope.addedProduct.productName;
-						product.productCode = $scope.addedProduct.productCode;
-						// 标准产品
-						product.compositeFlag = 2;
-						product.categoryCode = $scope.categoryCode;
-						product.productSecondarySpecification = $scope.addedProduct.productSecondarySpecification;
-						// 产品售卖单位
-						product.productBuyUnitCode = $scope.addedProduct.productBuyUnit.optionValue;
-						product.productBuyUnitName = $scope.addedProduct.productBuyUnit.optionName;
-						// 温区
-						product.productTemperatureZoneCode = $scope.addedProduct.productTemperatureZone.optionValue;
-						product.productTemperatureZoneName = $scope.addedProduct.productTemperatureZone.optionName;
-
-						// 返回数据的处理---产品的属性
-						var productProperties = [];
-						for (var i = 0; i < $scope.productCategoryProperties.length; i++) {
-							productProperty = {};
-							productPropertyName = $scope.productCategoryProperties[i].categoryPropertyName;
-							productPropertyValue = $scope.addedProduct.productProperty[i].categoryPropertyValue;
-							productProperty.productPropertyName = productPropertyName;
-							productProperty.productCode = $scope.addedProduct.productCode;
-							productProperty.productPropertyValue = productPropertyValue;
-							productProperties.push(productProperty);
-						}
-						// 返回数据的处理---产品的自定义属性
-						Array.prototype.push.apply(productProperties,
-								$scope.customerProductProperties);
-
-						product.productProperties = productProperties;
-						// 返回数据的处理---产品的图片
-						// 头部图片信息
-						var index = $rootScope.thumbHeader.length;
-						product.productPictures = [];
-						for ( var image in $rootScope.thumbHeader) {
-							if (product.productPictures[image] == undefined
-									|| product.productPictures[image] == null)
-								product.productPictures
-										.push({
-											pictureAddress : $rootScope.thumbHeader[image].pictureAddress,
-											pictureShowPosition : 0,
-											pictureShowOrder : image
-										});
-							else {
-								product.productPictures[image].pictureAddress = $rootScope.thumbHeader[image].pictureAddress;
-								product.productPictures[image].pictureShowPosition = 0;// 头部图片，0固定
-								product.productPictures[image].pictureShowOrder = image;
-							}
-							if (data != null) {
-								for (var i = 0; i < data.length; i++) {
-									// 若页面图片位置与传回来图片位置一致，则使用传回来的图片地址
-									if (data[i].pictureShowPosition == 0
-											&& image == data[i].pictureShowOrder) {
-										product.productPictures[image].pictureAddress = data[i].pictureAddress;
-										break;
-									}
-								}
-							}
-						}
-						// 详情页图片信息
-						for ( var image in $rootScope.thumbDetail) {
-							if (product.productPictures[index] == undefined
-									|| product.productPictures[index] == null)
-								product.productPictures
-										.push({
-											pictureAddress : $rootScope.thumbDetail[image].pictureAddress,
-											pictureShowPosition : 1,
-											pictureShowOrder : image
-										});
-							else {
-								product.productPictures[index].pictureAddress = $rootScope.thumbDetail[image].pictureAddress;
-								product.productPictures[index].pictureShowPosition = 1;// 详情图片，1固定
-								product.productPictures[index].pictureShowOrder = image;
-							}
-
-							if (data != null) {
-								for (var i = 0; i < data.length; i++) {
-									// 若页面图片位置与传回来图片位置一致，则使用传回来的图片地址
-									if (data[i].pictureShowPosition == 1
-											&& image == data[i].pictureShowOrder) {
-										product.productPictures[index].pictureAddress = data[i].pictureAddress;
-										break;
-									}
-								}
-							}
-							index++;
-						}
-
-						// 更新图片的编码
-						for (var i = 0; i < product.productPictures.length; i++) {
-							product.productPictures[i].productCode = $scope.addedProduct.productCode;
-						}
-
-						// 去除头部图片的空位置
-						product.productPictures = $rootScope
-								.deletBlank(product.productPictures);
-						// 包装单位
-						product.productPackUnit = $rootScope.productPackUnit;
-						$scope.addedProduct = product;
-						// 页面新增数据上传
-						$http.post("addProduct", $scope.addedProduct)
-								.success(
-										function(data) {
-											// 新增完成。FLG重置
-											if (!$scope.$parent.newEditQuit) {
-												$scope.$parent.newEditQuit = true;// 放弃当前新增
-												$scope.$parent.newEditCount = 0;// 确认放弃，次数归0
-											}
-											$scope.$parent.doubleClick = false;// 恢复完成按钮disable属性
-											exitPop('submitInfo');
-											$scope.$parent.doubleC = 0;// 完成提交初始化二重check
-											$scope.$parent.product = data;// 返回数据
-											// 处理新增之后直接编辑的情况
-											$rootScope.formHeader = [];
-											$rootScope.thumbHeader = [];
-											$rootScope.thumbDetail = [];
-											$rootScope.formDetail = [];
-											productPictures = $scope.product.productPictures;
-											if (undefined != productPictures) {
-												for (var i = 0; i < productPictures.length; i++) {
-													// 头部图片
-													if (productPictures[i].pictureShowPosition === 0) {
-														$rootScope.formHeader
-																.push({
-																	pictureAddress : productPictures[i].pictureAddress,
-																	changeFlag : false
-																});
-														$rootScope.thumbHeader
-																.push({
-																	pictureAddress : productPictures[i].pictureAddress,
-																	changeFlag : false
-																});
-													} else {
-														// 详情页图片
-														$rootScope.formHeader
-																.push({
-																	pictureAddress : productPictures[i].pictureAddress,
-																	changeFlag : false
-																});
-														$rootScope.thumbDetail
-																.push({
-																	pictureAddress : productPictures[i].pictureAddress,
-																	changeFlag : false
-																});
-													}
-												}
-											}
-											$scope.selectByPage(
-													$scope.pagination.pageNum,
-													$scope.pagination.pageSize,
-													$scope.categoryCode, null,
-													$scope.productProperty,
-													null, $scope.compositeFlag);
-										});
-						// 新增完成后进入查看界面显示该产品
-						$rootScope.showPage = 9;// 普通产品编辑页面总体不显示
-					}
-
-					// 标准产品
-					$scope.onAddSaveClick = function() {
-
-						// 防止表单重复提交
-						$scope.$parent.doubleC = $scope.$parent.doubleC + 1;
-						if ($scope.$parent.doubleC > 0) {
-							$scope.$parent.doubleClick = true;
-							$rootScope.message = "正在提交数据,请稍后,成功后自动关闭！";
-							showPopup('submitInfo', true);
-						}
-
-						// 图片数据的处理
-						var data = new FormData();
-						var ic = 0;
-						h1 = 0;
-						h2 = 0;
-
-						// 头部图片信息
-						for ( var image in $rootScope.thumbHeader) {
-							// 当头部图片集合中的图片地址长度大于100时，视为该图片为本地预览图片，未上传至服务器，故需上传至服务器
-							if ($rootScope.thumbHeader[image].pictureAddress != undefined
-									&& $rootScope.thumbHeader[image].pictureAddress.length > 100) {
-								ic++;
-								h1++;
-							}
-						}
-						// 详情页图片信息
-						for ( var image in $rootScope.thumbDetail) {
-							// 当详情页图片集合中的图片地址长度大于100时，视为该图片为本地预览图片，未上传至服务器，故需上传至服务器
-							if ($rootScope.thumbDetail[image].pictureAddress != undefined
-									&& $rootScope.thumbDetail[image].pictureAddress.length > 100) {
-								ic++;
-								h2++;
-							}
-						}
-						// 图片没有变更时，提交页面数据
-						var ib = 0;
-						$scope.pic = [];
-						if (ic == 0) {
-							$scope.productImageDetail($scope.pic);
-							return;
-						}
-						// 处理图片位置信息
-						var imageSize = 0;
-						for (var i = 0; i < ic; i++) {
-							var data = new FormData();
-
-							if (i >= h1) {
-								// 详情页图片
-								for ( var image in $rootScope.thumbDetail) {
-									// 当头部图片集合中的图片地址长度大于100时，视为该图片为本地预览图片，未上传至服务器，故需上传至服务器
-									if ($rootScope.thumbDetail[image].pictureAddress != undefined
-											&& $rootScope.thumbDetail[image].pictureAddress.length > 100) {
-										data
-												.append(
-														"1," + image,
-														$rootScope.thumbDetail[image].file);
-										$rootScope.thumbDetail[image].pictureAddress = undefined;
-										break;
-									}
-								}
-							} else {
-								for ( var image in $rootScope.thumbHeader) {
-									// 当头部图片集合中的图片地址长度大于100时，视为该图片为本地预览图片，未上传至服务器，故需上传至服务器
-									if ($rootScope.thumbHeader[image].pictureAddress != undefined
-											&& $rootScope.thumbHeader[image].pictureAddress.length > 100) {
-										data
-												.append(
-														"0," + image,
-														$rootScope.thumbHeader[image].file);
-										$rootScope.thumbHeader[image].pictureAddress = undefined;
-										break;
-									}
-								}
-							}
-							// 图片上传
-							$http({
-								method : 'post',
-								url : 'imageUpload',
-								data : data,
-								headers : {
-									'Content-Type' : undefined
-								},
-								transformRequest : angular.identity
-							}).success(function(newdata) {
-								$scope.pic[ib] = newdata[0];
-								ib++;
-								if (ib == ic)
-									$scope.productImageDetail($scope.pic);// 图片有变更时，提交页面数据
-							});
-						}
-					};
-				})
-		.controller(
-				'productSecondaryDetailController',// 普通产品编辑controller
-				function($scope, $rootScope, $http) {
-
-					// 点击编辑按钮触发的事件
-					$scope.onEditClick = function() {
-
-						if ($scope.$parent.oldEditQuit) {
-							$scope.$parent.oldEditQuit = false;// 是否放弃当前编辑FLG
-						}
-
-						$scope.otherProperty = [];
-						if ($scope.productCategoryProperties != undefined)
-							for (var i = 0; i < $scope.productCategoryProperties.length; i++) {
-								var count = 0;
-								if ($scope.product != undefined
-										&& $scope.product.productProperties != undefined)
-									for (var j = 0; j < $scope.product.productProperties.length; j++) {
-										if ($scope.product.productProperties[j].productPropertyName == $scope.productCategoryProperties[i].categoryPropertyName) {
-											count++;
-											break;
-										}
-									}
-								if (count == 0) {
-									$scope.otherProperty
-											.push($scope.productCategoryProperties[i]);
-								}
-							}
-						// 离最大图片size还差addSize个
-						var addSize = $rootScope.headerPictureSize
-								- $rootScope.thumbHeader.length;
-						// 补足图片数量
-						for (var i = 0; i < addSize; i++) {
-							$rootScope.formHeader.push({
-								pictureAddress : "",
-								changeFlag : false
-							});
-							$rootScope.thumbHeader.push({
-								pictureAddress : "",
-								changeFlag : false
-							});
-						}
-						document.productSecondaryEditForm.oneinput.value = '';// 详细图片name初始化
-						$rootScope.SourcePageEdit = 9;//跳转前页面
-						$scope.$parent.editProduct = true;
-						// 图片上传限制
-						$rootScope.isHeaderPictureSatified = true;
-						$rootScope.isDetailPictureSatified = true;
-						$rootScope.showProductBuyUnitEmpty = false;// 包装单位错误表示
-
-					};
-
-					// 标准产品图片编辑
-					$scope.bzcpImage = function(data) {
-						// 产品属性处理
-						$scope.product.productProperties = [];
-						$(".propertyV2").each(function(i) {
-							$scope.product.productProperties.push({
-								productPropertyName : this.id,
-								productPropertyValue : this.value
-							});
-						});
-						$(".propertyV3").each(function(i) {
-							$scope.product.productProperties.push({
-								productPropertyName : this.name,
-								productPropertyValue : this.value,
-								customerDefineFlag : 1
-							});
-						});
-
-						// 返回数据的处理---产品的图片
-						// 头部图片信息
-						var index = $rootScope.thumbHeader.length;
-						$scope.product.productPictures = [];
-						for ( var image in $rootScope.thumbHeader) {
-							if ($scope.product.productPictures[image] == undefined
-									|| $scope.product.productPictures[image] == null)
-								$scope.product.productPictures
-										.push({
-											pictureAddress : $rootScope.thumbHeader[image].pictureAddress,
-											pictureShowPosition : 0,
-											pictureShowOrder : image
-										});
-							else {
-								$scope.product.productPictures[image].pictureAddress = $rootScope.thumbHeader[image].pictureAddress;
-								$scope.product.productPictures[image].pictureShowPosition = 0;// 头部图片，0固定
-								$scope.product.productPictures[image].pictureShowOrder = image;
-							}
-							if (data != null) {
-								for (var i = 0; i < data.length; i++) {
-									// 若页面图片位置与传回来图片位置一致，则使用传回来的图片地址
-									if (data[i].pictureShowPosition == 0
-											&& image == data[i].pictureShowOrder) {
-										$scope.product.productPictures[image].pictureAddress = data[i].pictureAddress;
-										break;
-									}
-								}
-							}
-						}
-						// 详情页图片信息
-						for ( var image in $rootScope.thumbDetail) {
-							if ($scope.product.productPictures[index] == undefined
-									|| $scope.product.productPictures[index] == null)
-								$scope.product.productPictures
-										.push({
-											pictureAddress : $rootScope.thumbDetail[image].pictureAddress,
-											pictureShowPosition : 1,
-											pictureShowOrder : image
-										});
-							else {
-								$scope.product.productPictures[index].pictureAddress = $rootScope.thumbDetail[image].pictureAddress;
-								$scope.product.productPictures[index].pictureShowPosition = 1;// 详情图片，1固定
-								$scope.product.productPictures[index].pictureShowOrder = image;
-							}
-
-							if (data != null) {
-								for (var i = 0; i < data.length; i++) {
-									// 若页面图片位置与传回来图片位置一致，则使用传回来的图片地址
-									if (data[i].pictureShowPosition == 1
-											&& image == data[i].pictureShowOrder) {
-										$scope.product.productPictures[index].pictureAddress = data[i].pictureAddress;
-										break;
-									}
-								}
-							}
-							index++;
-						}
-						// 去除头部图片的空位置
-						$scope.product.productPictures = $rootScope
-								.deletBlank($scope.product.productPictures);
-						// 包装单位
-						$scope.product.productPackUnit = $rootScope.productPackUnit;
-						// 更新页面数据
-						$http.post("updateProduct", $scope.product)
-								.success(
-										function(data) {
-											$scope.$parent.doubleClick = false;
-											exitPop('submitInfo');
-											$scope.$parent.doubleC = 0;
-											$scope.$parent.oldEditQuit = true;// 放弃当前编辑
-											//跳转前页面
-											if($rootScope.SourcePage == 1){
-												$scope.searchByProductCode('detail');
-											}else if($rootScope.SourcePage == 3){
-												$scope.selectByPage(
-														$scope.$parent.pagination.pageNum,
-														$scope.$parent.pagination.pageSize,
-														$scope.$parent.categoryCode,
-														null,
-														$scope.$parent.productProperty,
-														null,
-														null,
-														null,
-														null);
-											}
-											$scope.rowClick(
-													$scope.$parent.nowRow,
-													$scope.product);
-										});
-					}
-
-					// 标准产品编辑保存
-					$scope.onSaveClick = function() {
-						$scope.$parent.doubleC = $scope.$parent.doubleC + 1;// 点击过保存按钮disable
-						if ($scope.$parent.doubleC > 0) {
-							$scope.$parent.doubleClick = true;
-							$rootScope.message = "正在提交数据,请稍后,成功后自动关闭！";
-							showPopup('submitInfo', true);
-						}
-
-						// 图片数据的处理
-						var data = new FormData();
-						var ic = 0;
-						h1 = 0;
-						h2 = 0;
-
-						// 头部图片信息
-						for ( var image in $rootScope.thumbHeader) {
-							// 当头部图片集合中的图片地址长度大于100时，视为该图片为本地预览图片，未上传至服务器，故需上传至服务器
-							if ($rootScope.thumbHeader[image].pictureAddress != undefined
-									&& $rootScope.thumbHeader[image].pictureAddress.length > 100) {
-								ic++;
-								h1++;
-							}
-						}
-						// 详情页图片信息
-						for ( var image in $rootScope.thumbDetail) {
-							// 当详情页图片集合中的图片地址长度大于100时，视为该图片为本地预览图片，未上传至服务器，故需上传至服务器
-							if ($rootScope.thumbDetail[image].pictureAddress != undefined
-									&& $rootScope.thumbDetail[image].pictureAddress.length > 100) {
-								ic++;
-								h2++;
-							}
-						}
-						// 图片未修改，提交页面数据
-						var ib = 0;
-						$scope.pic = [];
-						if (ic == 0) {
-							$scope.bzcpImage($scope.pic);
-							return;
-						}
-						var imageSize = 0;
-						for (var i = 0; i < ic; i++) {
-							var data = new FormData();
-							if (i >= h1) {
-								// 详情页图片
-								for ( var image in $rootScope.thumbDetail) {
-									// 当头部图片集合中的图片地址长度大于100时，视为该图片为本地预览图片，未上传至服务器，故需上传至服务器
-									if ($rootScope.thumbDetail[image].pictureAddress != undefined
-											&& $rootScope.thumbDetail[image].pictureAddress.length > 100) {
-										data
-												.append(
-														"1," + image,
-														$rootScope.thumbDetail[image].file);
-										$rootScope.thumbDetail[image].pictureAddress = undefined;
-										break;
-									}
-								}
-							} else {
-								for ( var image in $rootScope.thumbHeader) {
-									// 当头部图片集合中的图片地址长度大于100时，视为该图片为本地预览图片，未上传至服务器，故需上传至服务器
-									if ($rootScope.thumbHeader[image].pictureAddress != undefined
-											&& $rootScope.thumbHeader[image].pictureAddress.length > 100) {
-										data
-												.append(
-														"0," + image,
-														$rootScope.thumbHeader[image].file);
-										$rootScope.thumbHeader[image].pictureAddress = undefined;
-										break;
-									}
-								}
-							}
-
-							// 图片上传
-							$http({
-								method : 'post',
-								url : 'imageUpload',
-								data : data,
-								headers : {
-									'Content-Type' : undefined
-								},
-								transformRequest : angular.identity
-							}).success(function(newdata) {
-								$scope.pic[ib] = newdata[0];
-								ib++;
-								if (ib == ic)
-									$scope.bzcpImage($scope.pic);// 完成图片上传，提交页面数据
-							});
-						}
-					};
-
-					// 产品属性的修改的记录
-					$scope.changedProductproperties = [];
-					$scope.productPropertyChange = function(name, value) {
-						$scope.changedProductproperties.push({
-							productPropertyName : name.productPropertyName,
-							productPropertyValue : value.categoryPropertyValue
-						});
 					};
 				});
 function loadSecMenu(url) {

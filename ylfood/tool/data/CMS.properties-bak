@@ -1,0 +1,22 @@
+authorName=yanghuan
+
+#DAO 配置
+classDescImpl=DAO
+classDescInterface=DAO
+packageImpl=com.spfood.cms.dao.impl
+packageInterface=com.spfood.cms.dao
+
+#Manager配置
+managerClassDescImpl=Manager
+managerClassDescInterface=Manager
+managerPackageImpl=com.spfood.cms.manager.impl
+managerPackageInterface=com.spfood.cms.manager
+
+#Domain 配置
+#domainPackage=com.spfood.basicservice.domain
+domainPackage=com.spfood.cms.intf.domain
+#多个domain类用逗号分隔，这里的domainName按照表结构驼峰命名，
+#并于mybatis配置文件中的table->domainObjectName字段相同
+domainName=CatPromotePos
+#生成的代码在存放目录中的子目录，使用模块的名称
+result.dir=CMS

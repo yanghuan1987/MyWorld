@@ -53,9 +53,6 @@
     <result column="shelf_life" property="shelfLife" jdbcType="INTEGER" />
     <result column="shelf_life_name" property="shelfLifeName" jdbcType="VARCHAR" />
     <result column="shelf_life_value" property="shelfLifeValue" jdbcType="VARCHAR" />
-    <result column="sale_date" property="saleDate" jdbcType="INTEGER" />
-    <result column="sale_date_name" property="saleDateName" jdbcType="VARCHAR" />
-    <result column="sale_date_value" property="saleDateValue" jdbcType="VARCHAR" />
     
     <collection property="commodityPropertys" ofType="com.spfood.pms.intf.domain.CommodityProperty">
         <id column="cid" property="id" jdbcType="BIGINT" />
@@ -161,9 +158,6 @@
 			shelf_life,
 			shelf_life_name,
 			shelf_life_value,
-			sale_date,
-			sale_date_name,
-			sale_date_value,
 			product_temperature_zone_name,
 			product_temperature_zone_code
        	from 	pms_commodity 
@@ -185,9 +179,6 @@
 					shelf_life,
 					shelf_life_name,
 					shelf_life_value,
-					sale_date,
-					sale_date_name,
-					sale_date_value,
 					product_code,
 					sales_amount,
 					commodity_comment,
@@ -221,8 +212,11 @@
   <select id="select" resultMap="BaseResultMap" parameterType="com.spfood.pms.intf.domain.Commodity" >
 		select pms_commodity.id
 		from pms_commodity 
-		where pms_commodity.category_code like #{category.categoryCode,jdbcType=VARCHAR} '%'
-         AND commodity_status != 6
+		where
+         commodity_status != 6
+		<if test="category != null and category.categoryCode != ''" >
+			AND pms_commodity.category_code like #{category.categoryCode,jdbcType=VARCHAR} '%'
+		</if>
 		 <if test="commodityCode != null and commodityCode != ''" >
 	         AND commodity_code like #{commodityCode,jdbcType=VARCHAR}
 	     </if>
@@ -292,9 +286,6 @@
 				pms_commodity.shelf_life,
 				pms_commodity.shelf_life_name,
 				pms_commodity.shelf_life_value,
-				pms_commodity.sale_date,
-				pms_commodity.sale_date_name,
-				pms_commodity.sale_date_value,
 				pms_product.product_name,
 				pms_product_category.category_code,
 				pms_product.product_buy_unit_code,
@@ -348,9 +339,6 @@
 				pms_commodity.shelf_life,
 				pms_commodity.shelf_life_name,
 				pms_commodity.shelf_life_value,
-				pms_commodity.sale_date,
-				pms_commodity.sale_date_name,
-				pms_commodity.sale_date_value,
      			pms_commodity.product_code,
 			    pms_commodity.sales_amount,
 			    pms_commodity.commodity_comment,
@@ -404,9 +392,6 @@
 								shelf_life,
 								shelf_life_name,
 								shelf_life_value,
-								sale_date,
-								sale_date_name,
-								sale_date_value,
       							create_date,
       							create_user, 
       							last_update_date,
@@ -435,8 +420,7 @@
       							#{taxRateName,jdbcType=VARCHAR},
       							#{taxRateValue,jdbcType=VARCHAR},
 								#{shelfLife,jdbcType=INTEGER},  #{shelfLifeName,jdbcType=VARCHAR}, 
-								#{shelfLifeValue,jdbcType=VARCHAR},  #{saleDate,jdbcType=INTEGER}, 
-								#{saleDateName,jdbcType=VARCHAR},  #{saleDateValue,jdbcType=VARCHAR}, 
+								#{shelfLifeValue,jdbcType=VARCHAR},
       							#{createDate,jdbcType=TIMESTAMP},
       							#{createUser,jdbcType=VARCHAR}, 
       							#{lastUpdateDate,jdbcType=TIMESTAMP},
@@ -595,9 +579,6 @@
         shelf_life = #{shelfLife,jdbcType=INTEGER},
         shelf_life_name = #{shelfLifeName,jdbcType=VARCHAR},
         shelf_life_value = #{shelfLifeValue,jdbcType=VARCHAR},
-        sale_date = #{saleDate,jdbcType=INTEGER},
-        sale_date_name = #{saleDateName,jdbcType=VARCHAR},
-        sale_date_value = #{saleDateValue,jdbcType=VARCHAR},
 	      last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
 	      last_update_user = #{lastUpdateUser,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
@@ -615,9 +596,6 @@
 			pms_commodity.shelf_life,
 			pms_commodity.shelf_life_name,
 			pms_commodity.shelf_life_value,
-			pms_commodity.sale_date,
-			pms_commodity.sale_date_name,
-			pms_commodity.sale_date_value,
 			pms_commodity.product_code,
 			pms_commodity.commodity_comment,
 			pms_commodity.commodity_price,
@@ -659,9 +637,6 @@
 			pms_commodity.shelf_life,
 			pms_commodity.shelf_life_name,
 			pms_commodity.shelf_life_value,
-			pms_commodity.sale_date,
-			pms_commodity.sale_date_name,
-			pms_commodity.sale_date_value,
 			pms_commodity.product_code,
 			pms_commodity.sales_amount,
 			pms_commodity.commodity_comment,
@@ -713,9 +688,6 @@
 			pms_commodity.shelf_life,
 			pms_commodity.shelf_life_name,
 			pms_commodity.shelf_life_value,
-			pms_commodity.sale_date,
-			pms_commodity.sale_date_name,
-			pms_commodity.sale_date_value,
 			pms_commodity.product_code,
 			pms_commodity.sales_amount,
 			pms_commodity.commodity_comment,
@@ -884,7 +856,7 @@
     </select>
     
     
-    <select id="selectPageInCommodityForCommentDetail" resultMap="BaseResultMap" parameterType="java.util.List">
+    <select id="selectPageInCommodityForCommentDetail" resultMap="BaseResultMap" parameterType="com.spfood.pms.intf.domain.Commodity">
 				SELECT a.id,a.category_code,a.commodity_code,a.commodity_name,
 					IF(SUM(b.express_good) IS NULL,0,SUM(b.express_good)) AS express_good_count,
 					IF(SUM(b.express_mid) IS NULL,0,SUM(b.express_mid)) AS express_mid_count,
@@ -914,14 +886,20 @@
 					 MAX(CASE WHEN c.comment_type_code = 1 THEN  c.comment_grade  ELSE 0 END) as express_grade
 					,MAX(CASE WHEN c.comment_type_code = 2 THEN  c.comment_grade  ELSE 0 END) as package_grade
 					,MAX(CASE WHEN c.comment_type_code = 3 THEN  c.comment_grade  ELSE 0 END) as commodity_grade
-					FROM   pms_commodity_comment c  
+					FROM   pms_commodity_comment c 
+						WHERE 1=1
+					<!-- 评价时间 -->
+					<if test="commodityCommentDomain.CommodityCommentDateSt != null and 
+						commodityCommentDomain.CommodityCommentDateEd != null" >
+							AND c.comment_time BETWEEN #{commodityCommentDomain.CommodityCommentDateSt} AND #{commodityCommentDomain.CommodityCommentDateEd}
+					</if>
 							GROUP BY commodity_code,comment_usercode,order_no) as t 
 				GROUP BY t.commodity_code,t.comment_usercode,t.order_no
 				ORDER BY t.id
 				) AS b
 				ON a.commodity_code = b.commodity_code
 				WHERE a.id in 
-					<foreach item="item" index="index" collection="list" open="("
+					<foreach item="item" index="index" collection="commodityCommentDomain.idList" open="("
 						separator="," close=")">
 						#{item}
 					</foreach>

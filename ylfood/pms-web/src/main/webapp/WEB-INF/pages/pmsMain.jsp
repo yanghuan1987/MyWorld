@@ -20,15 +20,17 @@
 </head>
 <body ng-app="pmsMainApp" ng-controller="pmsMainCtrl">
 <input type="text" id="server" value="<%=path%>" style="display: none;"/>
-
-	<jsp:include page="./common/head.jsp"></jsp:include>
+<div class="sp-menu-left" style="overflow-y: auto;overflow-x: hidden;border-left: 5px solid #ebebeb;width: 20%;">
 		<div class="row">
 		<jsp:include page="./common/menu.jsp"></jsp:include>
-		<div class="sp-menu-right">
-
+		<div class="sp-menu-right" style="border-left: 5px solid #ebebeb;width: 80%;">
 		</div>
 	</div>
-	
+</div>
+<div class="sp-menu-right" style="border-left: 5px solid #ebebeb;width: 80%;">
+		<jsp:include page="./common/head.jsp"></jsp:include>
+
+</div>
 	<script type="text/javascript" src="<%=path%>/js/lib/jquery.min.js"></script>
 	<script type="text/javascript" src="<%=path%>/js/lib/angular-1.5.9.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/common/index.js"></script>

@@ -96,11 +96,11 @@ public class CommodityDaoImpl extends BaseDaoImpl<Commodity> implements Commodit
 	}
 	
 	//根据ID的集合查询所有的商品评价
-	public List<Commodity> selectListByIdsForComment(List<Long> idList) {
+	public List<Commodity> selectListByIdsForComment(Commodity commodity) {
 		try {
-			return sqlSessionTemplate.selectList(getSqlName(CommoditySqlIds.SELECT_PAGE_IN_COMMODITY_FOR_COMMENT_DETAIL), idList);
+			return sqlSessionTemplate.selectList(getSqlName(CommoditySqlIds.SELECT_PAGE_IN_COMMODITY_FOR_COMMENT_DETAIL), commodity);
 		} catch (Exception e) {
-			throw new PersistenceException("kernel.dao.selectListByIds", e, null, getSqlName(CommoditySqlIds.SELECT_PAGE_IN_COMMODITY_FOR_COMMENT_DETAIL), idList);
+			throw new PersistenceException("kernel.dao.selectListByIds", e, null, getSqlName(CommoditySqlIds.SELECT_PAGE_IN_COMMODITY_FOR_COMMENT_DETAIL), commodity);
 		}
 	}
 	
