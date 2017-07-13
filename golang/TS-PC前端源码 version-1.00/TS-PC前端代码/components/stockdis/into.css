@@ -1,0 +1,24 @@
+.topInput{
+	margin-bottom:.5rem;
+}
+.topInput li{
+	display: inline-block;
+    width: 300px;
+    line-height: 2rem;
+    margin-right: 2rem
+}
+span.block{
+	display: block;
+}
+.choseState Select{
+	margin-left:5px;
+}
+Table{
+	margin-top:2rem;
+}
+Button{
+	margin-left:5px;
+}
+.setWidth{
+	width:300px;
+}

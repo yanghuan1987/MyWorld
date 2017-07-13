@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xsi:schemaLocation="  
+        http://www.springframework.org/schema/beans   
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+        http://code.alibabatech.com/schema/dubbo        
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">  
+    <!-- dubbo service configuration -->
+    <!-- 提供方应用信息，用于计算依赖关系 -->
+    <dubbo:application name="cms-impl-service"  />
+ 
+    <!-- 用dubbo协议在20880端口暴露服务,使用的默认传输协议netty，默认序列化 方式hessian2-->
+    <dubbo:protocol name="dubbo" port="20998" />
+    
+    <!-- 从注册中心发现监控中心 -->
+    <dubbo:monitor protocol="registry"/>
+    
+    <!-- 声明需要暴露的服务接口 -->
+    <dubbo:service interface="com.spfood.cms.intf.SearchKeywordService" ref="searchKeywordService" timeout="6000" />
+    <dubbo:service interface="com.spfood.cms.intf.CatPromotePosService" ref="catPromotePosService" timeout="6000" />
+    <dubbo:service interface="com.spfood.cms.intf.MenuService" ref="menuService" timeout="6000" />
+    <dubbo:service interface="com.spfood.cms.intf.PromotedCommodityService" ref="promotedCommodityService" timeout="6000" />
+    <dubbo:service interface="com.spfood.cms.intf.CommodityPromotionPosService" ref="commodityPromotionPosService" timeout="6000" />
+    <dubbo:service interface="com.spfood.cms.intf.AdvertisementService" ref="advertisementService" timeout="6000" />
+    <dubbo:service interface="com.spfood.cms.intf.SlideAdsPositionService" ref="slideAdsPositionService" timeout="6000" />
+    <!-- 和本地bean一样实现服务 -->
+    <bean id="searchKeywordService" class="com.spfood.cms.impl.SearchKeywordServiceImpl" />
+    <bean id="catPromotePosService" class="com.spfood.cms.impl.CatPromotePosServiceImpl" />
+    <bean id="menuService" class="com.spfood.cms.impl.MenuServiceImpl" />
+    <bean id="promotedCommodityService" class="com.spfood.cms.impl.PromotedCommodityServiceImpl" />
+    <bean id="commodityPromotionPosService" class="com.spfood.cms.impl.CommodityPromotionPosServiceImpl" />
+    <bean id="advertisementService" class="com.spfood.cms.impl.AdvertisementServiceImpl" />
+    <bean id="slideAdsPositionService" class="com.spfood.cms.impl.SlideAdsPositionServiceImpl" />
+    
+    <!-- 引入基础服务 -->
+    <dubbo:reference id ="basicConfigurationService" interface="com.spfood.basicservice.intf.BasicConfigurationService" check="true" timeout="2000"></dubbo:reference>
+</beans>       

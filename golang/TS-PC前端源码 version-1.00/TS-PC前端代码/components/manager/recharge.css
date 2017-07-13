@@ -1,0 +1,26 @@
+.info{
+	margin:0 auto;
+	 font-size: 16px;
+}
+.info Input[type="text"]{
+	width:400px;
+	margin:0 2rem;
+	text-align: left !important;
+}
+.info p{
+	text-align: center;
+    line-height: 3rem;
+   
+}
+.info span.texts{
+	text-align: right !important;
+	display: inline-block;
+	width:120px;
+}
+Button.save{
+	margin-left: 10%;
+    margin-top: 3%;
+    width: 400px;
+    height: 40px;
+    line-height: 40px;
+}
